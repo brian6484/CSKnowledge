@@ -1,5 +1,7 @@
 # Layered Architecture
 
+Chapter 3.1.1
+
 ## About
 A layered architecture defines interfaces (boundaries between different components or layers of a system) that implement certain concerns or functionalities that specify how different parts of a system interact with one another. It allows changes to be made within that implementation of concern without disrupting other layers.
 
