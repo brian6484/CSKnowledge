@@ -10,3 +10,38 @@ like CreditCard, BankAccount (open for future extension ACID)
 but max 1 parent.
 
 ![image](https://github.com/brian6484/StudyNote/assets/56388433/3434357e-a4d9-4f97-b0a2-d50fd927444e)
+
+## User
+rmb Hibernate needs noargrsconstructor for each persistent class for performance optimisation - lazy loading and when invoking lifcycle events like entity listeners
+or interceptors
+
+configure entity,jparepo and yml db details
+```java
+@Entity
+@Table(name = "USERS")
+public class User {
+    @Id
+    @GeneratedValue
+    private Long id;
+    private String username;
+    private LocalDate registrationDate;
+    private String email;
+    private int level;
+    private boolean active;
+
+    public User() {
+    }
+
+    public User(String username) {
+        this.username = username;
+    }
+
+    public User(String username, LocalDate registrationDate) {
+        this.username = username;
+        this.registrationDate = registrationDate;
+    }
+
+    // Getters and setters
+}
+```
+
