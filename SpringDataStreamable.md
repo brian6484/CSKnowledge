@@ -22,3 +22,8 @@ void testStreamable() {
 }
 
 ```
+
+## important that you use try with Streamable
+In the above example, the stream is given as a resource of the `try` block so it will automatically be closed.
+Otherwise, if you don't use try clause, the stream will keep the database connection open, wasting resources.
+An explicit close() method can be done but usually this try is sufficient.
