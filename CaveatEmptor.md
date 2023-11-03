@@ -15,6 +15,8 @@ but max 1 parent.
 rmb Hibernate needs noargrsconstructor for each persistent class for performance optimisation - lazy loading and when invoking lifcycle events like entity listeners
 or interceptors
 
+pg 113 include the tests
+
 configure entity,jparepo and yml db details
 ```java
 @Entity
