@@ -1,4 +1,4 @@
-# Spring DATA JPA
+# Spring Data JPA
 
 ## Keywords
 
@@ -23,3 +23,19 @@
 
 A note is than LessThan and Before both filters entities on numeric fields and date but LessThan
 is more general whilst Before is specifically for date fields.
+
+## Generify
+In the above repo methods, the methods know exactly what the return types are from compile time.
+But we can generify the return type of repo methods, making them dynamic.
+
+For example,
+```java
+<T> List<T> findByEmail(String username, Class<T> type);
+
+## most likely you are gonna use dto instead of projection
+List<Projection.UsernameOnly> usernames =
+    userRepository.findByEmail("mike@somedomain.com", Projection.UsernameOnly.class);
+    
+List<User> users =
+    userRepository.findByEmail("mike@somedomain.com", User.class);
+```
