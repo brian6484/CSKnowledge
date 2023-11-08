@@ -30,3 +30,7 @@ is persisted and this reference is a foreign key-constrained value. Entity type 
 Value type has no persistent id (no @Id). It soley belongs to an entity instance so its lifespan is dependent on that entity instance. It does not support shared
 references.
 
+## UML
+You can add stereotype info (markked by double arrows) to differentiate between entity and value types like this
+![Screenshot 2023-11-08 142954](https://github.com/brian6484/CSKnowledge/assets/56388433/8e79d30f-2238-463e-a1ae-60f94db1d0cb)
+
