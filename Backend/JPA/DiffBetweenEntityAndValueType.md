@@ -32,6 +32,7 @@ Value type has no persistent id (no @Id). It soley belongs to an entity instance
 references.
 
 ## UML
-You can add stereotype info (markked by double arrows) to differentiate between entity and value types like this
+You can add stereotype info (markked by double arrows) to differentiate between entity and value types like this. Composition is marked
+with the diamond operator.
 ![Screenshot 2023-11-08 142954](https://github.com/brian6484/CSKnowledge/assets/56388433/8e79d30f-2238-463e-a1ae-60f94db1d0cb)
 
