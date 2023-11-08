@@ -15,7 +15,8 @@ refer to this address
 ## Value type (also known as embeddable class/ basic property type)
 ![Screenshot 2023-11-08 134349](https://github.com/brian6484/CSKnowledge/assets/56388433/b6b3e702-f602-44e2-9d56-27ce72902671)
 Here, each User instance has its own reference to its own homeAddress instance. This homeAddress instance is now dependent on a specific User instance, which means it
-should be a value type. When Brian deletes his user account, the homeAddress instance can be deleted too.
+should be a value type. When Brian deletes his user account, the homeAddress instance can be deleted too. This association is known as **composition**,
+where user instance is **fully responsible for lifecycle of referenced address instance**. This reference cannot be shared and does not need its own identity.
 
 ## Essential distinction
 ### How are object relationships saved in db?
