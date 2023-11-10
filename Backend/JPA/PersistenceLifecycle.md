@@ -83,6 +83,8 @@ Or we can continue working with the stale data and call **merge()** to save chan
 
 ## difference with regards to EM
 Persistent—An entity instance is in persistent state if EntityManager#contains(e) returns true.
+
 Transient—It’s in transient state if PersistenceUnitUtil#getIdentifier(e) returns null.
+
 Detached—It’s in the detached state if it’s not persistent, and PersistenceUnitUtil#getIdentifier(e) returns the value of the entity’s identifier property.
 
