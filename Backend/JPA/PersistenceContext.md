@@ -1,4 +1,6 @@
 ## Persistece Context
+![image](https://github.com/brian6484/CSKnowledge/assets/56388433/a977c3f8-948e-4f3f-a373-f1ccd183acd3)
+
 It is a service that remembers all modifications and state changes made to some data in a particular unit of work.
 PC is created when EMF.createEM() is invoked. And this PC is closed when EM.close() is invoked. 
 In JPA, it is an *application-managed* PC, which means our app defines the boundaries of PC, which subsequently demarcates the unit of work.
