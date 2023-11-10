@@ -44,7 +44,7 @@ parentEntity.setChildEntity(childEntity); // Reference from persistent to transi
 entityManager.persist(parentEntity);      // Cascading persistence
 ```
 
-## Persistent state
+### Persistent state
 It has a representation in db, which means it is already stored in db or either gonna be stored in db after unit of work is completed.
 It is an instance with a db identity, which is set to PK value of db representation.
 They are persistent if it is an instance retrieved from DB via a query or navigating the object graph from another persistent instance.
@@ -71,15 +71,18 @@ existingDepartment.getEmployees().add(newEmployee);
 // At this point, newEmployee becomes persistent
 ```
 
-## Removed state
+### Removed state
 We can delete a persistent instance from db via EntityManager.remove() or if we remove a 
 reference to it from a mapped collection with *orphanRemoval* enabled.
 
-## Detached state
+### Detached state
 When we load an instance by EntityManger.find() with pk value, it is persistent.
 But when we end our unit of work and close the persistent context, the application still has a *handle* - a reference to this instance.
 It is in detached state and the data is stale. We should discard this reference or let garabage collector reclaim the memory.
 Or we can continue working with the stale data and call **merge()** to save changes in new unit of work.
 
-
+## difference with regards to EM
+Persistent—An entity instance is in persistent state if EntityManager#contains(e) returns true.
+Transient—It’s in transient state if PersistenceUnitUtil#getIdentifier(e) returns null.
+Detached—It’s in the detached state if it’s not persistent, and PersistenceUnitUtil#getIdentifier(e) returns the value of the entity’s identifier property.
 
