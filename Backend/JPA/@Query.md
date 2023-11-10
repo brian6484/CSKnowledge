@@ -46,3 +46,7 @@ such as this
 List<Object[]> usersList2 = userRepository.findByAsArrayAndSort("ar", Sort.by("email_length").descending());
 ```
 
+## @Query turns SQL result set of a query to entity instances
+It first tries to resolve every instance entity with PC but if a data with this particular db identifier cannot be found in PC,
+only then does it read the rest of the result set then this entity instance, once found, is populated in PC.
+
