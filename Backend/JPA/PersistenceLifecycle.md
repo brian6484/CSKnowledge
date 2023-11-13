@@ -45,10 +45,20 @@ entityManager.persist(parentEntity);      // Cascading persistence
 ```
 
 ### Persistent state
+![Screenshot 2023-11-13 133607](https://github.com/brian6484/CSKnowledge/assets/56388433/c2b8ed1f-3fef-4cb4-a88b-3ec107f0d4b7)
+
+When you call persist(), **only the id value** of that entity is assigned but it depends on the strategy. For example if it is pre-insert like
+IDENTITY or SEQUENCE, where pk value has to be generated **before persist**, then INSERT is executed immediately after persist() is called.
+But if it is post-insert like TABLE or AUTO, INSERT is delayed until the end of transaction.
+
+
 It has a representation in db, which means it is already stored in db or either gonna be stored in db after unit of work is completed.
 It is an instance with a db identity, which is set to PK value of db representation.
 They are persistent if it is an instance retrieved from DB via a query or navigating the object graph from another persistent instance.
 Instances are persistent cuz entitymanager persisted it or app created a reference to that object from another persistent instance like 
+
+Best practice is to set all the fields by fully initialising before persisting cuz if you try to set the field **after persist()**, then
+a separate UPDATE query has to be sent. Or if a specific notNull fields is not initalised, it causes NOT NULL constraint error.
 
 ```java
 // Assume entityManager is an instance of EntityManager
