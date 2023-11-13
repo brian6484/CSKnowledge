@@ -10,3 +10,15 @@ We use equals() method to determine this. The properties are symmetry, reflexivi
 Persistence instance is an in-memory representation of a row/rows of a db table. They are the same if they share the same
 table and PK value.
 
+## How PC ensures object equality guarantee
+It enables repeatable reads of entity instance and guarantees object-identity equality.
+
+For example the 3 equalities are guaranteed
+```java
+Item itemA = em.find(Item.class, ITEM_ID);
+Item itemB = em.find(Item.class, ITEM_ID);
+
+assertTrue(itemA == itemB);
+assertTrue(itemA.equals(itemB));
+assertTrue(itemA.getId().equals(itemB.getId()));
+```
