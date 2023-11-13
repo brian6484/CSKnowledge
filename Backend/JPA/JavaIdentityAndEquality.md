@@ -8,7 +8,8 @@ We use equals() method to determine this. The properties are symmetry, reflexivi
 
 ### Internal logic of equals()
 All java classes inherit equals() method of Object. This equals() method by Object class uses object identity (==) 
-whether 2 ref. refer to same in-memory instance on the Java heap. So this method has to be overriden to truely compare the object *equality*.
+whether 2 ref. refer to same in-memory instance on the Java heap. So this equals() method has to be overriden to truely compare the object *equality*.
+But not just equals(). hasCode() also has to be overwritten with equals() because if 2 instances are equal, they should have same hashcode.
 
 ## Database identity (same pk value)
 Persistence instance is an in-memory representation of a row/rows of a db table. They are the same if they share the same
