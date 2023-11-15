@@ -14,4 +14,5 @@ resources the size of shared memory (code/data/heap) can be saved.
 1) If one thread destroys resources, the other threads may be terminated
 2) problem of synchronisation because resources are shared
 
-Also in mulithreading, we dont know which thread will run and the thread after that in context switching.
+Also in mulithreading, we dont know which thread will run and the thread after that in context switching. So since OS does not take care of
+thread scheduling (determining which thread should executed on a cpu core at a given time), the user has to deal with the synchronisation issues.
