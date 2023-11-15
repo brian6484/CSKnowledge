@@ -1,6 +1,6 @@
 ## Definitions
 Process is a *unit of work* that has been allocated resources from the OS.
-Thread is a *unit of execution flow that uses the resources allocated to a process.
+Thread is a *unit of execution flow* that uses the resources allocated to a *process*.
 
 ## program -> process -> thread
 The general flow goes like this but what exactly is a program? Refresh your memories 
@@ -19,7 +19,35 @@ it was imposs bcos OS allocated resources to 1 specific process, which cannot be
 So process had to have a smaller unit of work - *thread*.
 
 ![Screenshot 2023-11-15 123548](https://github.com/brian6484/CSKnowledge/assets/56388433/10d6a5cb-1d61-42d9-8906-7247134c8203)
+The time arrow is not that clear but as time arrow is downwards.
 
-Thread is a specific execution path *within a process* so it shares the memory with other threads within that process.
+Thread is a specific execution path *within a process* so it shares the memory with other threads within that process. If process is a chunk
+of code, thread is an individual function in that process.
+
+## Exactly what resources are allocated to process/thread by OS?
+
+### Process
+![Screenshot 2023-11-15 131830](https://github.com/brian6484/CSKnowledge/assets/56388433/c1a1374b-2100-4537-9eeb-c0ce7640eb40)
+For process, OS assigns an independent memory area to each process - in the form of code, stack, heap and data.
+Because the memory area is *independent* and specific to that process, other processes cannot access it.
+
+### Thread
+![Screenshot 2023-11-15 131841](https://github.com/brian6484/CSKnowledge/assets/56388433/2de85bae-c85e-43fc-a1cc-9a793c3417b0)
+In the independent memory area of a process, the memory area *in the form of Stack* is allocated separately for each threads
+but the remaining memory area in Code/Data/Heap format is shared. So each thread has a separate stack but the heap area can be read
+and written by all the threads in that process.
+
+## Diff between the 2 
+So if a proces fails, it will not affect other process (unless a file that is shared is corrupted) but for a thread, since it shares
+Code/Heap/Data memory area, if a thread fails then other threads also fail in that same process. It is like if your function(thread) fails,
+it stops other functions from running and stops the process.
+
+## Perspective
+For a CPU, the minimal unit of work is a thread but from OS perspective, the minimal unit of work is a process. So if process is a smallest unit of work
+by OS, then threads that belong to a process should have the same memory area.
+
+
+
+
 
 
