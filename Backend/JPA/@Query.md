@@ -50,3 +50,6 @@ List<Object[]> usersList2 = userRepository.findByAsArrayAndSort("ar", Sort.by("e
 It first tries to resolve every instance entity with PC but if a data with this particular db identifier cannot be found in PC,
 only then does it read the rest of the result set then this entity instance, once found, is populated in PC.
 
+## Errors
+### InvalidDataAccessApiUsageException: For queries with named parameters you need to use provide names for method parameters.
+Turns out I was using the wrong @Param import. It should be org.springframework.data.repository.query.Param.
