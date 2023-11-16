@@ -24,7 +24,7 @@ In more technical terms, lets say when an email is sent over TCP, a conncetion i
 3) source sends ACK packet to confirm the process, after which email contents are sent
 
 As we learnt in OSI, email is broken down to packets before it is sent through the Internet. They traverse several gateways before being reaseembled
-by TCP at the target device.
+by TCP at the target device. So TCP is bi-directional whereas UDP is uni-directional.
 
 ## UDP
 It is usally used for video streaming and DNS lookups where target does not need to send an acknowledgement back. 
@@ -33,8 +33,8 @@ This is cuz UDP sends packets (called datagrams) **without establishing a connec
 ![Screenshot 2023-11-16 145115](https://github.com/brian6484/CSKnowledge/assets/56388433/1a8780e8-d037-48b0-9933-31105b39e8e2)
 
 
-So since there is no handshake, UDP is significantly faster but less reliable. IF UDP datagrams are lost in transit, they are not resent like TCP/IP which
-asks lost packets to be resent.
+So since there is no handshake, UDP is unidirectional and is thus significantly faster but less reliable. 
+IF UDP datagrams are lost in transit, they are not resent like TCP/IP which asks lost packets to be resent.
 
 ## So is UDP inferior than TCP/IP?
 But most network routers actually dont perform packet ordering and arrival confirmation like UDP cuz more memory is needed. So it is not much of a flaw.
