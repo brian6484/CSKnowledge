@@ -62,6 +62,8 @@ If you think this code is correct, you are wrong. The type should be Object[][] 
   Optional<Object[][]> findBankDetailsById(@Param("userId") Long userId);
 ```
 
+And one important thing is you need @Column(nullable= true) for the bankAccount and bankNumber like explicitly annotate it.
+
 ## @Query turns SQL result set of a query to entity instances
 It first tries to resolve every instance entity with PC but if a data with this particular db identifier cannot be found in PC,
 only then does it read the rest of the result set then this entity instance, once found, is populated in PC.
