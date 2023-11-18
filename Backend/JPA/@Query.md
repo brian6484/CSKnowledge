@@ -46,6 +46,22 @@ such as this
 List<Object[]> usersList2 = userRepository.findByAsArrayAndSort("ar", Sort.by("email_length").descending());
 ```
 
+## A tricky personal example
+So I had this @Query where I made BankDetails an Embedded class of User entity and in that BankDetails, I allocated bankAccountNumber and
+bankName.
+
+```java
+  @Query("SELECT u.bankDetails.bankAccountNumber, u.bankDetails.bankName FROM User u WHERE u.id= :userId")
+  Optional<Object[]> findBankDetailsById(@Param("userId") Long userId);
+```
+If you think this code is correct, you are wrong. The type should be Object[][] because query actually returns an array of array of objects. bankAccount and bankNumber is not returned as an array of objects as I intended but they are within another outer array like
+[[123124,"bitchbank]]. I think this is because of the embeddable class implementation. If I just made it as regular fields within User entity, I can just do Object[] but here it is wrong. So correct answer is
+
+```java
+  @Query("SELECT u.bankDetails.bankAccountNumber, u.bankDetails.bankName FROM User u WHERE u.id= :userId")
+  Optional<Object[][]> findBankDetailsById(@Param("userId") Long userId);
+```
+
 ## @Query turns SQL result set of a query to entity instances
 It first tries to resolve every instance entity with PC but if a data with this particular db identifier cannot be found in PC,
 only then does it read the rest of the result set then this entity instance, once found, is populated in PC.
