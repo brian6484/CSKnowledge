@@ -19,3 +19,7 @@ properties, is our business key.
 
 Business key is what we (users) can uniquely identify a particular instance whereas surrogate key is what db uses to uniquely identify. This business key is mostly likely constrained as `UNIQUE` in our db schema. This business key is needed when we need to compare entities in detached state [here][https://github.com/brian6484/CSKnowledge/edit/main/Backend/JPA/EqualsForDetachedState.md]
 
+### Tip to determine business key
+- immutable (or mutable but rarely updated) field
+- attribute that has UNIQUE db constraint
+- db identifier of an associated entity instance (but not its own db identifier). For example, id of Item in Bid class 
