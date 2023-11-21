@@ -12,3 +12,8 @@ Each transaction should not be visible to other transactions that are concurrent
 
 ## Durable
 Changes made in transaction should be persisted to db - even in system failure or power outage
+
+# Correctness, a feature not in ACID
+Besides ACID, as our business logic gets more complex ACID alone is not enough. We also want correctness of a transaciton, which means business rules and app logic
+rules are followed by the transaction. Difference between consistency and correctness is that consistency is the **responsibility by db** via constraints placed but
+correctness is **our responsibility**.
