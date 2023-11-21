@@ -8,7 +8,9 @@ so we are given 4 solutions to tackle each.
 ## read uncommited isolation
 This solves **lost update**. 
 
-A transaction may not write to a row if a *uncommitted* transaction has already written to it (exclusive write locks)
+A transaction may not write to a row if a *uncommitted* transaction has already written to it (exclusive write locks).
+
+This is ALMOST never chosen because it is really unsafe.
 
 ## read committed isolation
 This solves unrepeatble reads and phantom reads.
@@ -26,3 +28,5 @@ but phantom read is not solved cuz it doesnt prevent insertion of new rows that 
 
 ## serialisable isolation
 This is less of concurrency but transactions are fully isolated from each other so it runs 1 by 1.
+
+This too, like read uncommitted, is not really needed.
