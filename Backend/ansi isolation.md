@@ -10,7 +10,7 @@ This solves **lost update**.
 
 A transaction may not write to a row if a *uncommitted* transaction has already written to it (exclusive write locks).
 
-This is ALMOST never chosen because it is really unsafe.
+This is ALMOST never chosen because it is really unsafe. We shouldnt allow transaction's uncommitted transactions to be seen by other transactions.
 
 ## read committed isolation
 This solves unrepeatble reads and phantom reads.
