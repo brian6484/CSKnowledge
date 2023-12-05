@@ -1,4 +1,4 @@
-# OAuth (Open Authorisation)
+# OAuth2 (Open Authorisation)
 
 ## Diff between authentication and authorisation
 Authentication - identifying who you are (like via login or making account)
