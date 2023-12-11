@@ -48,6 +48,27 @@ public class RunnableExample {
 
 ```
 
+or the lambda way
+```java
+// Using lambda expression to create a Runnable
+Runnable myRunnable = () -> {
+    for (int i = 1; i <= 5; i++) {
+        System.out.println("Runnable Thread: " + i);
+        try {
+            Thread.sleep(500);  // Simulate some work being done
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+};
+
+// Create a Thread using the Runnable lambda expression
+Thread myThread = new Thread(myRunnable);
+
+// Start the thread
+myThread.start();
+```
+
 ### Thread class
 We can *extend* Java's Thread class with inheritance instead of implementing a Runnable interface. By extending Thread class and overriding the run() method,
 threads run concurrently
@@ -163,4 +184,5 @@ public class CallableExample {
 }
 
 ```
+
 
