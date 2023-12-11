@@ -5,6 +5,7 @@ executed by the OS. In Java, the main thread is started by executing the main() 
 if there is another thread running, app does not terminate.
 
 ## How to create threads
+Btw if not set explicit names via setName(), the name is like Thread-n where n is number.
 ### Runnable interface
 We can extend the runnable interface to create a thread and *override the run() method*. An instance of this class that extended the runnable interface
 can be passed as parameter to the **thread constructor()** and then start() is invoked to execute the thread. This thread can run **separately from the main thread**.
