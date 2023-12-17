@@ -28,7 +28,7 @@ and these 4 threads would be combined by the main program, which would start the
 computing sum = sum1+.. sum4. 
 
 ## 2nd level of abstraction
-But making 4 loops is tedious and error- prone. We can use Java streams instead to **abstract** usage of threads as such:
+But making 4 loops is tedious and error- prone. We can use Java streams and its parallel() method to process in parallel instead of rewriting every for loop and an **abstract** usage of threads as such:
 ```java
 sum = Arrays.stream(stats).parallel().sum();
 ```
