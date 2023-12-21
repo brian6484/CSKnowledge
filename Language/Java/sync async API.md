@@ -76,8 +76,93 @@ public class ExecutorServiceExample {
 But this has explicit calls to submit() method. To further improve this, we make the APIs as asynchronous via 2 ways that both change
 the signatures of APIs - Future-styled API and reactive styled API
 
-## Future-styled API
+# Asynchronouse APIs 
+These are simpler and more high-level than explicit thread manipulation via Runnable or Thread class 
 
+## Future-styled API
+We change the return type of the functions as Future like
+
+```java
+Future<Integer> f(int x);
+Future<Integer> g(int x);
+```
+
+cuz previously, we had to submit our function as a task to executorservice to get the maybe_not_ready_yet_computed_result as Future object
+but if we explicitly declare the functions themselves to return Future object, this is called Future-styled Api.
+
+We can use it like this where Future contains a task that is evaluated within its original body and the result is returned ASAP.
+```java
+Future<Integer> y = f(x);
+Future<Integer> z = g(x);
+System.out.println(y.get() + z.get());
+```
+
+In bigger programs, it might not be appropriate because
+1) other functions that use g needs to return Future as well
+2) better to have more and smaller tasks (parallel like Stream)
+
+## Reactive-styled API
+We change return typed of functions as *void* like this. Even thought it doesnt return anything, notice we pass a lambada (**callback**) parameter as additional argument. The functions invoke this callback when the result is ready. The callback interface defines a method
+called *onComplete* that takes result as argument.
+
+```java
+public class CallbackStyleExample {
+    public static void main(String[] args) {
+        int x = 1337;
+        Result result = new Result();
+
+        // Callback for f
+        Callback fCallback = (int y) -> {
+            result.left = y;
+            System.out.println((result.left + result.right));
+        };
+
+        // Callback for g
+        Callback gCallback = (int z) -> {
+            result.right = z;
+            System.out.println((result.left + result.right));
+        };
+
+        // Call f and g with their respective callbacks
+        f(x, fCallback);
+        g(x, gCallback);
+    }
+
+    // Example f method that takes a callback
+    private static void f(int x, Callback callback) {
+        // Simulate asynchronous task
+        // In a real scenario, this could be an asynchronous operation
+        int result = x * 2;
+
+        // Call the callback with the result
+        callback.onComplete(result);
+    }
+
+    // Example g method that takes a callback
+    private static void g(int x, Callback callback) {
+        // Simulate another asynchronous task
+        int result = x / 2;
+
+        // Call the callback with the result
+        callback.onComplete(result);
+    }
+
+    // Callback interface
+    interface Callback {
+        void onComplete(int result);
+    }
+
+    // Result class
+    static class Result {
+        int left;
+        int right;
+    }
+}
+```
+
+Problem with this style is that
+1) Since there is no locking, it prints the fastest value to complete so it may print the sum twice. So this style is normally for a
+*sequence of events*, not for calculating individual results, for which the latter is better dealt via Futures.
 
 
 
