@@ -1,12 +1,13 @@
 ## CompletableFuture
-Coming back from the box and channel model post, let's explore completeablefuture.
+Coming back from the box and channel model post, let's explore completeablefuture. 
 
 The problem with Future is that it is an **interface**, so it is limited in composition (chaining multiple async tasks tgt),
 error handling, lack of cancellation, etc.
 
 So why is it called CompletableFuture? Whilst Future object is created via *Callable* and result is gotten via get(), CompletableFuture 
 can create a Future object without associating it with a sepcific computation. So this allows greater complexibility cuz
-we can compose and combine async operations. We can use complete() to manually complete a `CompletableFuture` with a value.
+we can compose and combine async operations. We can use complete() to manually complete a `CompletableFuture` with a value. CF is like
+to a plain `Future` just like Stream is to a Collection.
 
 for example:
 ```java
