@@ -28,5 +28,13 @@ while the slaves handle all read operations, which distribute read queries among
 partition data to distribute load among multiple instances. The application, instead of Redis server, can decide how to partition this data
 via a hash function or keys.
 
+## Limitations
+1) It is single thread and while it ensures Aciditiy, it limits the potential scability of computers with multiple CPU cores.
+2) It cannot do complex queries that are often associated with RDB since it is a simple key-data data structure.
+3) For heavy write operations, Redis is limited in I/O performance especially when using **syncrhonous persistence mechanism like
+AOF**.
+
+
+
 
 
