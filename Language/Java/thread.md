@@ -122,8 +122,13 @@ executor.execute(new MyRunnable());
 
 ### Callable interface and Future interface
 Callable is similar to Runnable interface but it can **return a result and throw exceptions**.
-Future interface can give a result of asynchronous computation and provides methods to check if the computation is complete, and can retrieve that result via get() 
-method.
+Future interface can give a result of asynchronous computation and provides a *reference* to that result when the computation is complete, and can retrieve that result via get() method.
+
+![Screenshot 2024-01-01 233051](https://github.com/brian6484/CSKnowledge/assets/56388433/445b3408-a3f3-40dc-a2ac-f0e4b545e032)
+
+If the doSomeLongComputation takes longer than 1s, it blocks my thread until the result is made available by ExecutorService.
+
+![Screenshot 2024-01-01 233100](https://github.com/brian6484/CSKnowledge/assets/56388433/2be05208-7c36-4941-9b5f-73cbf0865e77)
 
 #### A deeper explanation of below example
 We first *submit* a Callable instance to the *ExecutorService* using submit() method, which returns a `Future` object returning the computed value. This *submit*
