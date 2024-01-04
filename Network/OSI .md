@@ -1,5 +1,6 @@
 # OSI
 ## About
+APS T NDP (abs T NDP national day parade) acronym
 ![Screenshot 2023-11-16 133204](https://github.com/brian6484/CSKnowledge/assets/56388433/804681f2-936c-40e7-8fcf-e88798b53292)
 
 Open Systems intercommunication (OSI) is a standard for different computer systems to communicate with one another. It splits up
