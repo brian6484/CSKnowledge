@@ -14,6 +14,9 @@ It is when there is a request, the server searches the cache first before DB and
 ### Cache miss
 When there is a request, and when server cannot find the data in the cache and needs to look at DB, this is cache miss.
 
+## Diff between cache and CDN
+cache stores result of **expensive responses** or Frequently accessed data whereas content delivery network stores **static content**.
+
 ## Caching concepts
 ### Look aside cache
 This cache concept is **independent** of the main storage system (DB), which means cache stores an independent copy of the FA data of DB.
