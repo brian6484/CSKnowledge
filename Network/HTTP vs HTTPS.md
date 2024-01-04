@@ -80,5 +80,6 @@ is encrypted with the server's public key (public-key encryption or **asymmetric
 
 Client and server exchange 'Finished' messages, which means handshake is complete and connection is secure.
 
-
+### TLS
+Now, TLS is a more modern and more secure connection that SSL.
 
