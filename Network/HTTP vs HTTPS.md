@@ -37,7 +37,7 @@ There obviously is request and response. Let's look at request
 
 We have the method, path, version and the headers.
 
-The methods are the usual -GET, POST, DELETE, PUT. More explained [here](
+The methods are the usual -GET, POST, DELETE, PUT. More explained [here](https://github.com/brian6484/CSKnowledge/blob/main/Network/HTTP%20method%20and%20PUT%2CPOST%2CPATCH.md)
 
 
 For headers, there are 4 types
