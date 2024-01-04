@@ -10,7 +10,7 @@ an acknowledgement back to the source.
 
 This is TCP's role.
 
-## TCP
+## TCP Transmission Control Protocol
 TCP/IP is like sending a message on a puzzle through mail. The message is broken down to puzzle pieces and travel through different postal route.
 Some may arrive earlier or later then the rest so they are out of order. So whilst IP makes sure that the puzzle pieces arrive at the designated
 destination, TCP is the puzzle assembler that puts pieces together in the right order. Not only odes it assemble, but if some pieces are missing,
@@ -26,7 +26,7 @@ In more technical terms, lets say when an email is sent over TCP, a conncetion i
 As we learnt in OSI, email is broken down to packets before it is sent through the Internet. They traverse several gateways before being reaseembled
 by TCP at the target device. So TCP is bi-directional whereas UDP is uni-directional.
 
-## UDP
+## UDP User Datagram Protocol
 It is usally used for video streaming and DNS lookups where target does not need to send an acknowledgement back. 
 This is cuz UDP sends packets (called datagrams) **without establishing a connection first** and with **no order guarantee** unlike TCP/IP.
 
