@@ -1,6 +1,6 @@
 # ACID
 ## Atomicity
-All operations in a transaction should execute as 1 unit of work (1 atom if you will). 
+All operations in a transaction should execute as 1 unit of work (1 atom if you will)
 
 ## Consistency
 Transactions should allow multiple users to work (read,update,etc) concurrently on same piece of data without compromising the consistency of data.
