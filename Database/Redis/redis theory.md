@@ -34,7 +34,9 @@ via a hash function or keys.
 3) For heavy write operations, Redis is limited in I/O performance especially when using **syncrhonous persistence mechanism like
 AOF**.
 
-
+## Reasons for Redis than just websocket or STOMP
+- When server is reset, chatroom and messages are reset
+- pub/sub system works only for 1 server cuz the *topic* that is generated in that server is not visible to other servers
 
 
 
