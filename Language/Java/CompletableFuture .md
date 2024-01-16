@@ -103,4 +103,5 @@ But if you have somethjing like
 You have 2 problems:
 1) This blocks the main thread until result b is available with get() if computing g(x) takes too long.
 2) Do you remember that if we shutdown executorservice while there is still a task that is not completed yet, it can be fucked?
-Its essential that **all submitted tasks should be completed before shutting down executorservice**.
+Its essential that **all submitted tasks should be completed before shutting down executorservice**. Always remember of the consequence
+when you shut executorservice prematurely.
