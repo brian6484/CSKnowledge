@@ -1,6 +1,17 @@
 ## AOP and Transactional pitfall
 This was due to my shallow understanding of AOP and @Transactional.
 
+## 1st pitfal
+methods that have @Transactional or other AOP annotations **CANNOT BE PRIVATE**. This is cuz proxy classes **extend** the
+target class. Basically this proxy object *wraps* around the original object and intercepts method calls, allowing Spring Boot to 
+introduce additonal behaviour like transaction management/ AOP features.
+
+But if the target class's method is private, it is not visible to other class. Since proxy class needs to **override** the methods
+to allow this additional features, if method is private it is not visible to proxcy class so it won't be overriden. So it won't work.
+
+So make it **public**!
+
+## 2nd pitfall
 Observe this code in a service bean:
 ```java
 @RequireLock
