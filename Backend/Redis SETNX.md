@@ -59,4 +59,7 @@ preventing other users from acquiring that same lock. It's a basic way to coordi
 duplicate requests) in a distributed environment.
 
 
-tbc locks that are deleted once TTL passes
+tbc locks are deleted either once TTL passes or you explicitly delete it at the end of transaction. For the latter,
+it can be done via AOP where you make a custom annotation and **before** your transaction, you invoke this method. You
+shouldnt invoke in the midst of your transaction cuz it might not work as intended. Then after the transaction has
+ended, we can release this lock by deleting it and AOP will do that for us.
