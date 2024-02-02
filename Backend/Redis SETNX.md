@@ -62,4 +62,25 @@ duplicate requests) in a distributed environment.
 tbc locks are deleted either once TTL passes or you explicitly delete it at the end of transaction. For the latter,
 it can be done via AOP where you make a custom annotation and **before** your transaction, you invoke this method. You
 shouldnt invoke in the midst of your transaction cuz it might not work as intended. Then after the transaction has
-ended, we can release this lock by deleting it and AOP will do that for us.
+ended, we can release this lock by deleting it and AOP will do that for us like this
+
+```java
+@Aspect
+@Component
+@RequiredArgsConstructor
+public class RequireLockAdvice {
+    private final RedisLockService redisLockService;
+
+    @Around(value = "@annotation(requireLock)")
+    public Object lock(ProceedingJoinPoint pjp, RequireLock requireLock) throws Throwable {
+        long userId = getUserId(pjp.getArgs());
+
+        lock(requireLock, userId);
+        try {
+            return pjp.proceed();
+        } finally {
+            redisLockService.release(userId);
+        }
+    }
+}
+```
