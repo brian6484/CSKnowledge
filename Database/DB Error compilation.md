@@ -25,3 +25,7 @@ org.hibernate.dialect.MySQL8Dialect
 
 tbc
 
+### Oracle sequence number doesnt exist
+
+I checked if sequence exists but yea it existed. But the name of that sequence HAS TO MATCH with the @SequenceGenerator of my identity. The parameter - sequenceName needs to be exactly matching with the sequence name that I created in my Oracle DB
+
