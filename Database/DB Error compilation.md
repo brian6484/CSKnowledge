@@ -29,3 +29,14 @@ tbc
 
 I checked if sequence exists but yea it existed. But the name of that sequence HAS TO MATCH with the @SequenceGenerator of my identity. The parameter - sequenceName needs to be exactly matching with the sequence name that I created in my Oracle DB
 
+### Oracle trigger is invalid and failed revalidation 
+
+Once I fixed the error above, I was faced with this error. I tried deleting and creating the trigger again but it 
+didnt solve the issue. So the way to debug the error is 
+
+```
+SELECT * FROM user_errors WHERE type = 'TRIGGER' AND name = 'your_trigger_name';
+```
+
+For me, it showed as pls 00049 bad bind variable 'new'. Turns out, there was a spelling error when I was creating
+the trigger, where I wrote :NEW:"POLICY_ID", but it should be a dot after NEW keyword like :NEW."POLICY_ID"
