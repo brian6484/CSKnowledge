@@ -2,7 +2,7 @@
 We need to understand how html elements are created [first](https://github.com/brian6484/CSKnowledge/tree/main/Language/Javascript).
 
 
-## dropdown or select box (<select> element) with fetch API
+## dropdown or select box with fetch API
 First in your html file, the `<select>` element is used to create a dropdown list, with unique id of searchSelect.
 
 ```js
@@ -14,7 +14,6 @@ First in your html file, the `<select>` element is used to create a dropdown lis
         <select id="searchSelect">
             <!-- Options will be appended here dynamically -->
         </select>
-        <div id="searchResults"></div>
     </div>
 </body>
 ```
