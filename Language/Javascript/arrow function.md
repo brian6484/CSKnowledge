@@ -8,7 +8,7 @@ function add(a, b) {
 ```
 
 ## arrow function
-is like a lambda function where we put parameters in (brackets) and use a arrrow literally like => and declare
+is like a lambda function in py/java where we put parameters in (brackets) and use a arrrow literally like => and declare
 function body.
 
 ```js
