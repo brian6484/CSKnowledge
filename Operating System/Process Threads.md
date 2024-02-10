@@ -13,11 +13,11 @@ executed by CPU and loaded in RAM as such
 ![Screenshot 2023-11-15 000637](https://github.com/brian6484/CSKnowledge/assets/56388433/193ba13e-5ee5-447d-b751-994032dcfede)
 
 ## process -> thread
-Back in the days, program used to run from start to end in just 1 process. But as programs gets more demanding in terms of workload, 
+Back in the days, program used to run from start to end in just 1 process. (due to hardware restrictions) But as programs gets more demanding in terms of workload, 
 using just one process is insufficient. Why not we use multiple processes to run 1 program then? There are actually 3 ways - IPC, LPC
 and making a separate shared memory area to be shared amongst processes. But these requires a replacement of CPU register, initialising
 cache memory between RAM and CPU so the burden is big. Back then it was imposs bcos OS allocated resources to 1 specific process, which 
-cannot be shared with other processes for *safety reasons*.
+cannot be shared with other processes for *safety reasons*. 
 
 So process had to have a smaller unit of work - *thread*.
 
