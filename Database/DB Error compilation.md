@@ -39,4 +39,6 @@ SELECT * FROM user_errors WHERE type = 'TRIGGER' AND name = 'your_trigger_name';
 ```
 
 For me, it showed as pls 00049 bad bind variable 'new'. Turns out, there was a spelling error when I was creating
-the trigger, where I wrote :NEW:"POLICY_ID", but it should be a dot after NEW keyword like :NEW."POLICY_ID"
+the trigger, where I wrote :NEW:"POLICY_ID", but it should be a dot after NEW keyword like :NEW."POLICY_ID". 
+
+Also notice that the column name needs to match with the syntax (it is not ID but POLICY_ID)
