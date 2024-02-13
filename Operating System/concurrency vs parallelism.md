@@ -9,7 +9,7 @@ So we dont want to waste our precious clock cycles of our CPU while waiting.
 
 
 For example, if we are relying on Facebook and Twitter's API to get data, we shouldnt wait for data from Facebook before processing data
-from Twitter. It can happen concurrently.
+from Twitter. It can happen concurrently without operations affecting each other
 
 
 ## Diff
