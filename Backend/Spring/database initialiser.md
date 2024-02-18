@@ -1,5 +1,6 @@
 ## DB initialiser
 This inputs data **each time** application restarts so for a more permanent solution, we decided to input data straight into production db.
+We can do that via intellij DB extension tool or any other DB tool and make an insert sql query
 
 ```java
 @Configuration
