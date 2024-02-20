@@ -10,6 +10,8 @@ get(). Its original purpose is as written:
 Optional is primarily intended for use as a method return type where there is a clear need to represent “no result,” and where using null is likely to cause errors. 
 ```
 
+Brian Goetz advises against using get() unless you are absolutely certain that the value is present. Instead, he suggests using methods like ifPresent, orElse, or orElseGet to safely handle both cases without risking a NoSuchElementException.
+
 ## Example 
 wrong use:
 ```java
