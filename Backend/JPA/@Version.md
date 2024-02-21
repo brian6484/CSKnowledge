@@ -28,4 +28,4 @@ item.setName("New Name");
 assertThrows(OptimisticLockException.class, () -> em1.flush());
 // update ITEM set NAME = ?, VERSION = 1 where ID = ? and VERSION = 0
 ```
-
+It can thus be used to implement locks.
