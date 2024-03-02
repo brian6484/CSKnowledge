@@ -25,8 +25,6 @@ access token is time-limited
 ## Flow 
 ![image (1)](https://github.com/brian6484/CSKnowledge/assets/56388433/eb40c5cb-fa5f-47e6-9040-4ed949ae16a6)
 
-[VERY USEFUL LINK](https://www.callicoder.com/spring-boot-security-oauth2-social-login-part-2/)
-
 1) First initiated by the frontend client by sending user to this endpoint of
 ```
 http://localhost:8080/oauth2/authorize/{provider}?redirect_uri=<redirect_uri_after_login>
