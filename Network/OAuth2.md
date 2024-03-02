@@ -49,5 +49,5 @@ authenticated user and creates a *new entry* in db.
 4) But if Oauth2 callback results in error, Spring Security will invoke **oAuth2AuthenticationFailureHandler** in SecurityConfig.
 
 5) Finally, oAuth2AuthenticationSuccessHandler creates a **JWT authentication token** for user and sends the user to  OAUTH2 redirectURi
-with this jWT token in a *query string*.
+with this jWT token in a *query string* or cookie, as shown in diagram.
 
