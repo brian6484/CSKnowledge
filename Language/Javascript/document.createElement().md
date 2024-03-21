@@ -22,4 +22,15 @@ const selectElement = document.getElementById('mySelect');
 selectElement.appendChild(option);
 ```
 
+## Why use .createElement()?
+It is mainly for dynamic content generation where we want to create HTML elements based on user interaction, incoming
+data from API. This allows us to insert them into DOM **without harcoding them into HTML**, reducing loading time and
+increasing efficieny.
+
+## Why did I use it?
+I was fetching some data from an API, that gave me a list of some cert issue policies from the DB. I created an option HTML element for each of that policy to be included in my search select box (dropbox) so that user can click
+on a policy and select it. As seen in the above example we need to set the value and textContent attributes cuz
+the HTML element itself dont have any content or attribute.
+
+
 
