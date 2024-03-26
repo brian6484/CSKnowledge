@@ -24,7 +24,7 @@ SettleableProfit sp = optionalSettleableProfit.get();
 
 This isEmpty() and get() introduces additional boilerplate code that is not expressive and especially this get() is not recommended as mentioned.
 
-Instead, use .orElse() or .orElseThrow() for exceptions
+Instead, use .orElse() or .orElseThrow() or .ifPresent() for exceptions. This .ifPresent() is opposite of orElse cuz unlike OrElse where if there isnt an entity present we deal with that situation, ifPresent is when there **is** an entity found and we deal with that situation. For example, when creating account, if there is already a duplicate username found in DB via findByUsername(), then we use .ifPresent() and throw an exception
 
 correct:
 ```java
