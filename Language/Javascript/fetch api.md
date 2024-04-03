@@ -62,3 +62,9 @@ fetch(url, options)
     .catch(error => console.error('Error:', error));
 
 ```
+
+## common fitpall
+then methods in a *Promise* are not executed simultaneously. They are executed sequentially, one after another. Then how exactly does anything make it asynchronous in fetch API?
+
+It is the fetch API returning a Promise immediately that gives it a trait of being asynchronous. Instead of blocking
+the main thread to finish executing the fetch API, the rest of code **outside fetch API** can execute while that request within the fetch API (maybe network request to fetch some data) is made asynchronously.
