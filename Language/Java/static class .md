@@ -1,4 +1,7 @@
 ## Static
+### 1-liner
+Static belongs to the class, not the instances of the class. Since it is shared amongst all the class **instances**, it means it is used to declare something that is not meant to alter depending on each instance object so literally something "static".
+
 ### Static variable
 Variable belongs to the *class*, rather than the *instance of the class*. It is thus shared by **all instances of
 the class** and can be accessed via the class name like User.staticVariable.
