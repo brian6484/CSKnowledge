@@ -14,3 +14,5 @@ function body.
 ```js
 const add = (a, b) => a + b;
 ```
+
+This applies to any function, including async functions that Im gonna write soon about
