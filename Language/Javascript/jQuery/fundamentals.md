@@ -60,5 +60,25 @@ $('a[href="#"]'):
 $('img[alt]'): 
 ```
 
+### Manipulate elements
+You can manipulate content of a selected element (that you have just selected via $('selector')). You can change
+the text, add or remove class, change css style, etc
+```js
+// Change text content
+$('#myElement').text('New text');
+
+// Change HTML content
+$('#myElement').html('<strong>New HTML content</strong>');
+
+// Add or remove classes
+$('#myElement').addClass('highlight');
+$('#myElement').removeClass('highlight');
+
+// Set CSS properties
+$('#myElement').css('color', 'red');
+```
+
+
+
 
 
