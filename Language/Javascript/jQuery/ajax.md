@@ -63,7 +63,7 @@ $(document).ready(function() {
 Wait when we said we are gonna append each iteration of our data to our **list**, well we can see that a html id of
 *data-list* has been created. But this is just the name isnt it? Like how do we know it is a *list*? 
 
-Well fug me. We declared it with <ul> tag. <ul> represents an **unordered list**. So it is a list lol
+Well fug me. We declared it with ul tag. ul literally represents an **unordered list**. So it is a list lol
 
 ### Explanation of code
 fetch-data-btn button is first selected via $('selector') and once it is clicked, AJAX request is sent. Once we get data
