@@ -25,6 +25,32 @@ will not be mapped properly and prob a NullPointerException will occur when I tr
 Anyway, once we have those fields, then we can use those fields accordingly in our main query OR set the fields in the result 
 DTO with setter method.
 
+## How about adding where methods?
+So we explicitly set the values in our DTO result list instead of doing subquery with Querydsl. Then, how do we set
+where conditions? We can't do where(person.name.equals(condition.getName())) cuz we didnt select person.name with Querydsl in the first place.
+
+I thought about it and there is a simple solution. If we are sending in "" or null values in our search conditions 
+when they are emtpy, and some values when we wanna search something, we can set those values in our condition DTO in the controller step. And then, we do this search logic in the final step via collections.filter(), where we go through each result and see if a field in our result matches this search condition.
+
+```java
+//after querydsl and explicitly setting the values via setter methods
+
+List<FinalDto> collect = content.stream()
+  .filter(FinalDto ->
+    //when search field comes in as null (in my case it was "")
+    boolean match1 = Objects.equals(FinalDto.getName,"") ||
+    //when search field indeed has a value
+    FinalDto.getName.equalsIgnoreCase(condition.getName());
+  
+  //other boolean search conditions
+  
+  return match1 && match2 && ...
+})
+.collect(Collectors.toList());
+```
+
+
+
 ```java
 //main query
 ...where(entityC.id.eq(entityBId))
