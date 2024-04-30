@@ -4,6 +4,7 @@
 
 | Keyword | Example | Generated JPQL |
 | :---: | :---: | :---: |
+| countBy | countByFieldName, countByEntityName, countByCity | select count(person) from Person person where person.city = ?1 |
 | Is, Equals | findByUsername, findByUsernameIs, findByUsernameEquals | ... where e.username = ?1 |
 | And | findByUsernameAndDate | ... where e.username = ?1 and e.date = ?2 | 
 | Or | findByUsernameOrDate | ... where e.username = ?1 or e.date = ?2 | 
