@@ -1,5 +1,5 @@
 ## Example 
-Let's say we are reading an excel file of 10k rows or more and trying to check which rows has duplciate values in column
+Let's say we are reading an excel file of 10k rows or more and trying to check which rows has duplicate values in column
 1 or 2
 
 ```java
@@ -63,5 +63,5 @@ public void checkForDuplicates(String filePath, int columnToCheck, int numThread
 CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
 ```
 
-This is a good way to wait for asyn tasks, as well as creating an array of CompletableFuture instances with the correct
+This is a good way to wait for asyn tasks to all complete, as well as creating an array of CompletableFuture instances with the correct
 size. 
