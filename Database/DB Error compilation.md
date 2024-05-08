@@ -42,3 +42,8 @@ For me, it showed as pls 00049 bad bind variable 'new'. Turns out, there was a s
 the trigger, where I wrote :NEW:"POLICY_ID", but it should be a dot after NEW keyword like :NEW."POLICY_ID". 
 
 Also notice that the column name needs to match with the syntax (it is not ID but POLICY_ID).
+
+### MariaDB/MySQL incorrect column specifier for column "id"
+When I was migrating from Orcale to MariaDB, I was using Sequence strategy where an insertion would trigger the DB into inputting a PK value. But I knew that for MariaDb, we can use Identity strategy with auto-increment feature in the DB. But I tried ticking the auto-increment feature and I got some error.
+
+I searched online and found out that PK column type has to be a **numeric type** like INT or BIGINT. Cuz my type was declared as (18,0) it didnt allow this Auto-increment feature. 
