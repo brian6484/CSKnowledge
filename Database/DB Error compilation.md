@@ -47,3 +47,10 @@ Also notice that the column name needs to match with the syntax (it is not ID bu
 When I was migrating from Orcale to MariaDB, I was using Sequence strategy where an insertion would trigger the DB into inputting a PK value. But I knew that for MariaDb, we can use Identity strategy with auto-increment feature in the DB. But I tried ticking the auto-increment feature and I got some error.
 
 I searched online and found out that PK column type has to be a **numeric type** like INT or BIGINT. Cuz my type was declared as (18,0) it didnt allow this Auto-increment feature. 
+
+### MariaDB yml driver-class-name showing up as red
+In your build gradle, include mysql too like
+```
+implementation 'org.mariadb.jdbc:mariadb-java-client'
+runtimeOnly 'mysql:mysql-connector-java'
+```
