@@ -49,8 +49,10 @@ When I was migrating from Orcale to MariaDB, I was using Sequence strategy where
 I searched online and found out that PK column type has to be a **numeric type** like INT or BIGINT. Cuz my type was declared as (18,0) it didnt allow this Auto-increment feature. 
 
 ### MariaDB yml driver-class-name showing up as red
-In your build gradle, include mysql too like
+In your build gradle, include mysql too like.
 ```
 implementation 'org.mariadb.jdbc:mariadb-java-client'
 runtimeOnly 'mysql:mysql-connector-java'
 ```
+
+And dont forget to change the dialect to MariaDBDialect! :)
