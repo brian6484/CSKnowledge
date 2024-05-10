@@ -15,3 +15,5 @@ split into groups of 24 bits. These are split to 4 Base64 characters of 6 bits e
 But problem is if perfect grouping of multiple of 3 bytes doesnt work
 
 ![base2](https://github.com/brian6484/CSKnowledge/assets/56388433/358d4c51-bb90-4b0b-9c6c-53e4ead4c0c2)
+
+Rmb the final base64 encoded text needs to be in a multiple of 4 characters, so if there are like 6 chracters, the remaining 2 characters needs to be padded with "==".
