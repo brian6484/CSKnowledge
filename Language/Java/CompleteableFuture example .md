@@ -71,7 +71,7 @@ size.
 This is to declare an unmodifying list. But since my purpose is to modify the list along the computation, I should just use new ArrayList<>(). Btw, new ArrayList<>(value) doesnt work. You have to create the list first and add it at next line of code.
 
 ## Full correct attempt
-I wanna wrap my results in functional interface of SuccessResponse<T>.
+I wanna wrap my results in functional interface of SuccessResponse<T>. syncrhonizedSet is a thread-safe set that can be accessed by multiple threads without data inconsistency
 
 ```java
 public SuccessResponse<List<String>> checkForDuplicates(String filePath, int columnToCheck, int numThreads) throws IOException {
