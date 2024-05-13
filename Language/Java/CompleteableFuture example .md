@@ -136,3 +136,6 @@ public SuccessResponse<List<String>> checkForDuplicates(String filePath, int col
     }
 }
 ```
+
+## Spring's @Async
+To achieve parallelism with spring's provided annotation -@Async, look at [this](https://github.com/brian6484/CSKnowledge/blob/main/Backend/Spring/AOP/%40Async%20.md)
