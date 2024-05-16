@@ -17,7 +17,7 @@ object.setNmae("hello");
 ```
 If we create an Object instance with a String parameter and forcibly convert the String value to Integer, a ClasCastException (runtime exception) occurs.
 
-But if we use generics, we are able to check for type mismatch at *compile time* instead of runtime like below
+But if we use generics, we are able to check for type mismatch at *compile time* instead of *runtime* like below
 
 ```java
 // Generic class with a type parameter T
