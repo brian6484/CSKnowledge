@@ -19,7 +19,7 @@ Most commonly used attack, that above query is the most commonly used for login.
 Well this OR statement is True so it will execute and we comment out the remaining statement with this --. And now, attacker has
 all the info of users and can do harmful stuff
 
-### tbc
+### tbc 
 
 
 ## Solution
