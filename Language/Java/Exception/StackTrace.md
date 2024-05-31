@@ -66,3 +66,48 @@ Caused by: java.lang.NullPointerException
 
 stack trace tells us about the types of exceptions (if code implemented catching those exceptions) and where they are
 caused via "caused by".
+
+We can see that NPE is caused here
+```
+Caused by: java.lang.NullPointerException
+     at com.mycompany.service.impl.PortalManagerImpl.deleteMenuItem(PortalManagerImpl.java:603)
+     at com.mycompany.service.impl.PortalManagerImpl.deletePortal(PortalManagerImpl.java:358)
+```
+
+So lets look at the trace. While executing the deletePortal method at line 358 in PortalManagerImpl package, 
+that method **invoked** deleteMenuItem method. Then, within that deleteMenuItem method at line 603 in the same package, NPE is caused. So lets look at the code
+
+```java
+if (item == null) {
+    throw new NullArgumentException("item");
+}
+
+//중간 생략
+List<PortalMenu> children = getMenuItems(item.getPortal().getId(), item.getId()); // 603번째 줄
+
+for (PortalMenu child : children) {
+    deleteMenuItem(child);
+}
+```
+
+So we revised how null pointers are thrown and not thrown. We can see 5 possible cases
+1) children
+2) item
+3) item.getId()
+4) item.getPortal()
+5) item.getPortal().getId()
+
+So lets see which case caused this
+
+## Identifying causes
+1) children - NPE can't be raised just because you assign a null value is assigned to this children variable. Only when you try using its method or a field attribute will it cause NPE
+
+2) item - we see that if item is null, that is checked in the previous line to throw NullArgumentException. So it
+is no prob
+
+3) item.getId() - remember you can **pass null to method argument** just fine.
+4) item.getPortal() - if item.getPortal() is null, and we do a .getId() method call on it, it **will cause NPE**
+5) item.getPortal().getId() - same here, even if that is null, you can pass null value to method argument like point 3 so it isnt a problem
+
+Really useful to use stack trace
+
