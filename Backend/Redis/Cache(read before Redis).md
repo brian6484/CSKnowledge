@@ -1,4 +1,3 @@
-
 ## Cache
 Before we explore Redis, we should explore Cache. Cache is storing frequently-accessed data so that requests dont have to 
 reference an API or DB. There is also Pareto's law where 80% of result is caused by 20% of an original fault. In terms of cache, you can say
