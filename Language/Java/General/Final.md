@@ -1,4 +1,5 @@
 ## Final
+## Variable
 Its value cannot be changed after initialisation. 
 
 For example, this declares a constant MAX_VALUE whose value cannot be modified.
@@ -30,3 +31,6 @@ behaviour of object due to unintentional reassignment. **HOWEVER**, it is not en
 cuz the methods to modify the object or its contents may not be thread-safe. 
 
 So use a thread-safe implementation like ConcurrentHashMap.
+
+## Class
+Final class ensures that it cannot be **subclassed**. 
