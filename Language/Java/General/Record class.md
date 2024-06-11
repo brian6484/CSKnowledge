@@ -12,5 +12,12 @@ public record Person(String name, int age) {}
 This implicitly creates 
 1) private final fields for each parameter (final means its value cannot be changed after initialisation)
 2) public constructor
+like this
+```java
+public Person(String name, int age) {
+    this.name = name;
+    this.age = age;
+}
+```
 3) accessor methods for each field (name and age)
 4) equals(), hashCode(), toString() methods
