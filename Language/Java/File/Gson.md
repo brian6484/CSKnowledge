@@ -52,6 +52,8 @@ public class Student {
 Lombok's @SerializedName specifies the name of the field to be mapped to or from JSON file
 
 ### Function
+The method names are intuitive too. It is either toJson or fromJson.
+deserialisation:
 ```java
 public void parseNestJson() throws FileNotFoundException {
     FileReader fileReader = new FileReader("absolute file path");
@@ -60,6 +62,11 @@ public void parseNestJson() throws FileNotFoundException {
     Group group = gson.fromJson(fileReader, Group.class);
     System.out.println(group);
 }
+```
+
+serialisation:
+```java
+String jsonResult = new Gson().toJson(json으로 바꾸고싶은 java객체);
 ```
 
 If it is a list of group in the json file, it should be Group[].class
