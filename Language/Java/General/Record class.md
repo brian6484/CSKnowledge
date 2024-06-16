@@ -19,7 +19,14 @@ public Person(String name, int age) {
 }
 ```
 3) accessor methods for each field (name and age)
-4) equals(), hashCode(), toString() methods
+4) 
+You can access the field like just calling the field name:
+```java
+person.name()
+```
+That is equivalent of a getter method like we see so commonly like person.getName()
+
+5) equals(), hashCode(), toString() methods
 
 ## When to use Record class over regular class
 When **immutable** data carriers like DTO are needed. Once you declare the object like Person dimit = new Person("dimit",24), you cant change it like dimit.setAge(69) is not allowed.
