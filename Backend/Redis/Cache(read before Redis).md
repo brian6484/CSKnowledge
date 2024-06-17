@@ -7,6 +7,9 @@ Normally the architecture is like WS- WAS - DB but when users increase exponenti
 horizontally or vertically, we can add another additional cache layer. There is strain on DB cuz DB writes data on an actual physical disk 
 so for each transaction, we have to access this disk, decreasing its performance. This is called disk I/O.
 
+
+When you store data in a cache, you associate it with a **key**, which can be used later to retrieve that data. This key can be hashed via hash function and that hash value can be used for calculation to which cache server to be distributed. For example like this function hash % n (number of cache servers) determines which cache server this key is gonna go to.
+
 ### Cache hit
 It is when there is a request, the server searches the cache first before DB and if there is that data, we return that data.
 
