@@ -8,7 +8,7 @@ horizontally or vertically, we can add another additional cache layer. There is 
 so for each transaction, we have to access this disk, decreasing its performance. This is called disk I/O.
 
 ## Key 
-When you store data in a cache, you associate it with a **key**, which can be used later to retrieve that data. Cache is a key-value store after all so you need a key. The key can be plain text or hash value but a short hash value is good for performance purpose. Anyway this key can be hashed via hash function and that hash value can be used for calculation to which cache server to be distributed. For example like this function hash % n (number of cache servers) determines which cache server this key is gonna go to.
+When you store data in a cache, you associate it with a **key**, which can be used later to retrieve that data. Cache is a key-value store after all so you need a key. And this key **must be unique** cuz dict's keys must be unique. The key can be plain text or hash value but a short hash value is good for performance purpose. Anyway this key can be hashed via hash function and that hash value can be used for calculation to which cache server to be distributed. For example like this function hash % n (number of cache servers) determines which cache server this key is gonna go to.
 
 ### Cache hit
 It is when there is a request, the server searches the cache first before DB and if there is that data, we return that data.
