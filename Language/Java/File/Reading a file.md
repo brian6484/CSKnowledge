@@ -38,11 +38,15 @@ public class FileReadUsingJava {
 
     public void readFile(String fileName) throws IOException, URISyntaxException {
         // Get the URL of the resource file
-        URL resourceUrl = FileReadUsingJava.class.getClassLoader().getResource(fileName);
+        Path path = Paths.get(getClass().getClassLoader().getResource(fileName).toURI())
 
         if (resourceUrl == null) {
             System.out.println("File not found: " + fileName);
             return;
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path.toString()) {
+        // bla bla
         }
 
         // Using Files.readAllLines
