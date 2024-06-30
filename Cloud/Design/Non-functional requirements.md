@@ -17,6 +17,12 @@ service that is failing
 2) Retry mechanism - like Kafka's retry topic, can go 1 step to Exception topic for events that fail continuously
 3) Fallback mechanism - provide better user experience during down time
 
+## Reliability
+It is NOT the same as Highly available. Reliability means system's ability to function **without failure** so minimising **number of failures** that system encounters. Highly available is
+minimising **downtime duration** during a failure.
+1) Redundancy - redudant db, server instances, etc
+2) Fault tolerance - we can minimise failure if there is fault tolerance like retries, circuit breaker and fallbacks.
+
 ## Security
 1) HTTPS
 2) rate limiting - make a rate limit policy to prevent abuse, AWS WAF rules for example
