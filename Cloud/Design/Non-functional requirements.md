@@ -23,6 +23,8 @@ If w=r=1, it is very fast read and write since we only need 1 acknowledgement fr
 
 If w+r>n, normally n is 3 and w,r is 2 each, it ensures consistency.
 
+2) versioning
+3) vector locks
 
 ## Fault-tolerance
 It is system's ability to operate normally, even when some of its components go down. Netflix is known for testing its fault-tolerance by intenionally shutting down its components to test its FA.
