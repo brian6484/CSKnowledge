@@ -2,6 +2,7 @@
 1) caching - quick access of frequently requested data
 2) database indexing - speeds up query responses
 3) load balancer - efficiently distributes traffic to instances
+4) **partitions in topics in Kafka** increases throughput but also INCREASES LATENCY. There is always tradedoff between throughput and latency as both are inversely proportional
 
 ## Highly available
 It means minimal downtime and being operational most of the time to 99%
