@@ -22,6 +22,7 @@ While there are multiple libraries to convert JSON files to Java objects and vic
 ```
 
 ### Declaring entity to be mapped 
+This @SerializedName is really important. I kept naming it wrong when it should be "request" but I misnamed it as requestRR. FUg
 ```java
 @ToString
 @Getter
