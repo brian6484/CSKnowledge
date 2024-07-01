@@ -8,7 +8,21 @@ It means minimal downtime and being operational most of the time to 99%
 1) multiple load balancer with health checks and failover capabilities
 2) database replication - implement multi-region db replication in case an entire region goes down and fails
 3) MSA architecture
-4) Kafka's leader/follower to replicate the leader replica in a different partition improves availability, in case that leader replica fails. 
+4) Kafka's leader/follower to replicate the leader replica in a different partition improves availability, in case that leader replica fails.
+
+## Consistency
+It is a tradeoff between availability and consistency. Consistency is seeing the updated data correctly.
+
+![Screenshot 2024-07-01 152123](https://github.com/brian6484/CSKnowledge/assets/56388433/3a707d52-889b-4ca8-994c-f17e3b5c8d52)
+
+1) We use quorum consensus. Since data is replicated at nodes, we want to ensure consistency of replication.
+Here, n is number of replicas, w is no. of replicas that acknowledges that it has been written successfully and r is
+the same concept for read.
+
+If w=r=1, it is very fast read and write since we only need 1 acknowledgement from just 1 server. BTW w=1 doesnt mean we are writing to just one server. It just means We can just get **one** ACKS and that is done.
+
+If w+r>n, normally n is 3 and w,r is 2 each, it ensures consistency.
+
 
 ## Fault-tolerance
 It is system's ability to operate normally, even when some of its components go down. Netflix is known for testing its fault-tolerance by intenionally shutting down its components to test its FA.
