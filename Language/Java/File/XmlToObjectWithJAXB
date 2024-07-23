@@ -1,0 +1,19 @@
+## Converting XML to object
+very good [ref](https://www.mysoftkey.com/java/jaxb-nested-list-of-java-object-example/)
+
+especially when there is a nested xml like a list of objects to be converted, we don't use @XmlElement on that field. We
+use @XmlElementWrapper like so
+
+```java
+@XmlRootElement(name="bla)
+@XmlAccessorType(FIELD)
+public class XMLDto {
+
+@XmlElementWrapper(name= "CertInfoList")
+@XmlElement(name="DeviceIssueInfo")
+private List<DeviceIssueInfo> list
+}
+```
+
+ElementWrapper generates a wrapper element around XML representation while Element sets the name of the entities. So the
+list should be declared with elementwrapper.
