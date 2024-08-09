@@ -79,3 +79,4 @@ public class SettleableProfitTransactionService {
 
 This way, when we call another bean's method, this isnt self-invocation but calling external method, which proxies properly intercept this
 invocation.
+ 
