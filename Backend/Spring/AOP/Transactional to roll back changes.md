@@ -4,7 +4,9 @@ My
 ## Another work experience
 If there are like 3 business logic methods and you are catching and handling the exception in one of those methods instead of
 the main @Tranasactional method, it won't roll back the changes. There are several ways to make sure the main @Transactional
-method gets the exception but the most straightforward solution is
+method gets the exception but the most straightforward solution is propagating exception all the way to main method.
+
+BTW **very impt, transactional only rolls back on RUNTIME EXCEPTIONS**. If you want it to rollback on other exceptions, you have to add it to @Transactional(rollbackOn= Exception.class or your other exceptions).
 
 ### Sol 1 Propagate the exception all the way to the main method
 ```java
