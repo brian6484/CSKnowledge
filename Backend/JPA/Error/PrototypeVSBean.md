@@ -16,8 +16,12 @@ public class Service {
 }
 ```
 
-The issue was that since prototype is a single object, it is instantiated ONLY ONCE. So invoking the service logic reuses this
-old object that contains stale data. 
+## What is prototype?
+Spring's bean registration method is basically singleton scope, and the Spring container manages all beans as singletons. But Spring also provides the ability to create and return a new object each time it is requested (prototype bean, @Scope("prototype")). So if it returns
+a new object each time with this prototype, why is Spring reusing this object over and over again and sending stale data?
+
+## Issue is DI
+if you inject it into another bean using constructor or field injection (as in your Service class), Spring creates the prototype bean **only once** when the Service bean is created. As a result, the Service bean will hold a reference to a single instance of ObjectInjectedInMyServiceMethod, leading to the problem of stale data if that instance is reused across method calls.
 
 ## Solution
 Instead, ApplicationContext bean should be injected in that object. This is so that new bean is instantiated every time
