@@ -54,9 +54,12 @@ public static ProfitSettlementLogDto toDto(ProfitSettlementLog profitSettlementL
 }
 ```
 
+## Why they can be used without an instance of a class
+Static members are allocated a special area of memory called **method area** (there is stack and heap and method area
+generally in memory of java). This area is allocated once class is loaded by JVM and the static members are stored there. Since this method area is shared by all instances of the class, we don't have to instantiate to access these
+static members. 
+
 We also dont have access to instance-specific members( variables and methods) unless you create an instance from that class.
-
-
 
 ### Static class
 class that is associated with the class, rather than the **instances of the class**.
