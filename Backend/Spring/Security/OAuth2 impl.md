@@ -27,4 +27,4 @@ That url will contain the OAuth2 provider's login page url.
 
 ### DefaultOAuth2AuthorizationRequestResolver
 
-
+to be continued
