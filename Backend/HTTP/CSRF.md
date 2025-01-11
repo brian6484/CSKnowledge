@@ -7,4 +7,4 @@ That is an example of CSRF. There are several solutions like making a CSRF token
 
 ## Spring Security
 Spring Boot's Security automatically checks for this CSRF by making sure that any HTTP request must come with a correct CSRF token. However,
-if we are using JWT token, which is stateless, that can and should be turned off
+if we are using [JWT token](https://github.com/brian6484/CSKnowledge/blob/main/Backend/HTTP/JWT.md), which is stateless, that can and should be turned off
