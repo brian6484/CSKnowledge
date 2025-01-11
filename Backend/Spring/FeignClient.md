@@ -29,3 +29,6 @@ public interface InternalApiClient {
 // Usage
 String token = internalApiClient.getToken("Bearer " + token);
 ```
+
+## Ref
+https://mjoo1106.tistory.com/entry/Spring-FeignClient-%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%BC%EA%B9%8C
