@@ -1,3 +1,34 @@
+## Abstract class
+Class that cannot be instantiated and is meant to be inherited by other classes.
+It can have
+- abstract methods
+- concrete already-implemented methods
+- subclass must implement those abstract methods unless they themselves are abstract classes
+
+### Example
+```java
+public abstract class OIDCVerifier {
+    // Abstract method to check support for a specific OAuthType
+    protected abstract boolean support(OAuthType oAuthType);
+
+    // Method to extract Apple email from an idToken (concrete method)
+    protected final String getAppleEmail(String idToken) {
+        // Some implementation to extract email from idToken...
+    }
+
+    // Abstract method to verify an idToken (subclasses need to provide specific logic)
+    protected final OIDCInfo verifyIdToken(String idToken) {
+        // Some implementation to verify idToken...
+    }
+
+    // Abstract methods to fetch OIDC public keys and validate audience
+    protected abstract OIDCPublicKeys getOIDCPublicKeys(String iss);
+    protected abstract boolean audienceValid(String aud);
+    protected abstract OAuthType getOAuthType();
+}
+
+```
+
 ## Abstract method
 It is method without implementation. It is used by abstract class or interface that is intended to be implemented when 
 another class extends it (class) or implements it (interface).
