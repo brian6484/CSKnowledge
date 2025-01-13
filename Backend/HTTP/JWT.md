@@ -29,11 +29,14 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4
 ```
 
 ### Header
-Contains metadata about the token, typically the type (JWT) and the hashing algorithm used (e.g., HS256)
+Contains metadata about the token, typically the type (JWT) and the hashing algorithm used (e.g., HS256) and kid, which specifies which key is used to sign the JWT.
+This kid is used by the server to fetch the appropriate public key from like a OIDC provider's public key endpoint.
 ```json
+// Header
 {
-  "alg": "HS256",
-  "typ": "JWT"
+  "alg": "RS256",
+  "typ": "JWT",
+  "kid": "abc123"  // Key ID
 }
 ```
 
@@ -41,13 +44,18 @@ Contains metadata about the token, typically the type (JWT) and the hashing algo
 Contains the claims, which are statements about the user and additional data.
 There are 3 types of claims:
 Registered Claims: Predefined keys like iss (issuer), exp (expiration time), sub (subject), aud (audience).
+iss claim specifies the issuer that made this JWT token and is usually a url like Google/Fb.
+aud claim specifies the **intended audience** of the token. For example, it might be a client ID or url of a service
+that is meant to consume this token.
+
 Public Claims: Custom claims that must be agreed upon to avoid collisions.
 Private Claims: Custom claims shared between parties.
 ```json
 {
-  "sub": "1234567890",
-  "name": "John Doe",
-  "iat": 1516239022
+  "iss": "https://auth.example.com/",  // Issuer
+  "aud": "my-client-id",              // Audience
+  "sub": "user123",
+  "exp": 1681197497
 }
 ```
 
@@ -78,3 +86,5 @@ If the token is valid, the request is processed, and the user is authenticated.
 
 6) JWTs often include an expiration time (exp claim).
 After the token expires, the user must re-authenticate to obtain a new token.
+
+
