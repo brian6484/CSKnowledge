@@ -98,10 +98,65 @@ So the compiler will see it as:
 public OIDCProperties(Google arg0) { ... }  // what the compiler sees
 ```
 
-## Solution
+Moreover, the fields are final which means that setter methods are not allowed
+
+## Solution 1
 To fix that and preserve the original code, you need to 
 ```gradle
 tasks.withType(JavaCompile) {
     options.parameters = true
+}
+```
+
+## Solution 2 by Cluade
+Remove requiredargsconstructor and final 
+
+```java
+@Setter
+@Getter
+@Validated
+@ConfigurationProperties(prefix = "auth.oidc")
+public class OIDCProperties {
+
+    private Google google;
+    private Apple apple;
+    private Facebook facebook;
+
+    // Default constructor needed for properties binding
+    public OIDCProperties() {}
+
+    @Setter
+    @Getter
+    public static class Google {
+        // Setters needed for properties binding
+        @NotNull(message = "해당값은 필수 값입니다")
+        private List<String> audiences;
+
+        @NotBlank(message = "해당값은 필수 값입니다")
+        private String authUrl;
+
+    }
+
+    @Setter
+    @Getter
+    public static class Apple {
+        @NotNull(message = "해당값은 필수 값입니다")
+        private List<String> audiences;
+
+        @NotBlank(message = "해당값은 필수 값입니다")
+        private String authUrl;
+
+    }
+
+    @Setter
+    @Getter
+    public static class Facebook {
+        @NotNull(message = "해당값은 필수 값입니다")
+        private List<String> audiences;
+
+        @NotBlank(message = "해당값은 필수 값입니다")
+        private String authUrl;
+
+    }
 }
 ```
