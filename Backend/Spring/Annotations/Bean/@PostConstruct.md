@@ -2,7 +2,7 @@
 It marks a method to be executed immediately after the bean's initialisation (right after the constructor and DI are complete, but before the bean is used).
 You know initialisation is when Spring container creates an instance out of a class (**bean**) based on the configuration.
 
-Basically you want this method to run before this bean is used in ur application. It could be sth that you must make sure that it runs FIRST.
+Basically you want this method to run **BEFORE** this bean is used in ur application. It could be sth that you must make sure that it runs FIRST.
 
 For example, redisServer() method is being used to initialize and start the embedded Redis server when the Spring Bean containing this method is created.
 
