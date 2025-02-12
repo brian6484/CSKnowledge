@@ -1,0 +1,21 @@
+## @Where
+Adding this at the entity acts as a *global filter* for hibernate queries.
+This means that whenever u fetch this Post entity, this query (where deleted_at is null ) is automatically added to the query.
+It is normally for soft delete purposes, where u dont wanna fetch the posts that have deleted_at = null
+
+```java
+@Entity
+@Table(name = "post")
+@Where(clause = "deleted_at IS NULL")  // Automatically applies this condition to queries
+@SQLDelete(sql = "UPDATE post SET deleted_at = NOW() WHERE id = ?")
+public class Post extends BaseTimeEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+    private String content;
+    
+    private LocalDateTime deleted_at; // Soft delete column
+}
+```
