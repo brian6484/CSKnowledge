@@ -1,7 +1,7 @@
 ## @Where
 Adding this at the entity acts as a *global filter* for hibernate queries.
 This means that whenever u fetch this Post entity, this query (where deleted_at is null ) is automatically added to the query.
-It is normally for soft delete purposes, where u dont wanna fetch the posts that have deleted_at = null
+It is normally for soft delete purposes, where u just wanna fetch the posts that have deleted_at = null (i.e. valid posts, not deleted posts)
 
 ```java
 @Entity
