@@ -9,8 +9,8 @@
 3) User logins in and gives permission for our app to access their info
 4) Oauth provider sends you the the **authorisation code** with the redirect url that you stated in step 2
 5) We now exchange this authorisation code by sending a server-to-server request to oauth provider for 2 impt tokens
-- accessToken: used to access user's data on the provider's platform
-- idToken: used to verify user's identity. It is often in **JWT token format** and contains user data like name and info
+- accessToken (Authorisation): used to access user's data on the provider's platform
+- idToken (Authentication): used to verify user's identity. It is often in **JWT token format** and contains user data like name and info
 
 App sends a request like this
 ```
