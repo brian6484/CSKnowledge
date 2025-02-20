@@ -160,3 +160,16 @@ public class OIDCProperties {
     }
 }
 ```
+
+## Another example
+In my redis config, I was trying to get value from yml with @Value but the variable itself was declared as **final**.
+```java
+@Value("${spring.redis.port}")
+private final int redisPort;
+```
+
+This is a problem cuz
+1) final means they are initialised at declaration time/in the constructor
+2) @Value injects values **AFTER** object construction using reflection
+3) When there's final field, it makes the field immutable after initialisation
+4) So Spring cannot inject value  
