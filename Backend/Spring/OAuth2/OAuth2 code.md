@@ -113,8 +113,11 @@ spring security
                 .sessionManagement(
                         configure ->
                                 configure.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .securityContext(
+                        securityContext ->
+                                securityContext.securityContextRepository(
+                                        new HttpSessionSecurityContextRepository()))
                 .addFilterBefore(
-////////////////////////////////here/////////////////////////////////////////////////////////////////
                         new JwtAuthenticationFilter(jwtTokenProvider),
                         SecurityContextHolderFilter.class)
                 .build();
