@@ -10,7 +10,17 @@ try (BufferedReader br = new BufferedReader(new FileReader(path.toString()) {
 ```
 
 ## Method 2
-You can straightaway use ClassPathResource, which reads from src/main/resoruces/.
+You can straightaway use ClassPathResource, **which reads from src/main/resoruces/.**
+I need to emphasise that it already includes src/main/resoruces/, so your declared directory should be
+```
+## correct
+APPLE_KEY_DIR=static/apple/sdssd.p8
+
+## wrong
+APPLE_KEY_DIR=src/main/resources/static/apple/sdssd.p8
+```
+
+
 ```java
 ClassPathResource resource = new ClassPathResource("data.json");
 try 
