@@ -41,3 +41,67 @@ an instance or computing something in those brackets, we should use **orElse(() 
 
 this supplier in orElseGet(Supplier) will only be executed if there is no value in Optional so there is no unnecessary overhead (extra
 resources used consumed by a task that doesnt contribute to the task's primary goal) caused.
+
+## ifPresentOrElse()
+Initial inefficient code
+```java
+private void aggregateByNotificationType(
+            List<Notification> oldNotifications, NotificationType type) {
+        oldNotifications.stream()
+                .collect(Collectors.groupingBy(Notification::getPost)) // post 별로 그룹화
+                .forEach(
+                        (post, notifications) -> {
+                            AggregateNotification oldAggregatedNotification =
+                                    aggregateNotificationRepository.findByPost(post).orElse(null);
+
+                            if (oldAggregatedNotification != null) {
+                                Long count =
+                                        oldAggregatedNotification.getCount() + notifications.size();
+                                AggregateNotification updatedNotification =
+                                        oldAggregatedNotification.updateAggregateNotification(
+                                                count);
+                                aggregateNotificationRepository.save(updatedNotification);
+                            } else {
+                                AggregateNotification newAggregatedNotification =
+                                        AggregateNotification.createAggregateNotification(
+                                                post.getUser(),
+                                                post,
+                                                type,
+                                                (long) notifications.size());
+                                aggregateNotificationRepository.save(newAggregatedNotification);
+                            }
+```
+Lets say we are in a stream and forEach element, we do some logic that depends on a computation of an intermediate operation. If that is null, we call a function and if not, we call another function. This is what the initial code is doing. We findByPost and if oldAggregatedNotification is not null we createAggregateNotification and else, we updateAggregateNotification.
+
+Using ifPresentOrElse, this is much more efficient and clean. Like this
+```java
+    private void processPostNotifications(Post post, List<Notification> notifications) {
+        NotificationType type = notifications.get(0).getType();
+        User user = post.getUser();
+        long count = notifications.size();
+        
+        // Find existing aggregate notification or create new one
+        aggregateNotificationRepository.findByPost(post)
+                .ifPresentOrElse(
+                    // Update existing aggregate
+                    existingAggregate -> updateAggregateNotification(existingAggregate, count),
+                    // Create new aggregate
+                    () -> createAggregateNotification(user, post, type, count)
+                );
+                
+        // Delete processed notifications
+        notificationRepository.deleteAll(notifications);
+    }
+    
+    private void updateAggregateNotification(AggregateNotification aggregateNotification, long additionalCount) {
+        Long newCount = aggregateNotification.getCount() + additionalCount;
+        AggregateNotification updatedNotification = aggregateNotification.updateAggregateNotification(newCount);
+        aggregateNotificationRepository.save(updatedNotification);
+    }
+    
+    private void createAggregateNotification(User user, Post post, NotificationType type, long count) {
+        AggregateNotification newAggregate = AggregateNotification.createAggregateNotification(
+                user, post, type, count);
+        aggregateNotificationRepository.save(newAggregate);
+    }
+```
