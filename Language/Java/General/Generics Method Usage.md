@@ -55,4 +55,39 @@ public class Main {
 ```
 
 ## STATIC generic method (very tricky)
+This is mainly cuz static belongs to the class, not instance. So static members exisit even when class is not instantiated. But for generic, the type parameter is determined **when u create the instance from the class**.
+
+Since static methods are not associated with any specific instance, they don't inherently "know" what the type parameter E of a particular MyList object is. The static method could be called even before any MyList objects are created, or it could be called using the class name itself (ClassName.staticMethod()), without any instance involved.
+
 The error occurs because static methods in Java do not have access to the type parameters (E) of their enclosing class (ClassName<E>). They operate independently of any object instance and therefore cannot rely on instance-specific type parameters. To use generics in static methods, you either define a new type parameter for the method or explicitly specify the type when invoking the method. This ensures that the static method operates within the bounds of Java's static context while still leveraging the benefits of generics.
+
+declaring new type parameter for the method
+```java
+class MyClass<T> {
+    T instanceVariable;
+
+    public MyClass(T value) {
+        this.instanceVariable = value;
+    }
+
+    // A static method that uses its own type parameter 'U'
+    public static <U> void printValue(U value) {
+        System.out.println(value);
+    }
+
+    public T getInstanceVariable() {
+        return instanceVariable;
+    }
+}
+
+public class StaticGenericMethodExample {
+    public static void main(String[] args) {
+        MyClass<String> stringObject = new MyClass<>("Hello");
+        System.out.println(stringObject.getInstanceVariable()); // 'T' is String here
+
+        MyClass.printValue(123);     // 'U' is Integer here
+        MyClass.printValue("World"); // 'U' is String here
+        MyClass.printValue(true);    // 'U' is Boolean here
+    }
+}
+```
