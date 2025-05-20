@@ -62,4 +62,45 @@ static members.
 We also dont have access to instance-specific members( variables and methods) unless you create an instance from that class.
 
 ### Static class
-class that is associated with the class, rather than the **instances of the class**.
+class that is associated with the class, rather than the **instances of the class**. Normally it is static inner class 
+
+advantages are that we dont need an instance of the outer class to use this static inner class. For example if outer class is StringValidator and
+static inner class is Validator, we dont need to create an instance of stringvalidator to use validator's static methods cuz we can do 
+StringProcessor.Validator.isValidEmail()
+
+also helps with encapsulation and being logically grouped with outer class
+```java
+class StringProcessor {
+    public static class Validator {
+        public static boolean isValidEmail(String email) {
+            return email != null && email.contains("@");
+        }
+
+        public static boolean isNotEmpty(String str) {
+            return str != null && !str.trim().isEmpty();
+        }
+    }
+
+    private String text;
+
+    public StringProcessor(String text) {
+        this.text = text;
+    }
+
+    public boolean isEmailValid() {
+        return Validator.isValidEmail(this.text); // Using the static nested utility
+    }
+
+    public boolean isTextNotEmpty() {
+        return Validator.isNotEmpty(this.text);   // Using the static nested utility
+    }
+
+    public static void main(String[] args) {
+        StringProcessor processor = new StringProcessor("test@example.com");
+        System.out.println("Is email valid? " + processor.isEmailValid()); // true
+        System.out.println("Is text not empty? " + processor.isTextNotEmpty()); // true
+
+        System.out.println("Is another email valid? " + StringProcessor.Validator.isValidEmail("invalid")); // false
+    }
+}
+```
