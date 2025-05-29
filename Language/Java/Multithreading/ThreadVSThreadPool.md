@@ -1,11 +1,11 @@
 # Thread in Java
 ## What is thread?
 Thread is the smallest unit of execution within a process, representing a sequence of instructions that can be scheduled to be 
-executed by the OS. In Java, the main thread is started by executing the main() method. In multi-threading, even when the main thread is terminated,
-if there is another thread running, app does not terminate.
+executed by the OS. In Java, the main thread is started by executing the main() method. In multi-threading, even when the main thread is terminated, if there is another thread running, app does not terminate.
 
 ## How to create threads
 Btw if not set explicit names via setName(), the name is like Thread-n where n is number.
+
 ### Runnable interface
 We can extend the runnable interface to create a thread and *override the run() method*. An instance of this class that extended the runnable interface
 can be passed as parameter to the **thread constructor()** and then start() is invoked to execute the thread. This thread can run **separately from the main thread**.
@@ -111,14 +111,21 @@ public class ThreadClassExample {
 ```
 
 ### Executor framework
-We can use java.util.concurrent's executor to manage threads and is a more higher-level solution than previous solutions. We can have features like
-thread pooling and scheduling.
+We can use java.util.concurrent's executor to manage threads and is a more higher-level solution than previous solutions. We can have features like thread pooling and scheduling.
 
 ```java
 Executor executor = Executors.newFixedThreadPool(5);
 executor.execute(new MyRunnable());
 
 ```
+
+### Thread pool
+While creating individual thread objects gives u some fine-grained control, it can be inefficient and resource-intensive, especially when
+we have many small concurrent tasks to run. This is when thread pool comes in.
+
+Thread pool is a *managed* collection of worker threads that are kept alive to execute submitted tasks. So instead of creating threads to 
+run your tasks, we instead submit the tasks to this thread and **the pool assigns an available thread to do this task**. This reduces
+the overhead that comes with thread creation and destruction cuz thread pool **manages the lifecycles of threads** for us automatically.
 
 ### Callable interface and Future interface
 Callable is similar to Runnable interface but it can **return a result and throw exceptions**.
