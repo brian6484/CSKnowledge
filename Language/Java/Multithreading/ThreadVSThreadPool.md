@@ -124,10 +124,10 @@ While creating individual thread objects gives u some fine-grained control, it c
 we have many small concurrent tasks to run. This is when thread pool comes in.
 
 Thread pool is a *managed* collection of worker threads that are kept alive to execute submitted tasks. So instead of creating threads to 
-run your tasks, we instead submit the tasks to this thread and **the pool assigns an available thread to do this task**. This reduces
-the overhead that comes with thread creation and destruction cuz thread pool **manages the lifecycles of threads** for us automatically.
+run your tasks, we instead submit the tasks to this thread and **the pool assigns an available thread to do this task** (task queuing). This reduces the overhead that comes with thread creation and destruction cuz thread pool **manages the lifecycles of threads** for us automatically. There is also improved responsiveness as tasks execute sooner because they dont have to wait for a new thread to be
+made by the OS.
 
-### Callable interface and Future interface
+### Callable interface and Future interface (and how they work with Thread Pools)
 Callable is similar to Runnable interface but it can **return a result and throw exceptions**.
 Future interface can give a result of asynchronous computation and provides a *reference* to that result when the computation is complete, and can retrieve that result via get() method.
 
@@ -136,6 +136,8 @@ Future interface can give a result of asynchronous computation and provides a *r
 If the doSomeLongComputation takes longer than 1s, it blocks my thread until the result is made available by ExecutorService.
 
 ![Screenshot 2024-01-01 233100](https://github.com/brian6484/CSKnowledge/assets/56388433/2be05208-7c36-4941-9b5f-73cbf0865e77)
+
+So in simple words, a thread pool (represented by ExecutorService) is where you execute Callable tasks, and the Future object is how you retrieve the result of those Callable tasks from the pool.
 
 #### A deeper explanation of below example
 We first *submit* a Callable instance to the *ExecutorService* using submit() method, which returns a `Future` object returning the computed value. This *submit*
