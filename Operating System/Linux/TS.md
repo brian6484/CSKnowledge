@@ -59,3 +59,88 @@ sleep 60 && ls -lh /var/log/bad.log  # Check again after 1 min
 - **lsof** = List Open Files (best for finding file writers)
 - **fuser** = Show processes using files
 - **kill vs kill -9** = Graceful vs force termination
+
+# Find IP Address with Most Requests
+
+## Problem
+- Web server access log at `/home/admin/access.log`
+- Each line = one HTTP request
+- IP address at beginning of each line
+- Find IP with most requests
+- Write result to `/home/admin/highestip.txt`
+
+## Solution Steps
+
+### 1. Examine the Log File Structure
+```bash
+head -5 /home/admin/access.log    # See first 5 lines
+wc -l /home/admin/access.log      # Count total lines
+```
+
+### 2. Extract and Count IP Addresses
+
+**Method A: Using awk + sort + uniq**
+so awk is text processing tool that **works on fields & records**, where field is the space-separated part of each line and
+record is each line of input
+```bash
+awk '{print $1}' /home/admin/access.log | sort | uniq -c | sort -nr | head -1
+```
+
+**Method B: Using cut + sort + uniq**
+```bash
+cut -d' ' -f1 /home/admin/access.log | sort | uniq -c | sort -nr | head -1
+```
+
+### 3. Extract Only the IP Address
+```bash
+# Get just the IP (remove count)
+awk '{print $1}' /home/admin/access.log | sort | uniq -c | sort -nr | head -1 | awk '{print $2}'
+```
+
+### 4. Write to Output File
+```bash
+# Complete one-liner solution
+awk '{print $1}' /home/admin/access.log | sort | uniq -c | sort -nr | head -1 | awk '{print $2}' > /home/admin/highestip.txt
+```
+
+### 5. Verify Solution
+```bash
+cat /home/admin/highestip.txt
+sha1sum /home/admin/highestip.txt    # Should match: 6ef426c40652babc0d081d438b9f353709008e93
+```
+
+## Command Breakdown
+
+| Command | Purpose |
+|---------|---------|
+| `awk '{print $1}'` | Extract first field (IP address) |
+| `sort` | Sort IPs alphabetically |
+| `uniq -c` | Count unique occurrences |
+| `sort -nr` | Sort by count (numeric, reverse) |
+| `head -1` | Get top result |
+| `awk '{print $2}'` | Extract IP from "count IP" format |
+
+## Alternative Approaches
+
+**Using grep + sort (if IPs follow standard format)**
+```bash
+grep -oE '^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' /home/admin/access.log | sort | uniq -c | sort -nr | head -1 | awk '{print $2}'
+```
+
+**Step by step debugging**
+```bash
+# Step 1: Extract IPs
+awk '{print $1}' /home/admin/access.log | head -10
+
+# Step 2: Sort and count
+awk '{print $1}' /home/admin/access.log | sort | uniq -c | head -10
+
+# Step 3: Sort by frequency
+awk '{print $1}' /home/admin/access.log | sort | uniq -c | sort -nr | head -5
+```
+
+## Key Concepts
+- **Field extraction**: `awk '{print $1}'` or `cut -d' ' -f1`
+- **Counting duplicates**: `sort | uniq -c`
+- **Sorting by frequency**: `sort -nr` (numeric reverse)
+- **Pipeline chaining**: Combine commands with `|`
