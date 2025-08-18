@@ -39,4 +39,16 @@ Browser                            Server
    <--Response 3--------------------|
 ```
 
+## Connection set up difference
+### HTTP/1.1 AND HTTP/2 (TCP+TLS)
+1) tcp handshake - 1 (Round-Trip Time) RTT
+2) tls handshake (server&client negotiate encryption like keys and certs) - 1 RTT
+So 2 rtts before any actual data can be sent
+
+### HTTP/3 (QUIC/UDP)
+QUIC combines transport + encryption in 1 protocol
+1) if client previously connected to this server before, can send encrypted data right away so 0 RTT
+2) if first connection, QUIC sends initial handshake and encryption set up so 1 RTT
+
+So HTTP/3 can send requests faster
 
