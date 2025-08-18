@@ -1,6 +1,12 @@
 ## HTTP
 Hypertext Transfer Protocol is *application-layer protocol* that transfers resources (html,json,images,etc).
 
+1) client sends request (like GET /index.html HTTP/1.1) to server over TCP (protocol depends on HTTP version, if HTTP/3 it
+uses QUIC/UDP but most of the time, it usues TCP)
+2) server responds with status code (like 200 OK) and payload
+3) Stateless: every request is independent
+4) Modern web uses HTTP/2(multiplexing) and HTTP/3(QUIC/UDP). [More here]()
+
 ## HTTP methods
 The commonly seen methods are get, post, delete and put
 
