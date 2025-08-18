@@ -1,6 +1,15 @@
+## HTTP
+Hypertext Transfer Protocol is *application-layer protocol* that transfers resources (html,json,images,etc).
+
 ## HTTP methods
-The commonly seen methods are get, post, delete and put. Oh i dint know diff between get and post is get requests are cached by browser so that when same request
-is made, it can return the cached response. But post requests are not cached.
+The commonly seen methods are get, post, delete and put
+
+## Diff between GET vs POST
+GET retrieves data from server and **can be cached by browsers or CDNs with Cache-Control headers** unlike POST. It is also
+safe and idempotent (making same request multiple times doesnt change server state)
+
+POST sends data to server and **isnt usually cached by browsers cuz it changes server state**, although u can technically. Data
+is in the **request body, not URL like GET**. And is not idempotent
 
 ## The tricky ones
 Difference between POST and PUT is that POST is when you are entering new data that doesnt exist yet in db. PUT is used to *edit* the data saved in db.
