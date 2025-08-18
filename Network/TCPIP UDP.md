@@ -1,6 +1,6 @@
 # TCP and UDP
 ## About
-TCP and UPD are in layer 4 of OSI (Open Systems Interconnection), which is the Transport Layer.
+TCP(Transmission Control Protocol) and UPD(User Datagram Protocol) are in layer 4 of OSI (Open Systems Interconnection), which is the Transport Layer.
 [more on OSI here][https://github.com/brian6484/CSKnowledge/blob/main/Network/OSI%20.md]
 
 ## IP 
@@ -23,6 +23,8 @@ In more technical terms, lets say when an email is sent over TCP, a conncetion i
 2) target sends back SYN-ACK synchronisation-acknowledgement packet to the target to agree to the process
 3) source sends ACK packet to confirm the process, after which email contents are sent
 
+One key note is **data is sent in segments and each has a sequence number**.
+
 As we learnt in OSI, email is broken down to packets before it is sent through the Internet. They traverse several gateways before being reaseembled
 by TCP at the target device. So TCP is bi-directional whereas UDP is uni-directional.
 
@@ -39,3 +41,4 @@ IF UDP datagrams are lost in transit, they are not resent like TCP/IP which asks
 ## So is UDP inferior than TCP/IP?
 But most network routers actually dont perform packet ordering and arrival confirmation like UDP cuz more memory is needed. So it is not much of a flaw.
 TCP/IP is thus just an additional functionality when the app requires it.
+
