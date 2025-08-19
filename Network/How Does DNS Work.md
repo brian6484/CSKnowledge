@@ -16,3 +16,14 @@ the IP address to OS resolver, which gives to browser
 Recursive DNS server = goes around the internet asking others to resolve the query for you.
 
 Authoritative DNS server = has the official, correct answer because it stores the domain’s DNS records.
+
+## What happens when u enter a domain into browser?
+1) Browser checks cache (all that above explanation)
+2) browser establishes tcp conenction
+3) tls handshake for https
+4) sends https request
+5) facebook servers respond with html content
+6) browser parses html and makes addition requests for CSS, Javascript, images and other resources
+7) rendering engine builds Document Object Model (DOM) & CSS object model (CSSOM), combines them to Render tree and
+paints. Painting is where browser draws actual pixels on screen
+8)   Javascript executed, page displayed
