@@ -28,6 +28,13 @@ One key note is **data is sent in segments and each has a sequence number**.
 As we learnt in OSI, email is broken down to packets before it is sent through the Internet. They traverse several gateways before being reaseembled
 by TCP at the target device. So TCP is bi-directional whereas UDP is uni-directional.
 
+## TCP congestion
+Fundamental flaw: assumes all packet loss is due to network congestion. But there are cases that do not fit in this pattern.
+While it was designed at a time where network links were less reliable so packet loss might be due to network congestion, now 
+it is differnet. The way the algorithm tries to fix is to **reduce sender's data rate(congestion window)**.
+
+This is particularly bad for high bandwidth, high latency links cuz single packet loss can cause major decrease in sending rate. The subsequent recovery phase might take long time, leading to inefficient network utilisation.
+
 ## UDP User Datagram Protocol
 It is usally used for video streaming and DNS lookups where target does not need to send an acknowledgement back. 
 This is cuz UDP sends packets (called datagrams) **without establishing a connection first** and with **no order guarantee** unlike TCP/IP.
@@ -41,4 +48,5 @@ IF UDP datagrams are lost in transit, they are not resent like TCP/IP which asks
 ## So is UDP inferior than TCP/IP?
 But most network routers actually dont perform packet ordering and arrival confirmation like UDP cuz more memory is needed. So it is not much of a flaw.
 TCP/IP is thus just an additional functionality when the app requires it.
+
 
