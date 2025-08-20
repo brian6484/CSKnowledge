@@ -1,3 +1,76 @@
+# General tips
+1) Check logs
+```
+journalctl -xe
+or
+/var/log/*
+```
+check system or app logs.
+
+For example, it shows log erros like port already in use or missing file
+
+-xe means show recent erros and -u specifies the unit/service
+```
+journalctl -u nginx.service -xe
+
+bind() to 0.0.0.0:80 failed (98: Address already in use)
+```
+
+2) Verify permission and file existence
+If binary or config files dont exist, or if user doesnt have permission
+```
+ls -l /usr/bin/myapp
+ls -l /etc/myapp/config.yml
+```
+u should check if binary and config exist and
+binary file: it should be executable
+config: should be readable by app's user
+
+3) check dependency
+native binary, which is executable file to run directly on ur PC CPU and OS **without needing interpreter or VM**, often depends on shared libaries (.so files). And `ldd` shows wat libraries ur program needs
+
+```
+ldd /usr/bin/myapp
+libssl.so.1.1 => not found
+libcrypto.so.1.1 => /lib/x86_64-linux-gnu/libcrypto.so.1.1
+```
+
+4) check env variables and configs
+Some apps need env variables set like JAVA_HOME, PATH, DB_URL, etc. So u can check cur env
+
+```
+env | grep JAVA
+```
+
+but if my app uses a separate config file like yml file, wrong settings can cause startup failure
+
+5) use strace to see system calls
+if app fails mysteriously, we should run `strace`, which shows **every system call (open files, network, memory)**.
+
+```
+strace -f -o trace.log /usr/bin/myapp
+
+error:
+open("/etc/myapp/config.yml", O_RDONLY) = -1 ENOENT (No such file or directory)
+```
+
+6) check resource limit (ulimit -a)
+Sometimes app doesnt start cuz of system resource limit (too many open files, not enuff memory)
+
+```
+ulimit -a
+
+output:
+open files (-n) 1024
+max user processes (-u) 4096
+```
+So max user process is capped at 4k but if ur app needs more, hitting this limit causes server to fail. U can increase it like
+```
+ulimit -n 65535
+
+```
+
+
 # Finding & Terminating Process Writing to Log File
 
 ## Problem
