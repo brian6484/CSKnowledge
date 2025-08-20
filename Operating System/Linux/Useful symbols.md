@@ -7,3 +7,6 @@ ls: cannot access '/nonexistent': No such file or directory
 $ echo $?
 2
 ```
+
+## uname -r
+uname -r prints the kernel version of the running Linux system.
