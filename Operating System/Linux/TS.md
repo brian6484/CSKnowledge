@@ -1,6 +1,8 @@
 # General tips
 <img width="1182" height="766" alt="Image" src="https://github.com/user-attachments/assets/3eb1197a-cabd-4360-a209-de09b002ae7e" />
 
+for the book, 1.11 is so useful for case study
+
 1) Check logs
 ```
 journalctl -xe
