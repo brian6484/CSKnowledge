@@ -22,3 +22,6 @@ shows the top 10 largest files/folders inside /var/log,
 ```
 du -h /var/log | sort -rh | head -n 10
 ```
+
+## mount
+it lists mounted filesystems. Mounts means Linux attaching the filesystem to a directory
