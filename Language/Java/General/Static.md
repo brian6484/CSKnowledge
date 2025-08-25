@@ -59,7 +59,7 @@ Static members are allocated a special area of memory called **method area** (th
 generally in memory of java). This area is allocated once class is loaded by JVM and the static members are stored there. Since this method area is shared by all instances of the class, we don't have to instantiate to access these
 static members. 
 
-We also dont have access to instance-specific members( variables and methods) unless you create an instance from that class.
+Static also dont have access to instance-specific members( variables and methods) unless you create an instance from that class.
 
 ### Static class
 class that is associated with the class, rather than the **instances of the class**. Normally it is static inner class 
