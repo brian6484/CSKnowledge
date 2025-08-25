@@ -1,3 +1,6 @@
+## whats atomicity first
+if operation is atomic, **no other thread can see it partially complete**. It should complete 100%
+
 ## volatile
 ensures changes made by one thread are visible to other threads immediately. **BUT IT DOESNT ENSURE ATOMICITY** like
 count++
