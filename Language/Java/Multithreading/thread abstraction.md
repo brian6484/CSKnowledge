@@ -43,6 +43,8 @@ Another big prob is that the server itself definitely has several multi-core pro
 So if program utilises as many hardware threads there are available in server, our laptops definitely wont be able to process this. So the optimal number of threads
 depends on the hardware cores available.
 
+For example, on a 4-core CPU, you can create hundreds of OS threads, but only 4 (or 8 with Hyper-Threading) run at the exact same moment. The rest are waiting their turn in the queue.
+
 ### Thread pool with ExecutorService
 ExecutorService provides an interface where you can submit tasks and get the results later. The implementation of this interface is using a pool of threads as such:
 
