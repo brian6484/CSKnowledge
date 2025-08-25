@@ -4,6 +4,7 @@
 
 ## Callable
 - defines a task for thread to execute **and return result**
+- kind of like callable = runnable + result/exception
 - it can perform task, return a value of any type, or throw a checked exception
 
 ```java
