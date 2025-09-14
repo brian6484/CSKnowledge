@@ -137,11 +137,23 @@ DROP       tcp  --  anywhere             anywhere             tcp dpt:http
 ```
 
 so we can do iptables -F to delete all rules but thats not a good way. Instead we should target the rule for port 80
+-D = delete, INPUT = Traffic coming TO this computer from somewhere else, -p tcp = tcp protocol, --dport 80 = destination port 80,
+-j DROP = drop the packet. So basically we are deleting this rule that drops this input traffic's packet when it reaches our port 80
 ```
 # Remove specific rule blocking port 80
 iptables -D INPUT -p tcp --dport 80 -j DROP
 # Or allow port 80 specifically
 iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+```
+
+input is literall infront of ur web server like
+```
+Your Browser          →     Your Web Server
+(127.0.0.1:45678)           (127.0.0.1:80)
+                      │
+                      │ This arrow = INPUT traffic
+                      ↓ (going TO the web server)
+                [INPUT chain checks this]
 ```
 
 that should work
