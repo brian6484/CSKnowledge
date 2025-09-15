@@ -353,5 +353,58 @@ Your Browser          →     Your Web Server
                 [INPUT chain checks this]
 ```
 
-that should work
-  
+## 3
+so curling cannot connect to web server and question said there is nginx being used.
+
+we first check nginx config and btw the permission error u can ignore cuz we are not using sudo
+```
+admin@ip-10-1-12-30:/$ nginx -T
+nginx: [alert] could not open error log file: open() "/var/log/nginx/error.log" failed (13: Permission denied)
+2025/09/15 05:53:47 [warn] 834#834: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /etc/nginx/nginx.conf:1
+2025/09/15 05:53:47 [emerg] 834#834: unexpected ";" in /etc/nginx/sites-enabled/default:1
+nginx: configuration file /etc/nginx/nginx.conf test failed
+```
+we see that there is ; in the first line so we delete via vim. 
+press i for INSERT and once u done change, Esc button and write :wq.
+```
+sudo vim /etc/nginx/sites-enabled/default
+```
+that should work and i did
+```
+# Test configuration
+sudo nginx -t
+
+# If test passes, reload nginx
+sudo systemctl reload nginx
+
+# Check nginx status
+sudo systemctl status nginx
+```
+its status is running bur still curl doesnt work. We have to look error log. We see that the ; error has been solved by 9/11 but when
+we see 9/15 error, we see Too many open files error.
+```
+sudo tail -f /var/log/nginx/error.log
+2022/09/11 16:54:26 [emerg] 5931#5931: unexpected ";" in /etc/nginx/sites-enabled/default:1
+2022/09/11 16:55:00 [emerg] 5961#5961: unexpected ";" in /etc/nginx/sites-enabled/default:1
+2022/09/11 17:02:07 [emerg] 6066#6066: unexpected ";" in /etc/nginx/sites-enabled/default:1
+2022/09/11 17:07:03 [emerg] 6146#6146: unexpected ";" in /etc/nginx/sites-enabled/default:1
+2025/09/15 07:08:11 [emerg] 577#577: unexpected ";" in /etc/nginx/sites-enabled/default:1
+2025/09/15 07:10:19 [alert] 829#829: socketpair() failed while spawning "worker process" (24: Too many open files)
+2025/09/15 07:10:19 [emerg] 830#830: eventfd() failed (24: Too many open files)
+2025/09/15 07:10:19 [alert] 830#830: socketpair() failed (24: Too many open files)
+2025/09/15 07:11:31 [crit] 830#830: *1 open() "/var/www/html/index.nginx-debian.html" failed (24: Too many open files), client: 127.0.0.1, server: , request: "HEAD / HTTP/1.1", host: "127.0.0.1"
+2025/09/15 07:11:58 [crit] 830#830: *2 open() "/var/www/html/index.nginx-debian.html" failed (24: Too many open files), client: 127.0.0.1, server: , request: "HEAD / HTTP/1.1", host: "127.0.0.1"
+
+```
+What is open file error? So in linux evertyhing is considered as a file - actual files, network connections, sockets, devices, etc.
+So each visitor might be incrementing this file count 
+so we need to edit the filecount variable
+
+```
+sudo vim /etc/systemd/system/nginx.service
+[Service]
+LimitNOFILE=10
+
+```
+change to 1024 and save changes. then restart nginx
+
