@@ -52,6 +52,203 @@ echo "192.168.1.1" > /home/admin/highestip.txt
 
 # Medium
 ## 1
+Situation: postgre isnt writing to disk
+
+Lets first see if postgre process is running properly
+```
+ps aux | grep postgre
+
+root       887  0.0  0.1   4832   876 pts/0    S+   01:46   0:00 grep postgre
+```
+
+i first thought its running properly but actually its not. grep is also an active process so it displays its own info.
+
+if postgre was running properly
+```
+postgres  1234  0.0  0.1  25678  1234  ?      S    Jan20   0:00 /usr/lib/postgresql/16/bin/postgres -D /var/lib/postgresql/16/main
+postgres  1235  0.0  0.0  25678  1234  ?      S    Jan20   0:00 postgres: 16/main: checkpointer
+postgres  1236  0.0  0.0  25678  1234  ?      S    Jan20   0:00 postgres: 16/main: autovacuum launcher
+```
+
+so since its not running we should check the status via systemctl status
+```
+systemctl status postgresql
+
+● postgresql.service - PostgreSQL RDBMS
+
+   Loaded: loaded (/lib/systemd/system/postgresql.service; enabled; vendor preset: ena
+
+   Active: active (exited) since Mon 2025-09-15 01:40:40 UTC; 7min ago
+
+  Process: 671 ExecStart=/bin/true (code=exited, status=0/SUCCESS)
+
+ Main PID: 671 (code=exited, status=0/SUCCESS)
+
+
+Sep 15 01:40:40 ip-10-1-12-192 systemd[1]: Starting PostgreSQL RDBMS...
+
+Sep 15 01:40:40 ip-10-1-12-192 systemd[1]: Started PostgreSQL RDBMS.
+```
+
+so Active: active (exited) means service unit was successfully activated. But exited means its no longer running.
+/bin/true line: so systemd service file for postgres is running this /bin/true which is a program that **simply exits with status
+code 0**.
+
+even when i tried starting via systemctl start postgresql, its still same. So we should check for error log via journalctl.
+
+### systemd and journalctl
+systemd - master manager for ur computer and is **first process to run when pc starts**. It starts and manages services, handles logs and manages system state
+
+journalctl - command to query and display logs from **systemd journal**.
+
+so we can check for logs via 2 commands
+```
+journalctl -u postgresql
+
+-- Logs begin at Mon 2025-09-15 01:39:44 UTC, end at Mon 2025-09-15 01:53:10 UTC. --
+
+Sep 15 01:40:40 ip-10-1-12-192 systemd[1]: Starting PostgreSQL RDBMS...
+
+Sep 15 01:40:40 ip-10-1-12-192 systemd[1]: Started PostgreSQL RDBMS.
+```
+its not that useful but 
+
+journalctl -p err this asks for all log entries with priority level of **error** from entire system
+```
+root@ip-10-1-12-192:/etc/postgresql/14/main# journalctl -p err
+
+-- Logs begin at Mon 2025-09-15 01:39:44 UTC, end at Mon 2025-09-15 01:53:10 UTC. --
+
+Sep 15 01:39:44 ip-10-0-0-22 kernel: ena 0000:00:05.0: LLQ is not supported Fallback t
+
+Sep 15 01:39:44 ip-10-0-0-22 systemd-fstab-generator[210]: Failed to create unit file 
+
+Sep 15 01:39:44 ip-10-0-0-22 systemd[204]: /usr/lib/systemd/system-generators/systemd-
+
+Sep 15 01:40:40 ip-10-1-12-192 systemd-fstab-generator[646]: Failed to create unit fil
+
+Sep 15 01:40:40 ip-10-1-12-192 systemd-fstab-generator[646]: Failed to create unit fil
+
+Sep 15 01:40:40 ip-10-1-12-192 systemd[640]: /usr/lib/systemd/system-generators/system
+
+Sep 15 01:40:40 ip-10-1-12-192 systemd[1]: Failed to start PostgreSQL Cluster 14-main.
+
+Sep 15 01:51:12 ip-10-1-12-192 systemd[1]: Failed to start PostgreSQL Cluster 14-main.
+
+lines 1-9/9 (END)...skipping...
+
+-- Logs begin at Mon 2025-09-15 01:39:44 UTC, end at Mon 2025-09-15 01:53:10 UTC. --
+
+Sep 15 01:39:44 ip-10-0-0-22 kernel: ena 0000:00:05.0: LLQ is not supported Fallback to host mode policy.
+
+Sep 15 01:39:44 ip-10-0-0-22 systemd-fstab-generator[210]: Failed to create unit file /run/systemd/generator/opt-pgdata.mount, as it al
+
+Sep 15 01:39:44 ip-10-0-0-22 systemd[204]: /usr/lib/systemd/system-generators/systemd-fstab-generator failed with exit status 1.
+
+Sep 15 01:40:40 ip-10-1-12-192 systemd-fstab-generator[646]: Failed to create unit file /run/systemd/generator/opt-pgdata.mount, as it 
+
+Sep 15 01:40:40 ip-10-1-12-192 systemd-fstab-generator[646]: Failed to create unit file /run/systemd/generator/opt-pgdata.mount, as it 
+
+Sep 15 01:40:40 ip-10-1-12-192 systemd[640]: /usr/lib/systemd/system-generators/systemd-fstab-generator failed with exit status 1.
+
+Sep 15 01:40:40 ip-10-1-12-192 systemd[1]: Failed to start PostgreSQL Cluster 14-main.
+
+Sep 15 01:51:12 ip-10-1-12-192 systemd[1]: Failed to start PostgreSQL Cluster 14-main.
+```
+so its saying systemd service for the PostgreSQL database (version 14, in a configuration named main) tried to start but failed. We should thus see why its failing. We can check the system log and grep to only see postgre error. 
+
+BUT WHY? Why isnt journalctl -p err not showing the root cause but /var/log/syslog is showing the root cause? 
+
+This is an excellent question that gets to the heart of how logging works in modern Linux systems. The short answer is that systemd and syslog record different kinds of information.
+
+systemd Journal (journalctl)
+The systemd journal is a log of events managed by the systemd service manager. It primarily records information about the status of services themselves. It's concerned with whether a service started, stopped, or failed.
+
+In your case, systemd tried to start the PostgreSQL service. When the PostgreSQL process immediately failed and exited, systemd noted this failure and logged it as:
+
+Failed to start PostgreSQL Cluster 14-main.
+
+It logged a general failure message, but it didn't know the specific, internal reason for that failure. It just knew that its command to start the service didn't succeed.
+
+Syslog (/var/log/syslog)
+The syslog file, on the other hand, is a traditional log file that collects messages from the kernel and various running applications. Many programs, including PostgreSQL, are configured to send their detailed, internal log messages to syslog.
+
+When the PostgreSQL program started and immediately encountered the disk space issue, it logged the specific, detailed reason for its failure:
+
+FATAL: could not create lock file "postmaster.pid": No space left on device
+
+This detailed, program-specific message was sent to the syslog file, which is why you found it there.
+
+Analogy
+Think of it this way:
+
+systemd is a supervisor. It logs, "Employee X failed to show up for work today."
+
+syslog is a personal log from Employee X. It logs, "I couldn't get to work because my car ran out of gas."
+
+The supervisor (the systemd journal) only knows about the failure, but the internal log (syslog) contains the specific, root cause of the problem.
+
+
+```
+grep postgre /var/log/syslog
+
+Sep 15 01:51:12 ip-10-1-12-192 postgresql@14-main[896]: Error: /usr/lib/postgresql/14/bin/pg_ctl /usr/lib/postgresql/14/bin/pg_ctl start -D /opt/pgdata/main -l /var/log/postgresql/postgresql-14-main.log -s -o  -c config_file="/etc/postgresql/14/main/postgresql.conf"  exited with status 1:
+
+Sep 15 01:51:12 ip-10-1-12-192 postgresql@14-main[896]: 2025-09-15 01:51:11.940 UTC [901] FATAL:  could not create lock file "postmaster.pid": No space left on device
+
+Sep 15 01:51:12 ip-10-1-12-192 postgresql@14-main[896]: pg_ctl: could not start server
+
+Sep 15 01:51:12 ip-10-1-12-192 postgresql@14-main[896]: Examine the log output.
+
+Sep 15 01:51:12 ip-10-1-12-192 systemd[1]: postgresql@14-main.service: Can't open PID file /run/postgresql/14-main.pid (yet?) after start: No such file or directory
+
+Sep 15 01:51:12 ip-10-1-12-192 systemd[1]: postgresql@14-main.service: Failed with result 'protocol'.
+```
+we can see that [FATAL] No space left on device. so there is no disk space
+
+when we do df -h, it lists all the file system. But notice that from the grep postgre command that we run on system log, we had the 
+exact file system that postgre is using
+```
+/usr/lib/postgresql/14/bin/pg_ctl start **-D /opt/pgdata/main** 
+```
+so -D stands for **data directory**, and df -h shows that /dev/nvme0n1 is mounted on that /opt/pgdata/main. 
+
+```
+root@ip-10-1-12-192:/etc/postgresql/14/main# df -h
+
+Filesystem       Size  Used Avail Use% Mounted on
+
+udev             224M     0  224M   0% /dev
+
+tmpfs             47M  1.5M   46M   4% /run
+
+/dev/nvme1n1p1   7.7G  1.2G  6.1G  17% /
+
+tmpfs            233M     0  233M   0% /dev/shm
+
+tmpfs            5.0M     0  5.0M   0% /run/lock
+
+tmpfs            233M     0  233M   0% /sys/fs/cgroup
+
+/dev/nvme1n1p15  124M  278K  124M   1% /boot/efi
+
+/dev/nvme0n1     8.0G  8.0G   28K 100% /opt/pgdata
+
+root@ip-10-1-12-192:/etc/postgresql/14/main# free -m
+
+              total        used        free      shared  buff/cache   available
+
+Mem:            465          64         118           1         283         387
+```
+
+so we needa cut some space like deleting backup logs. Delete /opt/pgdata/file*.bk files and try to restart Postgres.
+**impt, we should start the exact service unit that is affected**. So it shouldnt be start postgresql but that postgresql14 service unit.
+```
+root@ip-10-1-11-59:/# rm /opt/pgdata/file*.bk
+sudo systemctl start postgresql@14-main.service
+```
+
+## 2
 first we should curl and see if http request via curl can get this html data
 ```
 curl 127.0.0.1:80
