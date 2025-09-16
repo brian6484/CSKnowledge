@@ -625,3 +625,21 @@ admin@i-0283bd2a7fbaa7962:~$
 
 so as u see, if there is redis connection error, app, or more specifically thread will sleep for 5s. So the issue is that **app cant connect to redis EVEN THO redis is running fine**.
 
+solution:
+first check if redis-cli responds with pong with my ping. If that works then the envionment variable is the issue. In the q, the app
+**doesnt read from /opt/.env file**, so the **systemd file's env variables matter**. Usually py dotenv reads variables from .env file
+but q said nope so check systemd env variables.
+
+```
+admin@i-0283bd2a7fbaa7962:~$ cat /opt/slow_app.py #!/usr/bin/python3 from flask import Flask import redis import time import os app = Flask(__name__) redis_host = os.getenv('REDIS_HOST', '127.0.0.1') r = redis.Redis(host=redis_host, port=6379, socket_connect_timeout=1) @app.route('/') def get_data(): try: r.ping() return "Data from FAST cache!" except redis.exceptions.ConnectionError: time.sleep(5) return "Data from SLOW database!" if __name__ == '__main__': app.run(host='0.0.0.0', port=5000) admin@i-0283bd2a7fbaa7962:~$ systemctl cat slow-app # /etc/systemd/system/slow-app.service [Unit] Description=Slow Flask Application After=network.target redis-server.service [Service] Environment="REDIS_HOST=127.0.0.2" ExecStart=/usr/bin/python3 /opt/slow_app.py Restart=always User=nobody Group=nogroup [Install] WantedBy=multi-user.target admin@i-0283bd2a7fbaa7962:~$
+```
+
+so in the environment, we see redis host is being declared wrongly as 0.2. Using vim we should change to 1 and v importnatly, **reload the daemon**. This is cuz when we edit unit file, systemd doesnt know this change autamatically. So we need to tell systemd to *re-read service unit files from disk. That is what the first command of daemon-reload does. V simply its like updating env variables for systemd to know.
+
+Then we should restart the py app too
+```
+sudo systemctl daemon-reload
+sudo systemctl restart slow-app
+
+```
+
