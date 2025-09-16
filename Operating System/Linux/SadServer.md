@@ -50,6 +50,88 @@ echo "192.168.1.1" > /home/admin/highestip.txt
 
 ## 3
 
+## 4 "Oaxaca": Close an Open File
+
+So we need to close an open file **without killing the process**. Lets first get the PID and the file decriptor number.
+```
+# Find which process has the file open and get the file descriptor number
+lsof /home/admin/somefile
+
+COMMAND  PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+vim     1234 admin   3w   REG    8,1      123  456 /home/admin/somefile
+```
+
+### Whats file descriptor?
+If u look at FD column thats file descriptor. The number 3 in this case is the FD number, which is kinda like a hotel room key.
+Think of it like hotel room keys:
+
+Hotel A gives you "Room 3" key → opens Room 3 in Hotel A
+Hotel B gives you "Room 3" key → opens Room 3 in Hotel B
+Same number (3), but different rooms in different hotels
+
+File descriptors work the same way:
+
+**Process A's "FD 3" is completely separate from Process B's "FD 3"**
+Each process has its own private "hotel" of file descriptors
+
+w=write,r=read,u=both.
+
+So anyway it means process 1234's file descriptor #3 points to that /home/admin/somefile file. 
+
+if that file is opened by vim like that sample output, its harder cuz its not bash but an external process like vim that is opening
+this file. If such we need to use gdb
+```
+# Attach GDB to the process (replace 1234 with actual PID)
+gdb -p 1234
+
+# In GDB, call the close() system call on the file descriptor
+(gdb) call close(3)
+
+# Detach from the process
+(gdb) detach
+
+# Exit GDB
+(gdb) quit
+```
+
+but in this case we see that
+```
+admin@ip-10-1-12-156:/$ lsof /home/admin/somefile
+COMMAND PID  USER   FD   TYPE DEVICE SIZE/OFF   NODE NAME
+bash    802 admin   77w   REG  259,1        0 272875 /home/admin/somefile
+```
+its the bash that has FD 77 open for writing. We can close it directly with
+```
+exec 77>&-
+```
+
+this command:
+exec = bash command that changes FD for current shell
+77= FD number
+>& = redirect FD
+and the dash(-) means close it.
+
+other examples are
+```
+exec 77> /tmp/test    # Connect FD 77 to /tmp/test for writing
+exec 77< /tmp/test    # Connect FD 77 to /tmp/test for reading  
+exec 77>&-            # Close/disconnect FD 77 completely
+```
+
+another way to see that bash's FD is thru
+```
+admin@ip-10-1-12-156:/$ ls -la /proc/802/fd/
+total 0
+dr-x------ 2 admin admin  0 Sep 16 05:27 .
+dr-xr-xr-x 9 admin admin  0 Sep 16 05:27 ..
+lrwx------ 1 admin admin 64 Sep 16 05:27 0 -> /dev/pts/0
+lrwx------ 1 admin admin 64 Sep 16 05:27 1 -> /dev/pts/0
+lrwx------ 1 admin admin 64 Sep 16 05:27 2 -> /dev/pts/0
+lrwx------ 1 admin admin 64 Sep 16 05:27 255 -> /dev/pts/0
+l-wx------ 1 admin admin 64 Sep 16 05:27 77 -> /home/admin/somefile
+```
+
+
 # Medium
 ## 1
 Situation: postgre isnt writing to disk
@@ -407,4 +489,139 @@ LimitNOFILE=10
 
 ```
 change to 1024 and save changes. then restart nginx
+
+## 4 "Paris": Where is my webserver?
+So we need to find a password hidden in the server. Lets try curl first
+
+```
+# What we know:
+admin@ip-10-1-12-85:~$ curl -v localhost:5000
+*   Trying 127.0.0.1:5000...
+* Connected to localhost (127.0.0.1) port 5000 (#0)
+> GET / HTTP/1.1
+> Host: localhost:5000
+> User-Agent: curl/7.74.0
+> Accept: /
+> 
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Server: Werkzeug/2.3.7 Python/3.9.2
+< Date: Tue, 16 Sep 2025 05:42:57 GMT
+< Content-Type: text/html; charset=utf-8
+< Content-Length: 12
+< Connection: close
+< 
+* Closing connection 0
+```
+
+(not rly sure recheck) when we curl -v we get 200 success code but we dont get the actual content as response. That means theres something wrong.
+
+And when we just do normal curl, it says unauthorised. So this suggests **server is intentiaonnly blocking something, not real error**. So what makes curl unique?
+
+1) user-agent header (most common)
+2) ip address
+3) request method (get/post/etc)
+4) other headers
+
+so lets try curl with a different header
+```
+# Try changing ONLY the User-Agent
+curl -A "NotCurl" localhost:5000
+```
+and that gave the password as a reponse!
+
+### but why developers block curl in the first place?
+1) prevent web bots/scrapers
+2) api rate limiting
+3) analaytics/security
+
+other ways that we could have diagonsed besides curl is wget and nc.
+
+### wget
+it downloads files from web servers. Diff from curl is that it uses a different user-agent header.
+```
+wget: User-Agent: Wget/1.20.3
+curl: User-Agent: curl/7.74.0
+```
+
+### nc
+its like cat command but not for files but for networks
+```
+nc localhost 5000
+GET /
+[press Enter twice]
+```
+so nc opens a RAW tcp connection to port 5000. We have to manually type the http method. 
+
+(unsure) so its like the bare minimum http request without extra http headers.
+
+## 5 Python web application
+when i did vimstat there was nothing that was abnormally high so i checked status of python app and redis but also they are running fine. The key point of this sceneario is that request is taking **approximately 5s**. U will see why this is crucial.
+
+```
+admin@i-0283bd2a7fbaa7962:~$ sudo systemctl status slow-app
+● slow-app.service - Slow Flask Application
+     Loaded: loaded (/etc/systemd/system/slow-app.service; enabled; preset: enabled)
+     Active: active (running) since Tue 2025-09-16 05:54:51 UTC; 11min ago
+ Invocation: fcda69a04b7d46f7ba0244e529315eca
+   Main PID: 886 (python3)
+      Tasks: 1 (limit: 503)
+     Memory: 25.2M (peak: 30.1M, swap: 1M, swap peak: 1M)
+        CPU: 447ms
+     CGroup: /system.slice/slow-app.service
+             └─886 /usr/bin/python3 /opt/slow_app.py
+Sep 16 05:54:51 i-0283bd2a7fbaa7962 systemd[1]: Started slow-app.service - Slow Flask Application.
+Sep 16 05:54:52 i-0283bd2a7fbaa7962 python3[886]:  * Serving Flask app 'slow_app'
+Sep 16 05:54:52 i-0283bd2a7fbaa7962 python3[886]:  * Debug mode: off
+Sep 16 05:54:52 i-0283bd2a7fbaa7962 python3[886]: WARNING: This is a development server. Do not use it in >
+Sep 16 05:54:52 i-0283bd2a7fbaa7962 python3[886]:  * Running on all addresses (0.0.0.0)
+Sep 16 05:54:52 i-0283bd2a7fbaa7962 python3[886]:  * Running on http://127.0.0.1:5000
+Sep 16 05:54:52 i-0283bd2a7fbaa7962 python3[886]:  * Running on http://10.1.12.23:5000
+Sep 16 05:54:52 i-0283bd2a7fbaa7962 python3[886]: Press CTRL+C to quit
+Sep 16 06:02:44 i-0283bd2a7fbaa7962 systemd[1]: [🡕] /etc/systemd/system/slow-app.service:9: Special user n>
+lines 1-20/20 (END)
+
+sudo systemctl status redis-server
+● redis-server.service - Advanced key-value store
+     Loaded: loaded (/usr/lib/systemd/system/redis-server.service; enabled; preset: enabled)
+     Active: active (running) since Tue 2025-09-16 05:54:51 UTC; 12min ago
+ Invocation: 05b9189eb5234a25bc89d7c2ae81f826
+       Docs: http://redis.io/documentation,
+             man:redis-server(1)
+   Main PID: 759 (redis-server)
+     Status: "Ready to accept connections"
+      Tasks: 6 (limit: 503)
+     Memory: 7.5M (peak: 9.4M, swap: 4K, swap peak: 4K)
+        CPU: 3.038s
+     CGroup: /system.slice/redis-server.service
+             └─759 "/usr/bin/redis-server 127.0.0.1:6379"
+Sep 16 05:54:51 i-0283bd2a7fbaa7962 systemd[1]: Starting redis-server.service - Advanced key-value store...
+Sep 16 05:54:51 i-0283bd2a7fbaa7962 systemd[1]: Started redis-server.service - Advanced key-value s
+```
+
+so since there is nothing wrong on the system, we should look at the *application*.
+```
+admin@i-0283bd2a7fbaa7962:~$ cat /opt/slow_app.py
+#!/usr/bin/python3
+from flask import Flask
+import redis
+import time
+import os
+app = Flask(name)
+redis_host = os.getenv('REDIS_HOST', '127.0.0.1')
+r = redis.Redis(host=redis_host, port=6379, socket_connect_timeout=1)
+@app.route('/')
+def get_data():
+    try:
+        r.ping()
+        return "Data from FAST cache!"
+    except redis.exceptions.ConnectionError:
+        time.sleep(5)
+        return "Data from SLOW database!"
+if name == 'main':
+    app.run(host='0.0.0.0', port=5000)
+admin@i-0283bd2a7fbaa7962:~$
+```
+
+so as u see, if there is redis connection error, app, or more specifically thread will sleep for 5s. So the issue is that **app cant connect to redis EVEN THO redis is running fine**.
 
