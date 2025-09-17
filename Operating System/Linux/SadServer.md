@@ -753,3 +753,48 @@ sudo systemctl restart slow-app
 
 ```
 
+## Hard
+### Hard 1 "Jakarta": it's always DNS.
+So we cant ping google. Suspection is DNS. We should look at /etc/nsswitch.conf file, which controls how linux system resolves names (hostnames, groups, users).
+
+```
+cat /etc/nsswitch.conf
+
+hosts:          files
+passwd:         compat
+group:          compat
+shadow:         compat
+```
+
+the hosts line specifically tells **which order** to look up hostnames. (rmb borwser searches local cache to find respective ip address for the entered domain name? this is it)
+
+```
+Current setting:
+hosts: files
+
+files = only check /etc/hosts file
+If hostname isn't in /etc/hosts, give up
+
+After your fix:
+hosts: files dns
+
+files = check /etc/hosts first
+dns = if not found in files, try DNS servers
+
+Why this matters:
+Before fix:
+
+You type ping google.com
+System checks /etc/hosts - google.com not there
+System gives up → "Name or service not known"
+
+After fix:
+
+You type ping google.com
+System checks /etc/hosts - google.com not there
+System tries DNS servers (8.8.8.8, etc.)
+DNS returns Google's IP → ping works
+```
+so we want system not to give up and try the DNS server so we have to add dns to that line via vim
+
+
