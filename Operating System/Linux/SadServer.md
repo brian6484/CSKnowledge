@@ -330,6 +330,116 @@ root@ip-10-1-11-59:/# rm /opt/pgdata/file*.bk
 sudo systemctl start postgresql@14-main.service
 ```
 
+## 1-1 "Hong-Kong": can't write data into database.
+Similar to Manahattan not being able to write to disk but harder.
+So when i looked at sys log
+```
+Sep 17 05:33:07 ip-172-31-25-11 systemd[1]: Timed out waiting for device /dev/xvdb.
+Sep 17 05:33:07 ip-172-31-25-11 systemd[1]: Dependency failed for /opt/pgdata.
+Sep 17 05:33:07 ip-172-31-25-11 systemd[1]: opt-pgdata.mount: Job opt-pgdata.mount/start failed with result 'dependency'.
+```
+
+postgres isnt writing cuz its data directory mount (/opt/pgdata) failed to mount due to timed out device (/dev/xvdb). 
+
+### whats mount and device
+Device is a storage device like SSD, HDD, etc. 
+```
+# See all storage devices
+lsblk
+
+NAME    SIZE TYPE MOUNTPOINT
+xvda     8G disk 
+├─xvda1  8G part /          # Your main hard drive (u know its main cuz of the slash /)
+xvdb    10G disk            # Missing/unmounted storage
+```
+so here xvda is main hard drive where ur OS is stored and xvdb is extra hard drive.
+mount means **making a storage device available as a folder in ur file system**. Storage device **needs to be mounted** or else it will
+exist but it will not be used.
+
+Before mounting:
+
+Device /dev/xvdb exists but you can't use it
+It's like having a locked storage box
+
+After mounting:
+sudo mount /dev/xvdb /opt/pgdata
+
+Now /opt/pgdata folder contains everything on /dev/xvdb
+It's like unlocking the box and putting it on a shelf labeled /opt/pgdata
+
+```
+root@ip-172-31-25-11:/# lsblk
+NAME         MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+nvme0n1      259:0    0    8G  0 disk 
+nvme1n1      259:1    0    8G  0 disk 
+├─nvme1n1p1  259:2    0  7.9G  0 part /
+├─nvme1n1p14 259:3    0    3M  0 part 
+└─nvme1n1p15 259:4    0  124M  0 part /boot/efi
+
+root@ip-172-31-25-11:/# lsblk -f
+NAME         FSTYPE LABEL UUID                                 FSAVAIL FSUSE% MOUNTPOINT
+nvme0n1      xfs          9a2e1bf9-50e8-41a9-9f8c-5dd837869c50                
+nvme1n1                                                                       
+├─nvme1n1p1  ext4         5db68868-2d70-449f-8b1d-f3c769ec01c7    6.1G    15% /
+├─nvme1n1p14                                                                  
+└─nvme1n1p15 vfat         72C9-F191                             123.5M     0% /boot/efi
+```
+we can see nvme0n1 isnt mounted as there are no partitions and memory that is being used. So we can assume that this is the storage 
+device postgres needs to mount cuz if u recall syslog
+
+```
+Timed out waiting for device /dev/xvdb
+Dependency failed for /opt/pgdata
+```
+
+postgres is expecting /dev/xvdb but theres no such device. theres only this nvme0n1. (wait how u know its /dev ? like /dev/nvm?)
+and if u look i thought mounting worked successfully but theres error
+```
+sudo mount /dev/nvme0n1 /opt/pgdata
+root@ip-172-31-25-11:/# sudo mount /dev/nvme0n1 /opt/pgdata
+root@ip-172-31-25-11:/# journalctl | tail
+Sep 17 05:47:26 ip-172-31-25-11 sudo[1329]: pam_unix(sudo:session): session opened for user root by (uid=0)
+Sep 17 05:47:26 ip-172-31-25-11 kernel: SGI XFS with ACLs, security attributes, realtime, no debug enabled
+Sep 17 05:47:26 ip-172-31-25-11 kernel: XFS (nvme0n1): Mounting V5 Filesystem
+Sep 17 05:47:26 ip-172-31-25-11 kernel: XFS (nvme0n1): Ending clean mount
+Sep 17 05:47:26 ip-172-31-25-11 sudo[1329]: pam_unix(sudo:session): session closed for user root
+Sep 17 05:47:26 ip-172-31-25-11 systemd[1]: opt-pgdata.mount: Unit is bound to inactive unit dev-xvdb.device. Stopping, too.
+Sep 17 05:47:26 ip-172-31-25-11 systemd[1]: Unmounting /opt/pgdata...
+Sep 17 05:47:26 ip-172-31-25-11 kernel: XFS (nvme0n1): Unmounting Filesystem
+Sep 17 05:47:26 ip-172-31-25-11 systemd[1]: opt-pgdata.mount: Succeeded.
+Sep 17 05:47:26 ip-172-31-25-11 systemd[1]: Unmounted /opt/pgdata.
+
+```
+
+more specifically
+```
+systemd[1]: opt-pgdata.mount: Unit is bound to inactive unit dev-xvdb.device. Stopping, too.
+systemd[1]: Unmounting /opt/pgdata...
+systemd[1]: Unmounted /opt/pgdata.
+```
+so systemd saw that i manually mounted something at /opt/pgdata but it has a **systemd mount unit that expects /dev/xvdb at that location**. Since /dev/xvdb doesnt exist, systemd forcefully unmounted my changes.
+
+so we should change that in fstab, which is File System TABle. Its a **config file that tells system which storage devices to mount at boot time**. 
+```
+# 1. Fix the mount issue first
+sudo vim /etc/fstab  # Change xvdb to nvme0n1
+sudo systemctl daemon-reload  
+sudo mount /dev/nvme0n1 /opt/pgdata
+
+# 2. Restart PostgreSQL
+sudo systemctl restart postgresql
+
+# 3. CHECK what actually happens (not assume)
+sudo systemctl status postgresql
+
+# 4. If it still fails, THEN check logs
+journalctl -u postgresql -f
+# or
+sudo -u postgres psql -c "INSERT INTO test_table VALUES (1);"
+```
+
+finally last step is seeing that theres not enoguh space in this nvm storage device for the data stored in postgres so we need to delete some backup files.
+
 ## 2
 first we should curl and see if http request via curl can get this html data
 ```
