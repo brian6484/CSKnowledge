@@ -34,5 +34,14 @@ then we see which proces is that zombie's parent
 ps -o pid,ppid,stat,cmd -p <PPID>
 ```
 
+## Fork
+Almost always zombie process is caused by fork where parent calls fork() that creates child process but child runs and finishes task and **dies**. Then parent doesnt call wait(), which turns child into zombie.
+
+```
+Parent: fork() → Child created
+Child: does work, then exit() → Child dies
+Parent: (doesn't call wait()) → Child becomes ZOMBIE
+```
+
 clean zombie either
 ask parent to reap it or kill the parent with kill -s
