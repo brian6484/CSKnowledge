@@ -9,7 +9,7 @@ and data comes back on the data bus within few CPU cycles. But disk cannot be ac
 abstraction layer that provides each process with an illusion of **its own large, contiguous address space**. So each process gets its own 
 virtual address space (typically 4GB on 32-bit systems).
 
-Virtual addresses are interpreted by **processor's Memory Management Unit (MMU)** using [page tables] that maps virtual address to its associated content.
+Virtual addresses are interpreted by **processor's [Memory Management Unit (MMU)](https://github.com/brian6484/CSKnowledge/blob/main/Operating%20System/Linux/Memory%20Management%20Unit%20(MMU).md)** using [page tables] that maps virtual address to its associated content.
 
 ## Prob with using physical memory
 [Memory Fragmentation and Allocation Chaos]
