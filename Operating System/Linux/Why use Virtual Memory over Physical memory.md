@@ -9,6 +9,8 @@ and data comes back on the data bus within few CPU cycles. But disk cannot be ac
 abstraction layer that provides each process with an illusion of **its own large, contiguous address space**. So each process gets its own 
 virtual address space (typically 4GB on 32-bit systems).
 
+Virtual addresses are interpreted by **processor's Memory Management Unit (MMU)** using [page tables] that maps virtual address to its associated content.
+
 ## Prob with using physical memory
 [Memory Fragmentation and Allocation Chaos]
 Without virtual memory, Program A might use physical addresses 0x1000-0x5000, Program B uses 0x6000-0x8000, and Program C uses 0x9000-0xC000. When Program B exits, you have a 0x2000-byte hole in the middle of memory. If Program D needs 0x3000 bytes, it can't fit in that hole, even though there's enough total free memory. Over time, physical memory becomes a Swiss cheese of unusable fragments.
