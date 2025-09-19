@@ -1,5 +1,5 @@
 ## Context
-Actually every terminal command like (ls), the bash is actually making a copy of itself to execute this ls command. This is cuz **Multiple processes can EXIST at the same time, but only ONE can RUN at a time (per CPU core)**!!.
+Actually every terminal command like (ls), the bash is actually making a copy of itself to execute this ls command. Bash is considered a **process** that reads your commands and runs other programs. (actually a process cuz if u do `ps`, bash shows up as a process). This is cuz **Multiple processes can EXIST at the same time, but only ONE can RUN at a time (per CPU core)**!!.
 
 So when we run ls
 1) bash process: exists in memory BUT is sleeping/waiting (not running)
