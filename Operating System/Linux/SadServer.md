@@ -582,6 +582,79 @@ Your Browser          →     Your Web Server
                 [INPUT chain checks this]
 ```
 
+## "Rosario": Restore a MySQL database
+so we cant recover the mysql password so main approach is to set env variables to change mysqldb config. 
+
+### 1. `sudo systemctl stop mariadb`
+**What it does:** Stops the MariaDB database service completely
+**Why:** You need to stop the service before you can restart it in a special "safe mode"
+
+### 2. `sudo systemctl set-environment MYSQLD_OPTS="--skip-grant-tables --skip-networking"`
+so mysql_opts is the environement variable that mysql uses.
+
+**What it does:** Sets system environment variables that MariaDB will use when it starts
+- `--skip-grant-tables`: Tells MariaDB to ignore user permissions/passwords (so you can log in as root without knowing the password)
+- `--skip-networking`: Disables network connections (only local connections allowed for security)
+
+**Why:** This is a clever way to pass special startup options to MariaDB through systemctl
+
+### 3. `sudo systemctl start mariadb`
+**What it does:** Starts MariaDB again, but now it uses the environment variables from step 2
+**Result:** MariaDB starts in "safe mode" - no password required, local access only
+
+### 4. `sed 's/?/;/g' backup.sql > backup2.sql`
+**What it does:** This is a text replacement command
+- `sed` = stream editor (text manipulation tool)
+- `s/?/;/g` = substitute all `?` characters with `;` characters and the g tells sed to replace ALL ocurrences on each line, not just 1 line.
+- `backup.sql` = input file
+- `> backup2.sql` = output to new file
+
+**Why this is needed:** Sometimes SQL backup files get corrupted or have encoding issues where semicolons (`;`) get replaced with question marks (`?`). Since semicolons end SQL statements, this fixes broken SQL syntax.
+
+### 5. `sudo mysql -u root main < backup2.sql`
+**What it does:** 
+- `mysql -u root` = Connect to MySQL as root user (no password needed due to step 2)
+- `main` = Use the database named "main"
+- `< backup2.sql` = Read and execute all SQL commands from the backup file (the < means READ FROM FILE)
+
+**Result:** Restores all the data from the backup into the 'main' database
+
+## The Complete Process Flow
+
+```
+1. Stop database
+2. Set special startup options (no passwords needed)
+3. Start database in safe mode
+4. Fix potential corruption in backup file (? → ;)
+5. Restore data from cleaned backup file
+```
+
+## Why This Method Works
+
+- **No password needed:** The `--skip-grant-tables` flag bypasses all authentication
+- **Security maintained:** `--skip-networking` prevents remote access during the vulnerable state
+- **File corruption handled:** The `sed` command fixes a common backup file issue
+- **Clean execution:** Uses systemd environment variables instead of complex startup commands
+
+## After Restoration (Important!)
+
+You should reset the root password and restart normally:
+
+so flush privileges reloads *grant table*, which stores all info about user acc and their privileges. When a user tries to connect or perform an action on the database, the server checks these tables to determine if the user has the necessary permissions. 
+```bash
+# Connect without password (while still in safe mode)
+sudo mysql -u root -e "
+FLUSH PRIVILEGES;
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'new_secure_password';
+FLUSH PRIVILEGES;"
+
+# Clear the environment variable and restart normally
+sudo systemctl unset-environment MYSQLD_OPTS
+sudo systemctl restart mariadb
+```
+
+This method is actually quite elegant - it uses systemd's environment variable feature to temporarily modify MariaDB's startup behavior without editing configuration files.
+
 ## 3
 so curling cannot connect to web server and question said there is nginx being used.
 
