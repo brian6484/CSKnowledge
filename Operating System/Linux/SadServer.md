@@ -636,11 +636,12 @@ so mysql_opts is the environement variable that mysql uses.
 - **File corruption handled:** The `sed` command fixes a common backup file issue
 - **Clean execution:** Uses systemd environment variables instead of complex startup commands
 
-## After Restoration (Important!)
+## another way? (is it? check again)
 
 You should reset the root password and restart normally:
 
 so flush privileges reloads *grant table*, which stores all info about user acc and their privileges. When a user tries to connect or perform an action on the database, the server checks these tables to determine if the user has the necessary permissions. 
+Password Change (Handled by FLUSH PRIVILEGES) but Startup Configuration with changes in env variables (Requires Restart)
 ```bash
 # Connect without password (while still in safe mode)
 sudo mysql -u root -e "
