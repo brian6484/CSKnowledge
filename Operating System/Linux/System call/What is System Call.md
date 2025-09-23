@@ -2,6 +2,10 @@
 It is interface between kernel and user programs. Its a *controlled* way for programs to request kernel services and is the **only way** for programs to access hardware, files, network
 from user space.
 
+A system call is a request a user program makes to the operating system kernel for a service. A mode switch is the technical process of changing the CPU's privilege level (from User Mode to Kernel Mode) to handle that request.
+
+In simple terms, a system call is the "why"—the reason for the request—while a mode switch is the "how"—the physical mechanism the CPU uses to fulfill it.
+
 ## CPU Protection ring
 Protection ring is hardware-enforced security mechanism built into the CPU that control what the code can do based on its privilege level. Its like airport security clearance level
 for software. It prevents programs from corrupting kernel memory or resources.
