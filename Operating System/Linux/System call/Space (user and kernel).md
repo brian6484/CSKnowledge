@@ -299,6 +299,10 @@ A: CPU switches from user mode (Ring 3) to kernel mode (Ring 0), kernel executes
 **Q: "Can kernel space access userspace memory?"**
 A: Yes, kernel can access all memory, but it must be careful to validate userspace pointers and handle page faults when copying data between spaces.
 
+Validate pointers: A user program could pass a pointer to a location in memory(RAM) that it shouldn't be accessing. The kernel must check that this pointer is valid and points to a location within the program's own memory.
+
+Handle page faults: When the kernel tries to copy data, the memory might not be in physical RAM at that exact moment (it might be in swap space on the hard drive). The kernel's memory manager handles this by triggering a page fault, which brings the required data from disk into RAM before the copy operation continues.
+
 **Q: "Why are system calls slower than regular function calls?"**
 A: System calls require context switching between privilege levels, saving/restoring state, and kernel execution overhead - much more expensive than jumping to a function in the same address space.
 
