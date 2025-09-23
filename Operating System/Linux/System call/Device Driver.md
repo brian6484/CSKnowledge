@@ -57,5 +57,5 @@ Printer drivers: Various printer models
 ## Why drivers are in ring 0 kernel mode
 1) Direct hardware access is required. 
 2) Hardware devices are often mapped to **specific memory address space in CPU** that correspond
-to physical hardware registers & memory.
+to [physical hardware registers](https://github.com/brian6484/CSKnowledge/blob/main/Operating%20System/Linux/System%20call/Register.md) & memory.
 3) 
