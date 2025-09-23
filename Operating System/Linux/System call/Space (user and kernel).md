@@ -299,7 +299,7 @@ A: CPU switches from user mode (Ring 3) to kernel mode (Ring 0), kernel executes
 **Q: "Can kernel space access userspace memory?"**
 A: Yes, kernel can access all memory, but it must be careful to validate userspace pointers and handle page faults when copying data between spaces.
 
-Validate pointers: A user program could pass a pointer to a location in memory(RAM) that it shouldn't be accessing. The kernel must check that this pointer is valid and points to a location within the program's own memory.
+Validate pointers: A user program could pass a pointer to a location in memory(RAM) that it shouldn't be accessing. Like for example malicious program can create pointer with virtual address that might point to other program's data or even to kernel's own memory. The kernel must check that this pointer is valid and points to a location within the program's own memory thru CPU's Memory Management Unit (MMU) to translate the virtual address from the pointer to physical address using **page tables**. If it is not valid, MMU signals **page fault** and kernel considers a violation and *terminates the program*.
 
 Handle page faults: When the kernel tries to copy data, the memory might not be in physical RAM at that exact moment (it might be in swap space on the hard drive). The kernel's memory manager handles this by triggering a page fault, which brings the required data from disk into RAM before the copy operation continues.
 
