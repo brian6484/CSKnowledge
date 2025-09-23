@@ -4,7 +4,7 @@ from user space.
 
 ## CPU Protection ring
 Protection ring is hardware-enforced security mechanism built into the CPU that control what the code can do based on its privilege level. Its like airport security clearance level
-for software.
+for software. It prevents programs from corrupting kernel memory or resources.
 
 ### The Ring Structure
 ```
@@ -25,6 +25,62 @@ for software.
 
 ### ring privilege levels
 #### Ring 0 (Kernel Mode/Supervisor Mode)
-Its highest privilege level where OS kernel and device drivers run. BTW device drivers  
-are **specialised software programs** that translate between OS and hardware devices. They
-are like translators who can speak both OS and hardware lang
+It is highest privilege level where OS kernel and [device drivers](https://github.com/brian6484/CSKnowledge/blob/main/Operating%20System/Linux/System%20call/Device%20Driver.md) run. They execute CPU instructions, access memory locations, control hardware, execute I/O executions, etc.
+
+## Ring 1 and 2
+They are raraely used in modern OS where it was originally designed for device drivers or system services. But most OSes use 0 or 3.
+
+## Ring 3 (User mode)
+It is **lowest privilege level** where user applications and programs run. They are restricted from executing privileged CPU isntructions, direct hardware access or basically anything that Ring 0 can do. It **MUST USE SYSTEM CALLS** to request kernel services.
+
+## the way it works
+So CPU tracks current instruction's privilege level in a reigster and **every instruction is checked against current ring**. If it attempts to do a privileged operation from a wrong ring, it will cause *CPU exception/fault*.
+
+### User to Kernel (Ring 3 to Ring 0) 🛡️
+This is the process of escalating privileges from a normal user application to the highly privileged operating system kernel. This is only allowed through a few, tightly controlled methods to prevent applications from gaining unauthorized access and potentially harming the system.
+
+System Calls (Software Interrupts): This is the most common and deliberate way. A user program needs a kernel service, such as reading or writing a file. It doesn't do this itself; instead, it executes a special instruction that triggers a software interrupt. This interrupt tells the CPU to stop executing the user code and jump to a pre-defined kernel routine to handle the request.
+
+Hardware Interrupts (Timer, Keyboard, etc.): These are triggered by hardware devices. For example, when you press a key on the keyboard, it sends an interrupt signal to the CPU. The CPU then stops what it's doing (even if it's running user code) and switches to kernel mode to execute a routine that handles the keyboard input.
+
+CPU Exceptions (Page Faults, Divide by Zero): These are unexpected events caused by a program's behavior. If a program tries to access a memory address it doesn't have permission for (a page fault) or divides a number by zero, the CPU hardware automatically triggers an exception. The CPU then switches to kernel mode to execute a special error-handling routine.
+
+### Kernel to User (Ring 0 to Ring 3) 🔽
+This is the process of de-escalating privileges, returning control from the kernel back to a user application.
+
+When Kernel Finishes Handling a Request: After the kernel has completed a system call (like reading a file) or handled an interrupt, it uses a special instruction (often a return from interrupt or return from trap instruction) to return control to the user program. The CPU then switches its privilege level back to Ring 3.
+
+Process Scheduling (Context Switches): The operating system kernel is responsible for managing multiple running programs. When it's time to switch from one program to another, the kernel saves the state of the current process and loads the state of the next one. This switch involves the kernel, which means a temporary privilege escalation to Ring 0. The kernel then returns to the new user process, dropping the privilege level back to Ring 3.
+
+## Real-World Example
+What happens when you run cat file.txt:
+
+Ring 3: cat program starts in user mode
+
+Ring 3: Program calls open("file.txt")
+
+Ring switch: System call triggers Ring 3 → Ring 0
+
+Ring 0: Kernel validates request, opens file
+
+Ring switch: Kernel returns to Ring 3 → Ring 0
+
+Ring 3: Program gets file descriptor
+
+Repeat for read() and write() calls
+
+## Interview q
+Q: "Why can't user programs disable interrupts?"
+A: Disabling interrupts is a privileged instruction only available in Ring 0. If user programs could do this, they could freeze the entire system.
+
+Q: "What happens if a Ring 3 program tries to execute a privileged instruction?"
+A: CPU generates a protection fault/general protection exception, typically killing the program.
+
+Q: "How does the kernel protect itself from user programs?"
+A: Protection rings ensure user programs (Ring 3) cannot execute privileged instructions or access kernel memory (Ring 0 protected).
+
+Q: "What's the performance cost of protection rings?"
+A: Ring switches (mode switches) have overhead due to context saving/restoring, but this is essential for system security and stability.
+
+## Ring -1 (minus one) Hypervisor
+The hypervisor is software that creates and manages virtual machines (VMs). It sits below the operating system and has ultimate control over the hardware. The OS thinks its in Ring 0 but it is actually running in ring 0 **inside a virtualised env**. Hypervisor intercepts and controls what this guest 0S does.
