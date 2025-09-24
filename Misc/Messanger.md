@@ -163,6 +163,7 @@ Client → Load Balancer → WebSocket Server Pool (part of Message Service)
                          Redis (store connection mapping)
 Redis: user_id → {server_id, connection_id, timestamp}
 ```
+We use Redis for connection management because we need sub-millisecond lookups to route messages between servers in real-time. Database would be too slow, and in-memory only doesn't work in a distributed system where users connected to different servers need to communicate.
 
 Thats also how we know the online status of users cuz when user comes online
 ```
