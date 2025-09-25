@@ -47,3 +47,24 @@ Parent: (doesn't call wait()) → Child becomes ZOMBIE
 
 clean zombie either
 ask parent to reap it or kill the parent with kill -s
+
+## Orphan
+When a parent process dies while its child is still running. The child becomes orphan and gets adopted by init process (PID 1). The child continues running normally but under new parentage.
+
+### detect
+so its parent will have a PID of 1 cuz it is adopted by init process. instead of doing ps aux, we do ps -eo which gets the desired commands
+
+```
+# Show processes with PPID = 1 (likely orphans)
+ps -eo pid,ppid,state,cmd | grep " 1 "
+
+# Example output:
+# PID   PPID S CMD
+# 1234    1  S sleep 100        ← Orphan! Parent died
+# 5678    1  S grep pattern     ← Orphan! Parent crashed
+# 2      1  S [kthreadd]        ← System process (not orphan)
+```
+
+
+another way is Process tree: pstree -p shows them directly under init.
+They have normal states (S, R, D) but parent is init/systemd instead of original parent
