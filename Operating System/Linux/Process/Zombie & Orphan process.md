@@ -24,6 +24,8 @@ the system (usually init or systemd) adopts the orphan, becomes its parent and e
 first we need to see where these zombie processes (Z) are
 ```
 ps aux | grep Z
+## or
+ps aux | grep defunct
 
 USER       PID  PPID  STAT  COMMAND
 alice     1234  1200  Z     someprocess
