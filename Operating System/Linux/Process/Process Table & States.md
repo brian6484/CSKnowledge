@@ -30,6 +30,8 @@ Its normally like hard disk read/write operations, Hardware device drivers waiti
 ```
 # Example: Mount a remote directory
 sudo mount -t nfs 192.168.1.100:/home/shared /mnt/remote
+                  └─────────────────────────┘ └──────────┘
+                        REMOTE PATH           LOCAL PATH
 
 # Now you can use remote files as if they're local:
 ls /mnt/remote/          # Actually lists files on 192.168.1.100
