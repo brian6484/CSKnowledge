@@ -7,7 +7,7 @@ If we do story or timebased id, when we do a query search based on the user, whi
 But with creator id, with cheaper queries, there is this hotspot problem where a celebrity can post stories and all his stories are stored in just 1 parition/server. So single node becomes the bottleneck, making it hot parittion. For this, im not sure how to fix.
 
 For this we have some solutions
-1) aggressive caching - based on the creator id, we can store that guy's stories in cache so that we dont have to search up db. Only the cache misses hit the hot partition
+1) aggressive caching (Redis/CDN) - based on the creator id, we can store that guy's stories in cache so that we dont have to search up db. Only the cache misses hit the hot partition
 ```py
 def get_celebrity_stories(creator_id):
     # 99%+ cache hit rate for celebrities
