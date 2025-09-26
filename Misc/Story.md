@@ -373,3 +373,26 @@ else:
 - **Availability**: 99.95% uptime target
 - **Cache Hit Rate**: >95% for timeline requests
 - **Error Rates**: <0.1% for critical user flows
+
+## Data format
+```
+CREATE TABLE stories (
+    creator_id UUID,           -- Partition key
+    story_id TIMEUUID,         -- Clustering key (time-ordered)
+    content_type TEXT,         -- 'photo', 'video', 'text'
+    s3_url TEXT,              -- Media file location
+    thumbnail_url TEXT,        -- Compressed thumbnail
+    text_overlay TEXT,         -- Story text content
+    privacy_level INT,         -- 0=public, 1=friends, 2=close_friends
+    close_friends_list SET<UUID>,  -- If privacy_level=2
+    created_at TIMESTAMP,
+    expires_at TIMESTAMP,      -- Auto-cleanup timestamp
+    view_count COUNTER,        -- Real-time view tracking
+    metadata MAP<TEXT, TEXT>,  -- Flexible: filters, location, etc.
+    PRIMARY KEY (creator_id, story_id)
+) WITH CLUSTERING ORDER BY (story_id DESC)  -- Recent stories first
+  AND default_time_to_live = 86400;         -- 24h auto-deletion
+```
+
+## so why creator id as parition key? and not story id or timebased id?
+[here](https://github.com/brian6484/CSKnowledge/blob/main/Misc/Solve%20hot%20parition.md)
