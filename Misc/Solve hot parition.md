@@ -50,7 +50,7 @@ tbc
 
 
 ## how to configure cache
-we can do this via **multi-layer caching strategy** to solve the celebrity hotspot problem. We wanna avoid hitting the db as much as possible
+we can do this via **multi-layer caching strategy** to solve the celebrity hotspot problem. We wanna avoid hitting the db as much as possible (Cache Hit Target of >99%).
 
 ## **Multi-Layer Cache Architecture**
 
