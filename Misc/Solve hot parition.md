@@ -22,6 +22,16 @@ def get_celebrity_stories(creator_id):
 
 # Result: Celebrity's Cassandra partition gets 1% of reads instead of 100%
 ```
+
+Hot Stories (celebrities): 
+→ Cached aggressively in Redis/Memcached
+→ Multiple cache replicas per region
+→ CDN for media files
+
+Normal Stories:
+→ Standard Cassandra with creator_id partitioning
+→ Regular cache TTL
+
 2) read replicas - so u can have 1 primary db and multiple read replicas of that db. 
 ```py
 def read_with_replica_routing(creator_id):
