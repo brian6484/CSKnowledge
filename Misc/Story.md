@@ -199,6 +199,8 @@ Monthly storage = ~100 PB/month
 
 **Choice:** Nginx with geographic routing
 
+[Also why is LB infront of API GW?](https://github.com/brian6484/CSKnowledge/blob/main/Misc/Why%20LB%20infront%20of%20API%20GW.md)
+
 **Why Nginx:**
 - ✅ High performance (handles 100K+ concurrent connections)
 - ✅ Built-in health checks and failover
