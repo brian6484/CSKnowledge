@@ -1,7 +1,25 @@
 # TCP and UDP
+
 ## About
 TCP(Transmission Control Protocol) and UPD(User Datagram Protocol) are in layer 4 of OSI (Open Systems Interconnection), which is the Transport Layer.
 [more on OSI here][https://github.com/brian6484/CSKnowledge/blob/main/Network/OSI%20.md]
+
+## Example
+```
+TCP breaks your data into segments:
+Segment 1: "Hello"
+Segment 2: "World"
+Segment 3: "!!!"
+
+IP wraps each segment and routes them:
+- Segment 1 might go: Your PC → Router A → Router B → Destination
+- Segment 2 might go: Your PC → Router A → Router C → Destination  
+- Segment 3 might go: Your PC → Router A → Router B → Destination
+
+Different segments can take DIFFERENT paths!
+```
+basically TCP breaks data into segments and hands those segments to IP, which routes and sends these data.TCP never touches the network!
+IP does ALL the routing AND sending!
 
 ## IP 
 Internet Protocol IP is the address of the Internet. Data in the form of packets is delivered from sender to receiver but IP
@@ -48,5 +66,6 @@ IF UDP datagrams are lost in transit, they are not resent like TCP/IP which asks
 ## So is UDP inferior than TCP/IP?
 But most network routers actually dont perform packet ordering and arrival confirmation like UDP cuz more memory is needed. So it is not much of a flaw.
 TCP/IP is thus just an additional functionality when the app requires it.
+
 
 
