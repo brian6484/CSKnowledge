@@ -1,3 +1,5 @@
+A ZSET is fundamentally a two-column structure for its data entries: Member and Score. The third term, the Key, is just the identifier for the whole set itself.
+
 Yes, in the original example provided by Server C, there are **two** distinct Sorted Sets (ZSETs) being used as secondary indexes:
 
 1.  **`posts:by_reactions`**: A Sorted Set where the **score** is the reaction count (e.g., $8$ likes). This set is used to get the posts ranked by **popularity**.
