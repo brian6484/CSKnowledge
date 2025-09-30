@@ -125,7 +125,7 @@ These servers hold the primary, sharded data.
 This server appears to be handling **secondary indexing** across the data sharded on Servers A and B.
 
 * **Key: `posts:by_reactions`**
-    * This is a **Redis Sorted Set (ZSET)**. Sorted Sets are used to store unique strings (members) with a numerical score, making them perfect for creating ordered indexes.
+    * This is a **Redis Sorted Set (ZSET)**[explained here](https://github.com/brian6484/CSKnowledge/blob/main/Misc/Redis%20DS.md). Sorted Sets are used to store unique strings (members) with a numerical score, making them perfect for creating ordered indexes.
     * **Members:** The members are **post keys** (e.g., `post:123`, `post:456`).
     * **Scores:** The scores are the **reaction counts** (e.g., `8`, `5`), likely representing the total number of a specific, most important reaction (like `like` or an aggregate).
     * **Purpose:** This ZSET allows the application to quickly retrieve the **top N posts** by reaction count (leaderboard) or fetch posts within a certain reaction range, regardless of which primary master (A or B) holds the full reaction data.
