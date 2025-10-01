@@ -81,10 +81,11 @@ Partition 0 of "orders" topic:
 ```
 Producer: "I want to write to orders-partition-0. Who's the leader?"
 ZooKeeper: "Broker 1 is the leader!"
-Producer: "Thanks!" → Sends message to Broker 1
+Producer: "Thanks!" → Sends message to Broker 1 (i.e. servver 1)
 ```
 
 **ZooKeeper stores this info:**
+In-Sync Replicas list includes Brokers 1, 2, and 3. 
 ```
 /brokers/topics/orders/partitions/0/state
   {
@@ -316,5 +317,3 @@ Everything continues working! ✅
 **The pattern:** ZooKeeper is the **brain** that coordinates the Kafka cluster. Without it, Kafka wouldn't know how to organize itself!
 
 ---
-
-Does this make sense now? The key insight is: **Distributed systems like Kafka have lots of moving parts that need coordination - ZooKeeper keeps track of all that coordination info!**
