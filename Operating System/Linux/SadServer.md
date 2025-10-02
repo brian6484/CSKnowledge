@@ -1,10 +1,12 @@
 # Easy
-## 1
+## 1 "Saint John": what is writing to this log file?
 1. You can use ps to list all processes and see if you see something related, for example with: ps auxf.
 Diff between ps aux and auxf is that ps auxf shows in tree format.
 
 2. but instead of ps auxf there is this `fuser` command to quickly find the offending process:
 fuser /var/log/bad.log. (lsof is another option but very slow cuz it lists **ALL OPEN FILES IN THE SYSTEM**
+
+[more on fuser here]()
 
 4. Solution: Using the PID found, terminate (kill) the process with kill -9 PID, for example: kill -9 7.
 
