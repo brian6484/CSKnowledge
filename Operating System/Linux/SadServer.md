@@ -140,7 +140,7 @@ exec 77< /tmp/test    # Connect FD 77 to /tmp/test for reading
 exec 77>&-            # Close/disconnect FD 77 completely
 ```
 
-another way to see that bash's FD is thru [proc]()
+another way to see that bash's FD is thru [proc](https://github.com/brian6484/CSKnowledge/blob/main/Operating%20System/Linux/proc.md)
 ```
 admin@ip-10-1-12-156:/$ ls -la /proc/802/fd/
 total 0
