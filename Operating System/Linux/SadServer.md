@@ -6,7 +6,7 @@ Diff between ps aux and auxf is that ps auxf shows in tree format.
 2. but instead of ps auxf there is this `fuser` command to quickly find the offending process:
 fuser /var/log/bad.log. (lsof is another option but very slow cuz it lists **ALL OPEN FILES IN THE SYSTEM**
 
-[more on fuser here]()
+[more on fuser here](https://github.com/brian6484/CSKnowledge/blob/main/Operating%20System/Linux/fuser.md)
 
 4. Solution: Using the PID found, terminate (kill) the process with kill -9 PID, for example: kill -9 7.
 
