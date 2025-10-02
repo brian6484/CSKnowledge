@@ -32,10 +32,12 @@ sort -nr - Sort by count/freq in descending order (numeric, reverse)
 head -1 - Get the top result
 awk '{print $2}' - Extract just the IP (second field after count)
 
-awk '{print $1}' produces: 192.168.1.1, 10.0.0.5, 192.168.1.1, 10.0.0.5, 192.168.1.1
+awk '{print $1}' /home/admin/access.log produces: 192.168.1.1, 10.0.0.5, 192.168.1.1, 10.0.0.5, 192.168.1.1
 sort produces: 10.0.0.5, 10.0.0.5, 192.168.1.1, 192.168.1.1, 192.168.1.1
 uniq -c produces: 2 10.0.0.5, 3 192.168.1.1
-(notice uniq -c puts the freq in the first column)
+(notice uniq -c puts the freq in the first column) Without the hyphen, c is treated as a filename.
+
+uniq c: uniq attempts to read its input from a file named c instead of from standard input (like a pipe).
 sort -nr produces: 3 192.168.1.1, 2 10.0.0.5
 head -1 produces: 3 192.168.1.1
 awk '{print $2}' produces: 192.168.1.1
