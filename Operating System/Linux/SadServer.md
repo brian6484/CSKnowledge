@@ -500,7 +500,7 @@ sudo -u postgres psql -c "INSERT INTO test_table VALUES (1);"
 
 finally last step is seeing that theres not enoguh space in this nvm storage device for the data stored in postgres so we need to delete some backup files.
 
-## 2
+## 21. "Tokyo": can't serve web file
 first we should curl and see if http request via curl can get this html data
 ```
 curl 127.0.0.1:80
@@ -605,7 +605,7 @@ Your Browser          →     Your Web Server
                 [INPUT chain checks this]
 ```
 
-## "Rosario": Restore a MySQL database
+## 35. "Rosario": Restore a MySQL database
 so we cant recover the mysql password so main approach is to set env variables to change mysqldb config. 
 
 ### 1. `sudo systemctl stop mariadb`
@@ -800,7 +800,7 @@ so nc opens a RAW tcp connection to port 5000. We have to manually type the http
 (unsure) so its like the bare minimum http request without extra http headers.
 
 ## 5 Python web application
-when i did vimstat there was nothing that was abnormally high so i checked status of python app and redis but also they are running fine. The key point of this sceneario is that request is taking **approximately 5s**. U will see why this is crucial.
+when i did vmstat there was nothing that was abnormally high so i checked status of python app and redis but also they are running fine. The key point of this sceneario is that request is taking **approximately 5s**. U will see why this is crucial.
 
 ```
 admin@i-0283bd2a7fbaa7962:~$ sudo systemctl status slow-app
