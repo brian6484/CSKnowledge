@@ -38,7 +38,23 @@ uniq -c produces: 2 10.0.0.5, 3 192.168.1.1
 (notice uniq -c puts the freq in the first column) Without the hyphen, c is treated as a filename.
 
 uniq c: uniq attempts to read its input from a file named c instead of from standard input (like a pipe).
-sort -nr produces: 3 192.168.1.1, 2 10.0.0.5
+sort -nr produces: 3 192.168.1.1, 2 10.0.0.5 (r= reverse)
+
+### The Function of `sort -n`
+
+The **`-n`** flag tells the `sort` utility to perform a **numerical sort**.
+
+Without `-n`, `sort` uses lexicographical (text/alphabetical) ordering. This means it compares strings character by character, which leads to incorrect ordering for numbers:
+
+| Numerical Sort (`sort -n`) | Lexicographical Sort (`sort`) |
+| :--- | :--- |
+| **1** | **1** |
+| **2** | **10** |
+| **10** | **2** |
+| **100** | **100** |
+
+The **`-n`** flag ensures the entire value is treated as a number, so **10** is correctly placed between **2** and **100**.
+
 head -1 produces: 3 192.168.1.1
 awk '{print $2}' produces: 192.168.1.1
 
@@ -52,11 +68,13 @@ awk '{print $1}' /home/admin/access.log | sort | uniq -c | sort -nr | head -1 | 
 echo "192.168.1.1" > /home/admin/highestip.txt
 ```
 
-## 3
+## Medium
 
-## 4 "Oaxaca": Close an Open File
+## 25 "Oaxaca": Close an Open File
 
 So we need to close an open file **without killing the process**. Lets first get the PID and the file decriptor number.
+
+btw we use lsof here not fuser cuz we need more comprehensive debugging than fuser, and its worht the slow
 ```
 # Find which process has the file open and get the file descriptor number
 lsof /home/admin/somefile
