@@ -21,11 +21,11 @@ fuser /var/log/bad.log
 kill -9 <pid>
 ```
 
-## 2
+## 2 "Saskatoon": counting IPs.
 so this we need to process the log file to get the first column (ip adress). We can use this `awk` tool. awk splits each line into columns
 via **whitespace**.
 
-awk '{print $1}' - Extract first field (IP address) from each line
+awk '{print $1}' - Extract first column (IP address) from each line. Its 1-indexed so its fine to call it via $1 instead of $0
 sort - Sort IPs alphabetically
 uniq -c - Count consecutive duplicate lines
 sort -nr - Sort by count/freq in descending order (numeric, reverse)
