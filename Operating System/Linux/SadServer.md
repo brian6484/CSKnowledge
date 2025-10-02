@@ -109,8 +109,7 @@ $ ls -la myfile.txt
 #                 ^^^^^^^^^^^--- file gets DIRECTORY's group!
 ```
 
-## Medium
-
+# Medium
 ## 25 "Oaxaca": Close an Open File
 
 So we need to close an open file **without killing the process**. Lets first get the PID and the file decriptor number.
@@ -194,7 +193,6 @@ lrwx------ 1 admin admin 64 Sep 16 05:27 255 -> /dev/pts/0
 l-wx------ 1 admin admin 64 Sep 16 05:27 77 -> /home/admin/somefile
 ```
 
-# Medium
 ## 20. "Manhattan": can't write data into database.
 Situation: postgre isnt writing to disk
 
@@ -392,7 +390,7 @@ root@ip-10-1-11-59:/# rm /opt/pgdata/file*.bk
 sudo systemctl start postgresql@14-main.service
 ```
 
-## 1-1 "Hong-Kong": can't write data into database.
+## 64 "Hong-Kong": can't write data into database.
 Similar to Manahattan not being able to write to disk but harder.
 So when i looked at sys log
 ```
@@ -485,7 +483,7 @@ so we should change that in fstab, which is File System TABle. Its a **config fi
 ```
 # 1. Fix the mount issue first
 sudo vim /etc/fstab  # Change xvdb to nvme0n1
-sudo systemctl daemon-reload  
+sudo systemctl daemon-reload  (not rly necessary)
 sudo mount /dev/nvme0n1 /opt/pgdata
 
 # 2. Restart PostgreSQL
