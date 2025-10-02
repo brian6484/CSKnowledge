@@ -68,6 +68,47 @@ awk '{print $1}' /home/admin/access.log | sort | uniq -c | sort -nr | head -1 | 
 echo "192.168.1.1" > /home/admin/highestip.txt
 ```
 
+## 17 "Yokohama": Linux Users Working Together
+its just making user groups like in AWS but in linux.
+
+```
+# Create and configure the group
+sudo groupadd projectteam
+sudo usermod -a -G projectteam abe betty carlos debora
+
+# Set directory permissions
+sudo chmod 750 /home/admin/shared
+sudo chmod g+s /home/admin/shared  # setgid bit
+```
+ok so this -a is append, where without this tag, those 4 users previous existing groups will be removed. -G means just specifiying supplementary groups. 
+
+SetGID (g+s) Explained
+SetGID is a special permission bit that changes how group ownership works.
+Normal Behavior (without setgid):
+```
+bash# abe creates a file in /home/admin/shared/
+$ whoami
+abe
+$ groups
+abe projectteam users
+
+$ touch /home/admin/shared/myfile.txt
+$ ls -la myfile.txt
+-rw-r--r-- 1 abe abe 0 Jan 15 10:30 myfile.txt
+#                 ^^^--- file gets abe's PRIMARY group
+```
+With SetGID (g+s):
+```
+bash# First, set setgid on the directory
+sudo chmod g+s /home/admin/shared/
+
+# Now when abe creates a file:
+$ touch /home/admin/shared/myfile.txt  
+$ ls -la myfile.txt
+-rw-r--r-- 1 abe projectteam 0 Jan 15 10:30 myfile.txt
+#                 ^^^^^^^^^^^--- file gets DIRECTORY's group!
+```
+
 ## Medium
 
 ## 25 "Oaxaca": Close an Open File
@@ -153,46 +194,8 @@ lrwx------ 1 admin admin 64 Sep 16 05:27 255 -> /dev/pts/0
 l-wx------ 1 admin admin 64 Sep 16 05:27 77 -> /home/admin/somefile
 ```
 
-
-## 5 "Yokohama": Linux Users Working Together
-its just making user groups like in AWS but in linux.
-
-```
-# Create and configure the group
-sudo groupadd projectteam
-sudo usermod -a -G projectteam abe betty carlos debora
-
-# Set directory permissions
-sudo chmod 750 /home/admin/shared
-sudo chmod g+s /home/admin/shared  # setgid bit
-```
-ok so this -a is append, where without this tag, those 4 users previous existing groups will be removed. -G means just specifiying supplementary groups. 
-
-SetGID (g+s) Explained
-SetGID is a special permission bit that changes how group ownership works.
-Normal Behavior (without setgid):
-bash# abe creates a file in /home/admin/shared/
-$ whoami
-abe
-$ groups
-abe projectteam users
-
-$ touch /home/admin/shared/myfile.txt
-$ ls -la myfile.txt
--rw-r--r-- 1 abe abe 0 Jan 15 10:30 myfile.txt
-#                 ^^^--- file gets abe's PRIMARY group
-With SetGID (g+s):
-bash# First, set setgid on the directory
-sudo chmod g+s /home/admin/shared/
-
-# Now when abe creates a file:
-$ touch /home/admin/shared/myfile.txt  
-$ ls -la myfile.txt
--rw-r--r-- 1 abe projectteam 0 Jan 15 10:30 myfile.txt
-#                 ^^^^^^^^^^^--- file gets DIRECTORY's group!
-
 # Medium
-## 1
+## 20. "Manhattan": can't write data into database.
 Situation: postgre isnt writing to disk
 
 Lets first see if postgre process is running properly
