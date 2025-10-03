@@ -73,151 +73,195 @@ So max user process is capped at 4k but if ur app needs more, hitting this limit
 ulimit -n 65535
 
 ```
+# Redis Memory Fragmentation and Thrashing - Case Study
 
+## 1. Problem: System Instability & High Swapping
 
-# Finding & Terminating Process Writing to Log File
+### Symptoms
+- Intermittent spikes in application latency
+- High, sustained swap activity on server
+- Redis cache slowdown
+- Low CPU load (ruling out CPU bottleneck)
 
-## Problem
-- Process continuously writing to `/var/log/bad.log`
-- Filling up disk space
-- Need to terminate without deleting log file
+### Initial Hypothesis
+Server running out of memory → kernel swapping pages frequently → **thrashing**
 
-## Solution Steps
+### Key Metrics
 
-### 1. Verify Issue
-```bash
-tail -f /var/log/bad.log          # Monitor active writing
-ls -lh /var/log/bad.log           # Check file size
+| Metric | Observation |
+|--------|-------------|
+| **System RAM** | Very low (< 1 GB) |
+| **Swap Used** | > 1 GB (exceeds physical RAM) |
+| **vmstat Swap Rate** | High, continuous si (79 KB/s) and so (70 KB/s) |
+
+---
+
+## 2. Diagnosis: Root Cause Analysis 🔍
+
+Active swapping confirmed memory shortage, but needed to identify the source.
+
+### Investigation Steps
+
+| Tool/Command | Observation | Conclusion |
+|--------------|-------------|------------|
+| `top` / `ps aux` | `redis-server` consuming largest RSS memory | Redis is the memory pressure source |
+| `redis-cli INFO memory` | `used_memory_rss` (5.88 MB) >> `used_memory` (1.48 MB) | **NOT a large dataset problem** <br> **Memory fragmentation issue** |
+| `mem_fragmentation_ratio` | **4.03** | **ROOT CAUSE** <br> Redis holding ~4x more physical RAM than dataset requires <br> Memory allocator cannot efficiently reuse/return fragmented blocks |
+| `maxmemory` | **0** (No limit set) | **Secondary problem** <br> Redis can fragment indefinitely <br> Guarantees eventual thrashing |
+
+### Key Insight
+```
+mem_fragmentation_ratio = used_memory_rss / used_memory
+4.03 = 5.88 MB / 1.48 MB
+
+Normal ratio: 1.0 - 1.5
+Critical ratio: > 1.5 (action needed)
 ```
 
-### 2. Find the Process (3 Methods)
+---
 
-**Method A: lsof (most reliable)**
-lsof lists files that are open and allows us to see **which process is using which resources**
+## 3. Solution & Verification ✅
+
+### Phase 1: Immediate Recovery (Stop Fragmentation)
+
+**Action:**
 ```bash
-sudo lsof /var/log/bad.log
+# Graceful restart of Redis service
+systemctl restart redis
+# OR
+redis-cli SHUTDOWN SAVE
+redis-server /etc/redis/redis.conf
 ```
 
-**Method B: fuser**
+**Verification:**
 ```bash
-sudo fuser -v /var/log/bad.log
+redis-cli INFO memory
 ```
 
-**Method C: Check file descriptors**
+**Results:**
+- `mem_fragmentation_ratio`: 4.03 → 1.05 (normal)
+- `used_memory_rss`: Dropped significantly (reclaimed several MB)
+- `vmstat` si/so rates: Returned to 0 immediately
+- System stability restored
+
+---
+
+### Phase 2: Long-Term Prevention
+
+#### 1. Set Memory Limits and Eviction Policy
+
+**Edit `/etc/redis/redis.conf`:**
 ```bash
-sudo ls -la /proc/*/fd/* 2>/dev/null | grep /var/log/bad.log
+maxmemory 500mb
+maxmemory-policy allkeys-lru
 ```
 
-### 3. Get Process Details
+**Explanation:**
+- `maxmemory`: Sets hard memory limit (prevents unbounded growth)
+- `maxmemory-policy allkeys-lru`: Evicts least recently used keys when limit reached
+
+**Other policy options:**
+- `volatile-lru`: Evict keys with TTL set
+- `allkeys-lfu`: Least frequently used
+- `volatile-ttl`: Evict keys with shortest TTL
+- `noeviction`: Return errors when memory full
+
+#### 2. Enable Active Defragmentation
+
+**Add to `redis.conf`:**
 ```bash
-ps aux | grep <PID>
-ps -p <PID> -f
+activedefrag yes
 ```
 
-### 4. Terminate Process
+**Optional tuning parameters:**
 ```bash
-sudo kill <PID>              # Graceful termination
-sudo kill -9 <PID>           # Force kill if needed
+# Minimum percentage of fragmentation to start active defrag
+active-defrag-threshold-lower 10
+
+# Maximum percentage of fragmentation at which we use maximum effort
+active-defrag-threshold-upper 100
+
+# Minimal effort for defrag in CPU percentage
+active-defrag-cycle-min 1
+
+# Maximal effort for defrag in CPU percentage
+active-defrag-cycle-max 25
 ```
 
-### 5. Verify Solution
-```bash
-ls -lh /var/log/bad.log       # Check size
-sleep 60 && ls -lh /var/log/bad.log  # Check again after 1 min
-/home/admin/agent/check.sh    # Run verification script
+**Note:** Active defrag runs during idle CPU time, minimal performance impact
+
+#### 3. Vertical Scaling (Infrastructure)
+
+**Recommendation:**
+- Upgrade to larger instance (e.g., 4GB RAM minimum)
+- Provides buffer for future growth and fragmentation
+- Critical services should not run on severely undersized VMs
+
+**Calculation:**
+```
+Recommended RAM = (expected_dataset_size × 1.5) + system_overhead
+                = (500 MB × 1.5) + 1 GB
+                = ~1.75 - 2 GB minimum
 ```
 
-## Alternative Search Methods
-- `ps aux | grep -E "(python|bash|sh|perl)"` - Find scripts
-- `ps aux | grep -i bad` - Search by keyword
-- `journalctl -f | grep -i bad` - Check system logs
+---
 
-## Key Commands to Remember
-- **lsof** = List Open Files (best for finding file writers)
-- **fuser** = Show processes using files
-- **kill vs kill -9** = Graceful vs force termination
+## Key Commands for Monitoring
 
-# Find IP Address with Most Requests
-
-## Problem
-- Web server access log at `/home/admin/access.log`
-- Each line = one HTTP request
-- IP address at beginning of each line
-- Find IP with most requests
-- Write result to `/home/admin/highestip.txt`
-
-## Solution Steps
-
-### 1. Examine the Log File Structure
+### Check Memory Fragmentation
 ```bash
-head -5 /home/admin/access.log    # See first 5 lines
-wc -l /home/admin/access.log      # Count total lines
+redis-cli INFO memory | grep -E 'used_memory:|used_memory_rss:|mem_fragmentation_ratio:'
 ```
 
-### 2. Extract and Count IP Addresses
-
-**Method A: Using awk + sort + uniq**
-so awk is text processing tool that **works on fields & records**, where field is the space-separated part of each line and
-record is each line of input
+### Monitor Swap Activity
 ```bash
-awk '{print $1}' /home/admin/access.log | sort | uniq -c | sort -nr | head -1
+vmstat 1 5              # Watch si/so columns
+free -h                 # Overall memory usage
+cat /proc/meminfo       # Detailed memory info
 ```
 
-**Method B: Using cut + sort + uniq**
+### Check Redis Process Memory
 ```bash
-cut -d' ' -f1 /home/admin/access.log | sort | uniq -c | sort -nr | head -1
+ps aux | grep redis
+top -p $(pgrep redis-server)
 ```
 
-### 3. Extract Only the IP Address
+### Verify Configuration
 ```bash
-# Get just the IP (remove count)
-awk '{print $1}' /home/admin/access.log | sort | uniq -c | sort -nr | head -1 | awk '{print $2}'
+redis-cli CONFIG GET maxmemory
+redis-cli CONFIG GET maxmemory-policy
+redis-cli CONFIG GET activedefrag
 ```
 
-### 4. Write to Output File
-```bash
-# Complete one-liner solution
-awk '{print $1}' /home/admin/access.log | sort | uniq -c | sort -nr | head -1 | awk '{print $2}' > /home/admin/highestip.txt
-```
+---
 
-### 5. Verify Solution
-```bash
-cat /home/admin/highestip.txt
-sha1sum /home/admin/highestip.txt    # Should match: 6ef426c40652babc0d081d438b9f353709008e93
-```
+## Prevention Checklist
 
-## Command Breakdown
+- [ ] Set `maxmemory` to safe limit (70-80% of available RAM)
+- [ ] Configure appropriate `maxmemory-policy`
+- [ ] Enable `activedefrag yes`
+- [ ] Monitor `mem_fragmentation_ratio` regularly
+- [ ] Disable swap for Redis OR reduce swappiness to 1
+- [ ] Ensure adequate system RAM (2-4x expected dataset size)
+- [ ] Set up alerts for fragmentation ratio > 1.5
+- [ ] Schedule periodic Redis restarts if fragmentation persists
 
-| Command | Purpose |
-|---------|---------|
-| `awk '{print $1}'` | Extract first field (IP address) |
-| `sort` | Sort IPs alphabetically |
-| `uniq -c` | Count unique occurrences |
-| `sort -nr` | Sort by count (numeric, reverse) |
-| `head -1` | Get top result |
-| `awk '{print $2}'` | Extract IP from "count IP" format |
+---
 
-## Alternative Approaches
+## Lessons Learned
 
-**Using grep + sort (if IPs follow standard format)**
-```bash
-grep -oE '^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' /home/admin/access.log | sort | uniq -c | sort -nr | head -1 | awk '{print $2}'
-```
+1. **Low CPU + High Swap = Memory Issue**: Classic thrashing pattern
+2. **Check Fragmentation First**: High RSS vs low used_memory indicates fragmentation, not data size
+3. **Restart is Quick Fix**: Defragments immediately but doesn't prevent recurrence
+4. **Set Limits**: `maxmemory=0` is dangerous in production
+5. **Right-size Infrastructure**: Critical services need adequate resources
+6. **Monitor Proactively**: Alert on fragmentation ratio before it becomes critical
 
-**Step by step debugging**
-```bash
-# Step 1: Extract IPs
-awk '{print $1}' /home/admin/access.log | head -10
+---
 
-# Step 2: Sort and count
-awk '{print $1}' /home/admin/access.log | sort | uniq -c | head -10
+## Related Issues to Watch
 
-# Step 3: Sort by frequency
-awk '{print $1}' /home/admin/access.log | sort | uniq -c | sort -nr | head -5
-```
-
-## Key Concepts
-- **Field extraction**: `awk '{print $1}'` or `cut -d' ' -f1`
-- **Counting duplicates**: `sort | uniq -c`
-- **Sorting by frequency**: `sort -nr` (numeric reverse)
-- **Pipeline chaining**: Combine commands with `|`
+- OOM killer events: `dmesg | grep -i oom`
+- Slow queries causing memory spikes: `redis-cli SLOWLOG GET 10`
+- Key eviction patterns: `redis-cli INFO stats | grep evicted`
+- Connection limits: `redis-cli INFO clients`
