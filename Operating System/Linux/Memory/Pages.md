@@ -171,6 +171,8 @@ procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
 - **buff** = Buffer cache (metadata)
 - **cache** = Page cache (file content)
 
+those are cache data that can be freed up if memory runs out and need more RAM immediately
+
 ### **Check page cache details:**
 
 ```bash
