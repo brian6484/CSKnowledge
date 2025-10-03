@@ -1,3 +1,5 @@
+They are both init systems, meaning they are the first process the kernel starts (with a Process ID of 1)
+
 ## What I Actually Mean by "Simultaneous"
 
 When I say systemd starts services "simultaneously," I mean **concurrently** - they're all in the process of starting at the same time, but the CPU is rapidly switching between them.
