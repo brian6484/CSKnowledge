@@ -4,9 +4,8 @@ is sharding for db like consistent hashing for servers i dont get the difference
 like isnt sharding also for servers too im confused
 
 ---
-1. **Both use hashing** to distribute data
-2. **Both involve multiple servers**
-3. **Both solve scalability problems**
+1. **Both can implement consistent hashing and vnodes**, not just servers but db too. 
+2. **Both solve scalability problems**
 
 But they operate at **different layers** and solve **different problems**.
 
