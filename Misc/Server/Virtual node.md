@@ -239,6 +239,9 @@ All nodes can handle it easily
 - Move 128 small vnode ranges (parallel)
 - vs. Move 1 huge data range (sequential)
 
+### benefit 5 - decrease the prob of hotspot 
+cuz const hashing just uses a contiguous large range per node
+
 ---
 
 ## Implementation Details
