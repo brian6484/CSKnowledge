@@ -1,3 +1,5 @@
+Read until the end to improve fault tolerance (physical nodes, not vnodes, can carry replicas of other physical nodes for FA)
+
 ## Server scalability
 For horizontal scaling to **increase scalability**, virtual nodes (vnodes) are essential for better load distribution
 
@@ -370,3 +372,31 @@ user_hash = hash(user_id)  # e.g., 400000
 - ✅ Manageable metadata
 - ✅ Fast rebalancing
 - ✅ Flexible for heterogeneous hardware
+
+## increase FA
+
+This means: **Each physical node stores copies (replicas) of data that "belongs" to other nodes.**
+
+**How it works:**
+
+1. **Primary storage**: Node A is responsible for keys that hash to range 100-200
+2. **Replication**: Nodes B and C also store copies of that same data (keys 100-200)
+3. So the data with hash 150 exists on nodes A, B, and C simultaneously
+
+**Why?**
+- **Fault tolerance**: If node A crashes, nodes B and C still have the data
+- Typically Dynamo uses **replication factor N=3** (3 copies of everything)
+
+**Combined with Vnodes:**
+
+Since Vnodes are scattered and non-contiguous:
+- Physical Node 1 might have Vnodes responsible for ranges: 10-20, 150-160, 500-510
+- Physical Node 2 stores **replicas** of some of Node 1's ranges (for backup)
+- But Node 2 also has its own primary Vnodes with different ranges
+- And Node 1 stores replicas of some of Node 2's data
+
+**Result**: Every node is both:
+- **Primary** for some data (its own Vnodes)
+- **Replica** for other nodes' data (backup copies)
+
+This creates a mesh of redundancy across the cluster.
