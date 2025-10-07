@@ -1,5 +1,17 @@
 Read until the end to improve fault tolerance (physical nodes, not vnodes, can carry replicas of other physical nodes for FA)
 
+Another point is decreasing network bandwidth. Instead of receiving all the data from other nodes when going clockwise in hash ring, u can implement digest/checksum way.
+
+## decrease network bandwidth
+"For read operations with replication, instead of fetching full data from all replicas, I'll optimize network bandwidth by:
+
+- Requesting full data from the **fastest node**. This fastest node info is stored in *snitch*, that tells us the fastest node
+- Requesting only a digest (checksum/hash) from other replicas
+- Comparing digests to verify consistency
+- Only fetching full data from additional nodes if digests don't match
+
+This reduces network bandwidth by ~50% for quorum reads while still ensuring consistency."
+
 ## Server scalability
 For horizontal scaling to **increase scalability**, virtual nodes (vnodes) are essential for better load distribution
 
