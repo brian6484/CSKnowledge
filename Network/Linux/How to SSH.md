@@ -22,3 +22,5 @@ $ ssh sysadmin@10.50.2.15
 ## then will promt u for the password
 ```
 
+## if ssh doesnt work
+maybe check ssh key file permission [here](https://github.com/brian6484/CSKnowledge/tree/main/Operating%20System/Linux/File)
