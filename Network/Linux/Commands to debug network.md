@@ -56,6 +56,37 @@ $ ls -la ~/ | grep -i vpn
 $ sudo iptables -L -n
 ```
 
+btw if its malicious bot
+-A INPUT = APPEND a new rule to INPUT chain. This input processes all inbounding traffic to our server.
+
+-s = Source option. It specifies the source ip address that the rule should match.
+
+-j = Jump option where we specify the action (DROP) if network packet matches the rule
+```
+sudo iptables -A INPUT -s 203.45.67.12 -j DROP
+```
+
+btw this update of iptables firewall rules are **in-memory**, which means if server restarts, this rule is forgotten.
+
+So better way is use AWS Shield for DDos attacks or enfore rate limiting.
+
+Or to permanently enforce this rule,
+```
+sudo iptables-save > /etc/iptables/rules.v4
+```
+
+`iptables-save` dumps your current iptables rules to a file in a format that can be restored later.
+
+The `.v4` extension is a convention used by the `iptables-persistent` package:
+- `rules.v4` = IPv4 rules (iptables)
+- `rules.v6` = IPv6 rules (ip6tables)
+
+When you save to `/etc/iptables/rules.v4`, the `iptables-persistent` service (if installed) will automatically load these rules on boot.
+
+**However**, just redirecting output to that file won't make it auto-load unless you have `iptables-persistent` installed. Without that package, you'd need to manually restore with `iptables-restore < /etc/iptables/rules.v4` on boot (via systemd service or rc.local).
+
+Do you want to install iptables-persistent to make it automatic, or leave the rule temporary since this is an active attack that might change IPs?
+
 ## 2 tcpdump usages
 When I cannot access example.com
 
