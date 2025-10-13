@@ -41,6 +41,8 @@ sudo ip route add [DESTINATION] via [GATEWAY_IP] dev [INTERFACE]
 ```
 
 or we try to find a vpn config file somewhere
+
+-i = case-insensitive (matches VPN, vpn, Vpn, etc.) when used with grep. But when used with ssh, -i means identity file.
 ```
 $ ls -la ~/.config/ | grep -i vpn
 $ ls -la ~/ | grep -i vpn
