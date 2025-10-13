@@ -24,7 +24,7 @@ Filesystem                          Size  Used Avail Use% Mounted on
 `lsblk` only shows **block devices** (physical/virtual disks like hard drives, SSDs, USB drives).  
 Network filesystems (NFS, CIFS/SMB) aren't block devices, so they won't appear here.
 
-To see the diff, see [here]()
+To see the diff, see [here](https://github.com/brian6484/CSKnowledge/tree/main/Operating%20System/Linux/Memory)
 
 ---
 
