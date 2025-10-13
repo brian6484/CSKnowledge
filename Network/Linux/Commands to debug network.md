@@ -1,4 +1,60 @@
-## tcpdump usages
+## 1 if ssh,curl,ping all doesnt work
+check firewall rules or VPN. Normally the company server is in a private network so we need VPN to access that private network. 
+
+### VPN
+We check kernel's IP routing table via 'ip route' to see the path that our packets take to the final destination. Note this **isnt for checking VPN**.
+
+```
+$ ip route
+
+default via 192.168.1.1 dev wlp3s0 proto dhcp metric 600 
+192.168.1.0/24 dev wlp3s0 proto kernel scope link src 192.168.1.45 metric 600
+```
+
+the first line tells us that if i dont know where to send my outbounding traffic, we send it to wifi card (wlp3s0) and to my router (192.168.bla). 
+the second line, it says for anything going to 192.168.1.x addresses, send it directly through WiFi. My IP is 192.168.1.45.
+
+But if we are checking for VPN like if we are trying to reach 10.50.2.15, we dont see such route laid out here in the routing table. So by default, traffic is sent to home router, which
+also doesnt know this ip address, causing timeout.
+
+to fix there should be something like this
+```
+10.50.2.0/24 via 10.8.0.1 dev tun0
+```
+
+we also check if theres vpn connection via `ip link show`. This command shows network interfaces (the actual hardware/virtual network cards)
+```
+$ ip link show
+
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: wlp3s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DORMANT group default qlen 1000
+    link/ether a4:34:d9:8f:12:c3 brd ff:ff:ff:ff:ff:ff
+```
+
+Only your loopback and WiFi interface. No VPN interface (like tun0 or wg0)
+
+so we can either directly add to routing table like
+
+```
+sudo ip route add [DESTINATION] via [GATEWAY_IP] dev [INTERFACE]
+```
+
+or we try to find a vpn config file somewhere
+```
+$ ls -la ~/.config/ | grep -i vpn
+$ ls -la ~/ | grep -i vpn
+```
+
+### firewall
+-L = List option to list all the rules
+
+-n = The Numeric option. This is used to display IP addresses and port numbers in their numeric format (e.g., 192.168.1.1 and 80) instead of trying to resolve them into hostnames (like google.com) and service names (like http)
+```
+$ sudo iptables -L -n
+```
+
+## 2 tcpdump usages
 When I cannot access example.com
 
 Firstly, use **ipconfig** to know whats ur network interface
