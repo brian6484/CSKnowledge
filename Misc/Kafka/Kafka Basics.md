@@ -6,7 +6,7 @@
 ✅ Fault tolerance - If the consumer side is down, messages pile up in the queue(not lost). For example, if consumer workers crash, producers can continue to publish to queue without
 users being affected and when consumer workers can work on those piled messages once they recover. 
 
-✅ Replay capability - Can reprocess if models improve cuz kafka retains old messages like 7 days 
+✅ Replay capability - Can reprocess if models improve or need analytics cuz kafka retains old messages like 7 days 
 
 
 
