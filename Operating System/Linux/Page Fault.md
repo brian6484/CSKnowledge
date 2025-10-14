@@ -13,6 +13,6 @@ The Page Fault Process
 7) Resume Process: Process continues as if nothing happened
 
 ## Types of Page Faults
-Minor Page Fault: Page is in memory but not in process's page table (just needs mapping)
+Minor Page Fault: Page is in memory but not in process's page table (just needs mapping). Absence in page table could be of lazy mapping, where  C runtime library allocates the virtual address space, but the OS often doesn't assign physical pages or update the page table until the program actually attempts to write data to that new memory.
 Major Page Fault: Page must be loaded from disk (slow operation)
 Segmentation Fault: Invalid access - process tried to access memory it shouldn't (terminates process)
