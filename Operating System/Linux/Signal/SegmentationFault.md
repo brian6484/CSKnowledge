@@ -1,6 +1,7 @@
 # Segmentation Fault: When Your Program Steps Out of Bounds
 
-A segmentation fault (often abbreviated as "segfault") is what happens when your program tries to access memory it's not allowed to touch. It's the operating system's way of saying "Stop right there!" and terminating your program before it can cause damage.
+A segmentation fault (often abbreviated as "segfault") is what happens when your program tries to access memory it's not allowed to touch. It is hardware and OS level response that
+immediately terminates the program
 
 ## What Causes a Segmentation Fault
 
