@@ -58,6 +58,8 @@ char *ptr = (char*)0x12345678;  // Random address
 **Step-by-Step Process:**
 
 ### 1. Your Program Makes a Bad Memory Access
+first line is cast and an assignment where ur casting a constatnt int value and assign that value to pointer variable. second line is trying to access that memory and only
+when we try to **dereference** a pointer, does the OS and and MMU get involved
 ```c
 int *bad_ptr = (char*)0xDEADBEEF;
 *bad_ptr = 42;  // This instruction tries to write to virtual address 0xDEADBEEF
