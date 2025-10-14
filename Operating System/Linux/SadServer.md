@@ -203,7 +203,8 @@ ps aux | grep postgre
 root       887  0.0  0.1   4832   876 pts/0    S+   01:46   0:00 grep postgre
 ```
 
-i first thought its running properly but actually its not. grep is also an active process so it displays its own info.
+i first thought its running properly but actually its not. grep is also an active process so it displays its own info. The reason y it has "postgre" is cuz
+the command i typed had that keyword and grep finds its own process and includes that keyword in the result
 
 if postgre was running properly
 ```
