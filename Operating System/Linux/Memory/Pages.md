@@ -95,10 +95,10 @@ Linux maintains two LRU (Least Recently Used) lists for pages:
 
 ### How It Works:
 
-1. **Page is first accessed** → Goes to **inactive list**
-2. **Page is accessed again while inactive** → Promoted to **active list**
-3. **Active page not accessed for a while** → Demoted to inactive list
-4. **Under memory pressure** → Inactive pages evicted first
+✓ Page is accessed first time → Goes to ACTIVE list (not inactive!)
+✓ Active page not accessed for a while → Demoted to INACTIVE list
+✓ Page accessed again while inactive → Promoted back to ACTIVE list
+✓ Under memory pressure → INACTIVE pages evicted first
 
 ### Active vs Inactive:
 
