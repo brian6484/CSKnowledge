@@ -1,4 +1,4 @@
-# Clean Pages vs Active Pages in Linux Memory Management
+# Clean Pages vs Dirty Pages vs Active Pages in Linux Memory Management
 ## Page Basics
 
 First, understand that Linux divides memory into **pages** (typically 4KB chunks). The kernel tracks different types of pages based on their state and usage.
