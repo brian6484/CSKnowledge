@@ -2,7 +2,7 @@ First we have to understand physical and virutal memory
 
 ## Physical memory
 actual hardware memory installed in your system. I always thought its RAM + disk cuz its **physical memory devices** but its only
-just RAM. This is cuz CPU can directly access (read and write) from and to RAM with memory addresses, sending an address on the address bus and 
+just RAM. This is cuz CPU can directly access (read and write) from and to RAM with memory addresses, sending an address on the [memory address bus]() and 
 and data comes back on the data bus within few CPU cycles. But disk cannot be accessed directly by CPU.
 
 ## Virtual memory
