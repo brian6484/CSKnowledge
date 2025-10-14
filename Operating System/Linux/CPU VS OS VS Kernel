@@ -1,0 +1,103 @@
+# CPU vs OS vs Kernel
+
+These are three distinct components that work together to make your computer function:
+
+## CPU (Central Processing Unit)
+
+**What it is:** Physical hardware chip that executes instructions
+
+**Key characteristics:**
+- **Hardware component** - You can physically touch it
+- **Executes machine code** - Binary instructions (add, subtract, load, store, jump, etc.)
+- **No intelligence of its own** - Just follows instructions extremely fast
+- **Components**: ALU (arithmetic), registers, cache, control unit
+- **Examples**: Intel Core i7, AMD Ryzen, Apple M-series
+
+**What it does:**
+- Performs calculations
+- Moves data between memory and registers
+- Controls hardware through I/O ports
+- Switches between processes (when told to by OS)
+
+## Kernel
+
+**What it is:** The core program that directly controls the hardware
+
+**Key characteristics:**
+- **Software component** - Code running with highest privileges
+- **Bridge between hardware and applications**
+- **Always in memory** - Loaded at boot, runs until shutdown
+- **Runs in privileged mode** - Can execute special CPU instructions
+- **Examples**: Linux kernel, Windows NT kernel, XNU (macOS)
+
+**What it does:**
+- Memory management (paging, allocation)
+- Process scheduling (decides which program runs when)
+- Device drivers (communicate with hardware)
+- System calls (interface for programs to request services)
+- File system management
+- Security and permissions
+
+## Operating System (OS)
+
+**What it is:** Complete software package including kernel + system programs
+
+**Key characteristics:**
+- **Software suite** - Collection of programs
+- **Includes the kernel PLUS additional components**
+- **User-facing system** - What you interact with
+- **Examples**: Linux (with GNU tools), Windows, macOS, Android
+
+**What it includes:**
+- **Kernel** (the core)
+- **System utilities** (ls, cp, mv, task manager, etc.)
+- **Shell/Command interpreter** (bash, PowerShell, cmd)
+- **GUI** (desktop environment, window manager)
+- **System daemons/services**
+- **Libraries** (libc, system APIs)
+
+## The Relationship
+
+```
+┌─────────────────────────────────────┐
+│     Applications (Firefox, etc.)     │
+├─────────────────────────────────────┤
+│  OS Components (Shell, Utilities)    │
+├─────────────────────────────────────┤
+│         Kernel (Core OS)             │
+│  (Memory mgmt, scheduling, drivers)  │
+├─────────────────────────────────────┤
+│      CPU (Physical Hardware)         │
+└─────────────────────────────────────┘
+```
+
+## Simple Analogy
+
+Think of a restaurant:
+
+- **CPU** = The kitchen equipment (ovens, stoves) - does the actual cooking
+- **Kernel** = The head chef - directly controls the equipment, coordinates everything
+- **OS** = The entire restaurant - includes the chef, but also waiters, menus, seating, management
+
+## Key Differences
+
+| Aspect | CPU | Kernel | OS |
+|--------|-----|--------|-----|
+| **Type** | Hardware | Software (core) | Software (complete) |
+| **Location** | Physical chip | Code in RAM | Multiple programs |
+| **Role** | Executes instructions | Manages resources | Complete environment |
+| **Example** | Intel i7 | Linux kernel 6.x | Ubuntu Linux |
+
+## Practical Example
+
+When you run a program:
+
+1. **OS**: You click an icon in the GUI (OS component)
+2. **Kernel**: Creates a new process, allocates memory
+3. **CPU**: Executes the program's instructions
+4. **Kernel**: Manages when the CPU works on your program vs others
+5. **CPU**: Performs the actual computations
+6. **Kernel**: Handles system calls (like reading files)
+7. **OS**: Provides libraries and utilities the program needs
+
+So: **CPU is hardware, kernel is the core software, OS is the complete system.**
