@@ -2,7 +2,7 @@ First we have to understand physical and virutal memory
 
 ## Physical memory
 actual hardware memory installed in your system. I always thought its RAM + disk cuz its **physical memory devices** but its only
-just RAM. This is cuz CPU can directly access (read and write) from and to RAM with memory addresses, sending an address on the [memory address bus]() and 
+just RAM. This is cuz CPU can directly access (read and write) from and to RAM with memory addresses, sending an address on the [memory address bus](https://github.com/brian6484/CSKnowledge/blob/main/Operating%20System/Linux/Memory/Memory%20Bus.md) and 
 and data comes back on the data bus within few CPU cycles. But disk cannot be accessed directly by CPU.
 
 ## Virtual memory
@@ -29,7 +29,7 @@ Multiple programs using the same library (like libc) would each need their own c
 Each process gets its own complete virtual address space (0x00000000 to 0xFFFFFFFF on 32-bit systems). Process A's virtual address 0x1000 is completely separate from Process B's virtual address 0x1000. The hardware enforces this separation.
 
 [Simplified Programming Model]
-Every program can be compiled assuming it starts at address 0x00000000, with a predictable layout: code at the bottom, data above that, heap growing up, stack growing down from the top. Programs don't need to know where they actually reside in physical memory.
+Every program can be compiled assuming it starts at address 0x00000000 (Memory address zero - the very first byte in the address space), with a predictable layout: code at the bottom, data above that, heap growing up, stack growing down from the top. Programs don't need to know where they actually reside in physical memory.
 
 [Efficient Memory Use]
 Multiple processes can share the same physical pages for read-only code and data. When you run 10 copies of a text editor, they all share the same physical pages for the executable code.
