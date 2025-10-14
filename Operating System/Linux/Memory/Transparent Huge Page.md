@@ -30,6 +30,12 @@ Kernel automatically promotes 4KB pages → 2MB pages behind the scenes.
 ### 1. **Latency Spikes**
 - Needs 2MB contiguous memory
 - Kernel defragments memory (moves pages around)
+like
+```
+Physical RAM:
+[4KB used][4KB free][4KB used][4KB free][4KB used][4KB free]...
+         ↑ Fragmented! No 2MB contiguous blocks!
+```
 - **Causes random performance spikes**
 
 ### 2. **Memory Waste**
@@ -39,8 +45,8 @@ Kernel gives: 2 MB
 Wasted:       2044 KB
 ```
 
-### 3. **Fork Overhead**
-- Copy-on-write copies entire 2MB (not just 4KB)
+### 3. **fork() Overhead**
+- Copy-on-write copies entire 2MB (not just 4KB). fork(), making a copy, needs much more memory now
 - **Bad for Redis, MongoDB** (they fork for backups)
 
 ### 4. **Swap Issues**
