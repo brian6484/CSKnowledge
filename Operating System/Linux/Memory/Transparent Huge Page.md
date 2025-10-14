@@ -6,7 +6,7 @@ Linux automatically uses **2MB pages instead of 4KB pages** to reduce memory man
 ## Why It Exists
 
 **Problem:** With 64GB RAM and 4KB pages = 16 million page table entries
-- TLB cache misses (slow memory access)
+- [TLB](https://github.com/brian6484/CSKnowledge/blob/main/Operating%20System/Linux/Memory/Translation%20Lookaside%20Buffer.md) cache misses (slow memory access)
 - Huge page table overhead
 
 **Solution:** 2MB pages = 512x fewer entries = better performance
