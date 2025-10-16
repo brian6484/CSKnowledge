@@ -9,6 +9,8 @@ CREATE TABLE game_history (
 
 ```
 
+It is also Unique (no duplicates) and Auto-indexed, unlike secondary indexed which might have duplicates and is not indexed automatically.
+
 
 ### Secondary Index vs Composite Index
 diff is composite index is a subset of secondary index. Secondary index can have single column index AND composite (multi column) indexes.
