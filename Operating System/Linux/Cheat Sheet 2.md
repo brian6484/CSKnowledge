@@ -30,6 +30,7 @@ iostat -xz 5
 ```
 
 ### IO
+-x = extended statistics and -z means skip devices with zero activity! Thats y we dont disks that are doing i/o, not every disk.
 ```
 # check disk io
 # Show extended disk I/O statistics AND cpu usage every 5 seconds until manually stopped
