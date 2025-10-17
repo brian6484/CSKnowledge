@@ -59,7 +59,36 @@ iotop's `IO>` column shows **percentage of time** process is spending doing I/O 
 
 `DISK WRITE` column means that postgres is writing to disk at 124M/s. Because the disk is saturated and cannot meet the demand immediately, new requests must wait in a queue, causing the average write latency to spike to $45.67\ \text{ms}$. This is the effect.
 
+### Network
 
+### netstat
+if we wan check network for port 80 ONLY, not 8080. We need a space after 80, which means only port 80
+```
+netstat -an | grep ':80 '
+```
 
+we can add more greps after like this to count established connections on port 80
+```
+netstat -an | grep ':80 ' | grep ESTABLISHED | wc -l
+```
 
+and we can see who is connecting. Before the awk comand, the 5th column shows the IP address and the port number. We are only interested
+in the IP so while we extract the 5th column, we set the delimiter (-d) as the colon (:) and -f1 means the specififer for the first field.
+before
+```
+# 5th column
+192.168.1.5:45678
+```
+
+```
+netstat -an | grep ':80 ' | grep ESTABLISHED | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -nr | head -10
+```
+
+### dig
+Its translates dns between domain names and ip addresses. Its bi directional so if we do dig google.com it gives ip address but
+```
+dig -x 10.0.5.142
+
+The `-x` flag means "reverse lookup" - go from IP to hostname/domain.
+```
 
