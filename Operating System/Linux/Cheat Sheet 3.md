@@ -3,6 +3,7 @@ So this goes deeper to application-level.
 
 ## I/O
 ### Postgres DB
+#### checkpoint
 ```
 **iotop (top 5 processes):**
 Total DISK READ:        12.34 M/s | Total DISK WRITE:      128.56 M/s
@@ -14,3 +15,12 @@ Total DISK READ:        12.34 M/s | Total DISK WRITE:      128.56 M/s
 
 this checkpoint in postgres is when **db writes all dirty pages to disk** to ensure durability. It can be heavy i/o if thers lots of data
 to flush.
+
+#### show active queries
+stat activity shows whats happening inside the db
+```
+sudo -u postgres psql
+SELECT pid, query, state FROM pg_stat_activity;
+```
+
+
