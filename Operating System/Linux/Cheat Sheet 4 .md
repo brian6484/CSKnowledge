@@ -1,5 +1,7 @@
 ## Common directories
-/var/log: stores both system and application logs. But nowadyas on modern linux, we use systemd journal. The Journal's data is typically stored in a binary format under /var/log/journal so cant just cat. We need to use journalctl commands. 
+/var/log: stores both system and application logs. It stores *variable data*, files that might change. But nowadyas on modern linux, we use systemd journal. The Journal's data is typically stored in a binary format under /var/log/journal so cant just cat. We need to use journalctl commands. 
+
+/etc: stores system and application **config files**.
 
 ## File
 ### Viewing directory and FILE PERMISSION
