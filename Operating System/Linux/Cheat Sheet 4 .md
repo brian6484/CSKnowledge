@@ -41,4 +41,14 @@ log_directory
 ```
 so it show the log file is at /var/lib/postgresql/14/main/pg_log. 
 
+## Config
+### Postgres config
+-name "*.conf* finds files matching the pattern.
 
+2>/dev/null redirects error messages (file descriptor 2 =stderr) to /dev/null (throw them away). 
+```
+find /etc/postgresql -name "*.conf" 2>/dev/null
+/etc/postgresql/14/main/postgresql.conf
+/etc/postgresql/14/main/pg_hba.conf
+/etc/postgresql/14/main/pg_ident.conf
+```
