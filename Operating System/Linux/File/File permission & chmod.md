@@ -12,6 +12,17 @@ Then theres 9 characters - first 3 being the owner permission, the next 3 being 
 
 Owner has read and write permission so 600 permission for this file. This means me (user) is the only one that can read/write. Which is good.
 
+## change file permission via chmod
+if pem file is anything other than 600, SSH refuses it for security reasons.
+```
+chmod 600 company-ssh-key.pem
+
+## others
+chmod 600 file.pem    # Set specific permissions
+chmod +x script.sh    # Add execute permission
+chmod -w file.txt     # Remove write permission
+```
+
 ## just rechecking file's content
 if u just need to see the first line of that file
 
