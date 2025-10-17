@@ -52,3 +52,47 @@ find /etc/postgresql -name "*.conf" 2>/dev/null
 /etc/postgresql/14/main/pg_hba.conf
 /etc/postgresql/14/main/pg_ident.conf
 ```
+
+### nginx config
+**You run:**
+```bash
+sudo tail -100 /var/log/nginx/access.log | grep 10.0.5.142
+```
+
+**Result:**
+```
+10.0.5.142 - - [12/Oct/2025:15:47:23 +0000] "GET /metrics HTTP/1.1" 200 45231 "-" "Prometheus/2.45.0"
+10.0.5.142 - - [12/Oct/2025:15:47:23 +0000] "GET /metrics HTTP/1.1" 200 45234 "-" "Prometheus/2.45.0"
+10.0.5.142 - - [12/Oct/2025:15:47:23 +0000] "GET /metrics HTTP/1.1" 200 45229 "-" "Prometheus/2.45.0"
+10.0.5.142 - - [12/Oct/2025:15:47:23 +0000] "GET /metrics HTTP/1.1" 200 45236 "-" "Prometheus/2.45.0"
+10.0.5.142 - - [12/Oct/2025:15:47:23 +0000] "GET /metrics HTTP/1.1" 200 45228 "-" "Prometheus/2.45.0"
+10.0.5.142 - - [12/Oct/2025:15:47:24 +0000] "GET /metrics HTTP/1.1" 200 45232 "-" "Prometheus/2.45.0"
+10.0.5.142 - - [12/Oct/2025:15:47:24 +0000] "GET /metrics HTTP/1.1" 200 45235 "-" "Prometheus/2.45.0"
+... (93 more identical lines)
+```
+
+😱 **ALL hitting `/metrics` endpoint!** Every single request at almost the same timestamp (15:47:23-24).
+
+**Let's see how fast these are coming:**
+the grep is setting the time itnerval to the second 
+```bash
+sudo tail -1000 /var/log/nginx/access.log | grep 10.0.5.142 | grep "15:47:2[0-9]" | wc -l
+```
+
+**Result:**
+```
+847
+```
+
+**847 requests in one second!** That's insane for a metrics endpoint.
+
+**Let's check how long the /metrics endpoint takes to respond:**
+```bash
+curl -w "\nTime: %{time_total}s\n" http://localhost/metrics -o /dev/null -s
+```
+
+**Result:**
+```
+Time: 3.452s
+```
+
