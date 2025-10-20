@@ -64,6 +64,10 @@ printf("Hello World");         // Print to screen (through library)
 fopen("file.txt", "r");        // Open file (through library)
 ```
 
+notice that for file opening, we def need mode switch. But for malloc,
+Memory allocation (malloc, free) → Usually no mode switch (works from pre-allocated pool), but occasionally switches when asking kernel for more pages. Thats cuz malloc has
+its own memory pool 
+
 ### **What Userspace CANNOT Do**
 ```c
 // These would CRASH your program if attempted directly:
