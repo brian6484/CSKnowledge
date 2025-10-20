@@ -38,7 +38,7 @@ They are raraely used in modern OS where it was originally designed for device d
 It is **lowest privilege level** where user applications and programs run. They are restricted from executing privileged CPU isntructions, direct hardware access or basically anything that Ring 0 can do. It **MUST USE SYSTEM CALLS** to request kernel services.
 
 ## the way it works
-So CPU tracks current instruction's privilege level in a reigster and **every instruction is checked against current ring**. If it attempts to do a privileged operation from a wrong ring, it will cause *CPU exception/fault*.
+So CPU tracks current instruction's privilege level in a reigster and **[every instruction is checked against current ring](https://github.com/brian6484/CSKnowledge/blob/main/Operating%20System/Linux/System%20call/Register.md)**. If it attempts to do a privileged operation from a wrong ring, it will cause *CPU exception/fault*.
 
 ### User to Kernel (Ring 3 to Ring 0) 🛡️
 This is the process of escalating privileges from a normal user application to the highly privileged operating system kernel. This is only allowed through a few, tightly controlled methods to prevent applications from gaining unauthorized access and potentially harming the system.
