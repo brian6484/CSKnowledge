@@ -307,7 +307,34 @@ Validate pointers: A user program could pass a pointer to a location in memory(R
 
 Handle page faults: When the kernel tries to copy data, the memory might not be in physical RAM at that exact moment (it might be in swap space on the hard drive). The kernel's memory manager handles this by triggering a page fault, which brings the required data from disk into RAM before the copy operation continues.
 
+^ This is diff from swapping as swapping is **moving entire processes in/out of memory** while paging is a more fine-grained, page-by-page management.
+
+```
+
+Your program's memory view:
+[Page 0] [Page 1] [Page 2] [Page 3] [Page 4] ...
+   ↓        ↓        ↓        ↓        ↓
+ In RAM   In RAM   On Disk  In RAM   On Disk
+
+When you access Page 2:
+1. CPU tries to access it
+2. "Page fault!" - it's not in RAM
+3. Kernel loads it from disk to RAM
+4. Access continues
+```
+
+## Swapping (broader term):
+The entire process is moved to disk and back. This is more aggressive—typically when the system is very low on memory.
+```
+Process A: Entirely in RAM
+Process B: Entirely in RAM
+Process C: Entirely swapped to disk (sleeping)
+
+System needs more RAM:
+→ Swap out entire Process B to disk
+→ Load Process C back into RAM
+```
+
 **Q: "Why are system calls slower than regular function calls?"**
 A: System calls require context switching between privilege levels, saving/restoring state, and kernel execution overhead - much more expensive than jumping to a function in the same address space.
 
-**Bottom Line:** Userspace = **restricted applications**, Kernel Space = **privileged OS core**. The separation provides security, stability, and controlled resource access!
