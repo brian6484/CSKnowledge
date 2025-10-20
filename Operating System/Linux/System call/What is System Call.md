@@ -52,7 +52,45 @@ CPU Exceptions (Page Faults, Divide by Zero): These are unexpected events caused
 ### Kernel to User (Ring 0 to Ring 3) 🔽
 This is the process of de-escalating privileges, returning control from the kernel back to a user application.
 
-When Kernel Finishes Handling a Request: After the kernel has completed a system call (like reading a file) or handled an interrupt, it uses a special instruction (often a return from interrupt or return from trap instruction) to return control to the user program. The CPU then switches its privilege level back to Ring 3.
+When Kernel Finishes Handling a Request: After the kernel has completed a system call (like reading a file) or handled an interrupt, it uses a special instruction to return control to the user program. The CPU then switches its privilege level back to Ring 3.
+
+This special instruction:
+The **instruction** is a specific CPU command that switches the processor back from kernel mode (Ring 0) to user mode (Ring 3) and resumes executing the user program where it left off.
+
+## Common examples on different architectures:
+
+**On x86/x64 CPUs:**
+- `IRET` (Interrupt Return) - for hardware interrupts
+- `SYSRET` - specifically for returning from system calls (faster, modern method)
+- `IRETQ` - 64-bit version of IRET
+
+**On ARM CPUs:**
+- `ERET` (Exception Return)
+
+**On RISC-V:**
+- `SRET` (Supervisor Return) or `MRET` (Machine Return)
+
+## What these instructions actually do:
+
+When executed, they perform several critical actions **atomically** (all at once):
+
+1. **Restore the privilege level** - Switch CPU back to Ring 3
+2. **Restore the instruction pointer** - Tell CPU where to continue in user code
+3. **Restore the stack pointer** - Switch back to the user's stack
+4. **Restore CPU flags/status** - Return the CPU state to what it was before
+
+Think of it like this: When the system call happened, the kernel "saved" the entire state of your program (like pausing a video game and saving your progress). The return instruction "loads" that saved state and resumes exactly where you left off.
+
+**Example flow:**
+```
+User code: result = read(file, buffer, 100);
+           ↓ (triggers interrupt, saves state)
+Kernel:    sys_read() { ... }
+           ↓ (executes SYSRET with saved state)
+User code: // continues here with result
+```
+
+The instruction is the CPU-level command that makes that final jump back to user mode possible.
 
 Process Scheduling (Context Switches): The operating system kernel is responsible for managing multiple running programs. When it's time to switch from one program to another, the kernel saves the state of the current process and loads the state of the next one. This switch involves the kernel, which means a temporary privilege escalation to Ring 0. The kernel then returns to the new user process, dropping the privilege level back to Ring 3.
 
