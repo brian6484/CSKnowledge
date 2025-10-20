@@ -18,7 +18,7 @@ Process terminates gracefully (or doesn't)
 1) kill() sysstem call is invoked
 2) kernel receives system call and looks up the target process
 3) signal(like SIGTERM, SIGKILL,etc) is sent by kernal to that process
-4) process receives and handles signal by responding (terminates, ignores, pauses, etc). It has a [signal handler]() or uses default behaviour.
+4) process receives and handles signal by responding (terminates, ignores, pauses, etc). It has a [signal handler](https://github.com/brian6484/CSKnowledge/blob/main/Operating%20System/Linux/Signal/Signal%20Handler.md) or uses default behaviour.
 
 ### SIGKILL signal 9 force kill
 Try SIGTERM (-15) first → gives process time to clean up cuz this is Force kill and **cannot be caught**. 
