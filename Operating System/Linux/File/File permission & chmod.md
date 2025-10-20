@@ -28,6 +28,9 @@ if u just need to see the first line of that file
 
 head: The command to output the beginning of a file.
 -n number: show the top n lines of that file
+
+both comamnds work fine
 ```
 $ head -n 1 ~/.ssh/prod_key
+$ head 1 ~/.ssh/prod_key
 ```
