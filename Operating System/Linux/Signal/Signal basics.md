@@ -65,3 +65,33 @@ Its user defined custom signals. Its for application-specific use and we can mak
 ## Signals that cannot be caught - SIGKILL 9 & SIGSTOP 19
 Process cannot catch it means **processes cannot set up a signal handler for that signal**. It is the kernel that force the default
 action no matter what.
+
+## 2 ways for process to handle signal
+1) SIGN_IGN = ignore the signal
+```
+signal(SIGTERM, SIG_IGN);  // Ignore SIGTERM
+```
+When process receives SIGTERM, signal is ignored completely.
+
+2) SIG_DFL = use default handler
+```
+signal(SIGTERM, SIG_DFL);  // Use default handler
+```
+So when process receives SIGTERM, default action happens (usually terminate) 
+```
+// No handler set (default)
+kill -15 <PID>  → Process terminates
+
+// SIG_DFL set
+signal(SIGTERM, SIG_DFL);
+kill -15 <PID>  → Process terminates (same)
+
+// SIG_IGN set
+signal(SIGTERM, SIG_IGN);
+kill -15 <PID>  → Process ignores, keeps running
+
+// Custom handler
+void my_handler(int sig) { printf("Caught!\n"); }
+signal(SIGTERM, my_handler);
+kill -15 <PID>  → my_handler() runs, prints "Caught!"
+```
