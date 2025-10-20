@@ -43,7 +43,7 @@ So CPU tracks current instruction's privilege level in a reigster and **[every i
 ### User to Kernel (Ring 3 to Ring 0) 🛡️
 This is the process of escalating privileges from a normal user application to the highly privileged operating system kernel. This is only allowed through a few, tightly controlled methods to prevent applications from gaining unauthorized access and potentially harming the system.
 
-System Calls (Software Interrupts): This is the most common and deliberate way. A user program needs a kernel service, such as reading or writing a file. It doesn't do this itself; instead, it executes a special instruction that triggers a software interrupt. This interrupt tells the CPU to stop executing the user code and jump to a pre-defined kernel routine to handle the request.
+System Calls (Software Interrupts): This is the most common and deliberate way. A user program needs a kernel service, such as reading or writing a file. It doesn't do this itself; instead, it executes a special instruction that triggers a software interrupt. This interrupt tells the CPU to stop executing the user code and jump to a pre-defined kernel routine (function in kernel to execute some task) to handle the request.
 
 Hardware Interrupts (Timer, Keyboard, etc.): These are triggered by hardware devices. For example, when you press a key on the keyboard, it sends an interrupt signal to the CPU. The CPU then stops what it's doing (even if it's running user code) and switches to kernel mode to execute a routine that handles the keyboard input.
 
