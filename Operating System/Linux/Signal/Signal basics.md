@@ -1,5 +1,5 @@
 ## Signals
-tbc what are signals? They are software interrupts sent to processes, asking them to do something (like terminate, pause, etc). The process receives and responds to them.
+tbc what are signals? They are software interrupts sent to processes, asking them to do something (like terminate, pause, etc). The process receives and responds to them. It can interrupt system calls and while sys call is synchronous, signal is asynchronous.
 
 ## Diff between system call
 System call is request to kernel to do something. So signal is the "what" (what message to send) and system call is the "how" (how to send it)
