@@ -1,6 +1,6 @@
 ## System call
-It is interface between kernel and user programs. Its a *controlled* way for programs to request kernel services and is the **only way** for programs to access hardware, files, network
-from user space.
+It is interface between kernel and user programs. Its a *controlled* way for user-space programs to request kernel services and is the **only way** for programs to access i/o (read(), write()), hardware, files(open(), close()), network, process control(fork(), exec())
+from user space. 
 
 A system call is a request a user program makes to the operating system kernel for a service. A mode switch is the technical process of changing the CPU's privilege level (from User Mode to Kernel Mode) to handle that request.
 
