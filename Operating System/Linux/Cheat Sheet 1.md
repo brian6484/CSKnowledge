@@ -89,6 +89,44 @@ PORT     STATE  SERVICE
 Nmap done: 1 IP address (1 host up) scanned in 4.67 seconds
 ```
 
+### changing dns config
+go to /etc/hosts file. If the error i cannot resolve hostname (db.internal) and there is no mapping inside this /etc/hosts file, we have to add manually. And the ip address that belongs to this domain can be found via
+```
+nslookup db.internal
+
+## but if theres NXDOMAIN error, then ask a teammate lol
+** server can't find db.internal: NXDOMAIN
+```
+
+```
+sh-4.2$ cat /etc/hosts
+```
+
+**Result:**
+```
+127.0.0.1   localhost
+127.0.1.1   prod-web-01
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+```
+
+---
+
+Hmm, no entry for `db.internal`! That's the problem.
+
+There's no mapping telling the server what IP address `db.internal` should resolve to.
+
+Usually you'd see something like:
+```
+10.50.2.100   db.internal
+```
+assuming teammate gave us the ip 
+
 ### if theres bastion
 ```
 ssh admin@bastion.company.name
