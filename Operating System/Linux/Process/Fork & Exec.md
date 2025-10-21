@@ -6,11 +6,34 @@ So when we run ls
 2) ls process: exists in memory and is actively running
 
 ## Fork
-it creates a new process by duplicating the current process. The original becomes the parent and the new one becomes the child.
+it creates a new process by duplicating an exact copy of current process. The original becomes the parent and the new one becomes the child.
 
-Returns PID of child to parent, 0 to child, -1 on error
-Child gets copy of parent's memory space (copy-on-write optimization)
-Both processes continue execution from the fork point
+Both processes get the same memory space via copy on write (explained below), file descriptors, code, stack, heap. In the parent process, fork() returns the child's pid (gets child's pid) but in the child process, fork() returns 0.
+
+There is no error case in the child. If fork fails, no child process is created at all! So the error return (-1) only happens in the parent process.
+
+## whats copy on write?
+Its optimisation to make fork() fast and memory eff. If fork() copied all the parent's memory,it would be slow and wasteful cuz when child calls exec() it throws away all that copied memory anyway.
+
+So instead of copying memory, **both parent and child processes share the same physical memory pages**. Memory is marked read only and when either tries to write, OS catches this (page fault) and only then does it make a real copy of that specific memory page. The writing process gets its *own* copy while the other process keeps the original.
+
+```
+Parent has 100MB of memory
+  |
+  | fork()
+  v
+Parent (100MB) ←─── both point to same 100MB
+Child (100MB)  ←─┘   (no actual copy yet!)
+
+Child writes to page 5:
+  → OS copies ONLY page 5
+  → Child now has its own page 5
+  → Other 99.99MB still shared
+
+Child calls exec():
+  → Replaces all memory anyway
+  → Good thing we didn't copy everything!
+```
 
 ## Exec
 replaces the current process image with new program.
