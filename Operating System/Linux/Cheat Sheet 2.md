@@ -62,7 +62,24 @@ iotop's `IO>` column shows **percentage of time** process is spending doing I/O 
 ### Network
 
 ### netstat
-if we wan check network for port 80 ONLY, not 8080. We need a space after 80, which means only port 80
+Firstly theres -an and -tulpn. Which do we use for which case?
+
+-a = shows all sockets (LISTEN and ESTABLISHED)
+
+-n = shows numerical addreeses (and not hostnames)
+
+-t = TCP connections only
+
+-u = UDP connections only
+
+-l = Show only **listening** sockets (NOT ESTABLISHED CONNECTIONS)
+
+we use -an to see connections only and not interested in the programs that are using them.
+
+we use -tulpn to see **which program is using which port**. It requires **sudo** to see the process name and only shows listening
+ports by servers
+
+if we wan check network for port 80 ONLY, not 8080. Firstly we just use -an and We need a space after 80, which means only port 80
 ```
 netstat -an | grep ':80 '
 ```
@@ -90,5 +107,17 @@ Its translates dns between domain names and ip addresses. Its bi directional so 
 dig -x 10.0.5.142
 
 The `-x` flag means "reverse lookup" - go from IP to hostname/domain.
+```
+
+if it gives an internal Prometheus metric monitoring system and its doing Ddos, and my web server is behind a nginx, we should check
+the nginx log via
+```
+sudo tail -100 /var/log/nginx/access.log | grep 10.0.5.142
+```
+this is cuz if nginx is proxying requests to my backend app, every prometheus req hits nginx first. Prom -> nginx:80 -> backend:8080/metrics.
+
+to see how fast the metrics are coming in one second at 3.47pm 20 to 29 seconds so 10 seconds
+```
+sudo tail -1000 /var/log/nginx/access.log | grep 10.0.5.142 | grep "15:47:2[0-9]" | wc -l
 ```
 
