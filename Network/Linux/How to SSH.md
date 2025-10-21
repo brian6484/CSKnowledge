@@ -23,4 +23,4 @@ $ ssh sysadmin@10.50.2.15
 ```
 
 ## if ssh doesnt work
-maybe check ssh key file permission [here](https://github.com/brian6484/CSKnowledge/tree/main/Operating%20System/Linux/File)
+maybe check ssh key file permission [here](https://github.com/brian6484/CSKnowledge/blob/main/Operating%20System/Linux/File/File%20permission%20%26%20chmod.md)
