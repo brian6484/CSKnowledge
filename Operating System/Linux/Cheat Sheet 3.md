@@ -22,6 +22,48 @@ Oct 12 15:46:01 gunicorn[1547]: ERROR: Metrics generation timeout - too many dat
 Oct 12 15:46:23 gunicorn[1547]: WARNING: Metrics cardinality explosion detected
 ```
 
+### check systemd app directory (where application files are like the folder containing ur code)
+we can check via ps aux and seeing if config file path is visible. Else, we can do sudo systemctl status gunicorn to see the service file, which will tell us the [Working Directory]
+
+```bash
+# Method 1: Check service file
+systemctl cat myapp
+
+# Look for these lines:
+# WorkingDirectory=/path/to/app
+# ExecStart=/path/to/app/script.sh
+
+# Method 2: Check running process
+ps aux | grep myapp
+
+# Method 3: If it's a Python app
+sudo lsof -p $(pgrep -f myapp) | grep cwd
+```
+
+**Example service file:**
+```ini
+[Unit]
+Description=My App
+
+[Service]
+Type=notify
+User=www-data
+WorkingDirectory=/opt/myapp        ← App directory
+ExecStart=/opt/myapp/venv/bin/gunicorn app:app  ← Executable path
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+furthermore to find the config file in app directory, u should go to the app directory and find. Maybe the metrics app logic is weird and u wanna check 
+
+## TL;DR:
+
+- **`systemctl`** = Control services (start/stop/restart)
+- **`journalctl`** = Read service logs
+- **App directory** = Check `systemctl cat <service>` for `WorkingDirectory` or `ExecStart` paths
+
 ## I/O
 ### Postgres DB
 #### checkpoint
