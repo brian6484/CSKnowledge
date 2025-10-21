@@ -1,6 +1,27 @@
 ## Start
 So this goes deeper to application-level.
 
+## systemd service
+### Check systemd service's log
+Rmb journalctl is the systemd logging service. **ALL systemd services log to journal** and journalctl is the tool to read those queries.
+```
+systemd = Init system & service manager
+   ↓
+systemd-journald = Logging daemon (part of systemd)
+   ↓
+journalctl = Command to read systemd-journald logs
+```
+
+We can check the log via
+```
+sudo journalctl -u <systemd service name like nginx,gunicorn,etc> -n 100 | grep -i error
+
+Oct 12 15:45:12 gunicorn[1547]: WARNING: Metrics endpoint generating 247k metrics
+Oct 12 15:45:34 gunicorn[1547]: WARNING: Database query for user_activity_metrics took 2.3s
+Oct 12 15:46:01 gunicorn[1547]: ERROR: Metrics generation timeout - too many database queries
+Oct 12 15:46:23 gunicorn[1547]: WARNING: Metrics cardinality explosion detected
+```
+
 ## I/O
 ### Postgres DB
 #### checkpoint
