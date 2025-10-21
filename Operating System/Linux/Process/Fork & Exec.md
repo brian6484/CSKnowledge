@@ -65,6 +65,23 @@ Typical pattern: fork() → exec() to create new processes running different pro
    - This wakes up the sleeping bash
 
 6. **Bash wakes up** and gives you prompt again
+```
+bash (parent)
+    |
+    | fork()
+    v
+bash (parent)          bash (child - copy of parent)
+    |                       |
+    | waits                 | exec("/bin/ls")
+    |                       v
+    |                  ls program (child - replaced bash)
+    |                       |
+    |                       | runs, outputs to terminal
+    |                       | exits
+    | <--- child done
+    v
+bash (parent) - shows prompt again
+```
 
 ## The Key Moments:
 
