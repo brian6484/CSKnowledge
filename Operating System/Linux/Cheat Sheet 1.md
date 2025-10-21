@@ -69,6 +69,26 @@ Chain OUTPUT (policy ACCEPT)
 target     prot opt source               destination
 ```
 
+### ssh connection refused at port 22 - debug with nmap
+Now instead of connection time out, the connection is refused. Then we can check which port this server is open and listening for connections
+```bash
+$ nmap 10.50.2.15
+```
+
+**Result:**
+```
+Starting Nmap 7.80 ( https://nmap.org ) at 2025-10-13 09:47 KST
+Nmap scan report for 10.50.2.15
+Host is up (0.0023s latency).
+Not shown: 997 filtered ports
+PORT     STATE  SERVICE
+22/tcp   closed ssh
+80/tcp   open   http
+443/tcp  open   https
+
+Nmap done: 1 IP address (1 host up) scanned in 4.67 seconds
+```
+
 ### if theres bastion
 ```
 ssh admin@bastion.company.name
