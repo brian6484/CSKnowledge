@@ -130,7 +130,7 @@
       "x": 1037.8149210611978,
       "y": -875.5187632242839,
       "width": 842.079345703125,
-      "height": 475,
+      "height": 650,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -144,20 +144,20 @@
       "index": "a3",
       "roundness": null,
       "seed": 760350147,
-      "version": 1247,
-      "versionNonce": 53468390,
+      "version": 1609,
+      "versionNonce": 1904284221,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366021,
+      "updated": 1761110398897,
       "link": null,
       "locked": false,
-      "text": "Non-functional requirements:\ncalc:\n100K client requests/second across all MSAs with reach log being 1Kb\n\nassuming theres 5 services, each producing 5 log entries per request:\n100K * 5 * 5 * 1K = 2500Mb = 2.5Gb/s of logs produced\n\ncap theorem:\nAP eventual consistency cuz we want isolated nodes to keep logging and storing data\nand its better to have excess logs rather than lost logs\n\nLatency: Query <5s, logs visible within 10s\nhigh durability but some non critical logs loss is acceptable\n\nlog data:\ntrace_id to correlate logs for 1 user across services, timestamp, instance id, message,\nlevel, service name\n\n",
+      "text": "Non-functional requirements:\ncalc:\n100K client requests/second across all MSAs with reach log being 1Kb\n\nassuming theres 5 services, each producing 5 log entries per request:\n100K * 5 * 5 * 1K = 2500Mb = 2.5Gb/s of logs produced\n\ncap theorem:\nAP eventual consistency cuz we want isolated nodes to keep logging and storing data\nand its better to have excess logs rather than lost logs\n\nLatency: Query <5s, logs visible within 10s\nhigh durability but some non critical logs loss is acceptable\n\nlog data:\ntrace_id to correlate logs for 1 user across services, timestamp, instance id, message,\nlevel, service name\n\ntrace_id is unique per request/transaction.\nlike for cases where user can request 2 times concurrently, we need to trace PER \nREQUEST\n\nrequest A: api gw -> payment service -> bla (user1, trace1)\nrequest B: api gw -> product service -> bla (user1,trace2)\nwithout trace id, logs will be mixed tgt from both requests making debugging imposs\n",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Non-functional requirements:\ncalc:\n100K client requests/second across all MSAs with reach log being 1Kb\n\nassuming theres 5 services, each producing 5 log entries per request:\n100K * 5 * 5 * 1K = 2500Mb = 2.5Gb/s of logs produced\n\ncap theorem:\nAP eventual consistency cuz we want isolated nodes to keep logging and storing data\nand its better to have excess logs rather than lost logs\n\nLatency: Query <5s, logs visible within 10s\nhigh durability but some non critical logs loss is acceptable\n\nlog data:\ntrace_id to correlate logs for 1 user across services, timestamp, instance id, message,\nlevel, service name\n\n",
+      "originalText": "Non-functional requirements:\ncalc:\n100K client requests/second across all MSAs with reach log being 1Kb\n\nassuming theres 5 services, each producing 5 log entries per request:\n100K * 5 * 5 * 1K = 2500Mb = 2.5Gb/s of logs produced\n\ncap theorem:\nAP eventual consistency cuz we want isolated nodes to keep logging and storing data\nand its better to have excess logs rather than lost logs\n\nLatency: Query <5s, logs visible within 10s\nhigh durability but some non critical logs loss is acceptable\n\nlog data:\ntrace_id to correlate logs for 1 user across services, timestamp, instance id, message,\nlevel, service name\n\ntrace_id is unique per request/transaction.\nlike for cases where user can request 2 times concurrently, we need to trace PER \nREQUEST\n\nrequest A: api gw -> payment service -> bla (user1, trace1)\nrequest B: api gw -> product service -> bla (user1,trace2)\nwithout trace id, logs will be mixed tgt from both requests making debugging imposs\n",
       "autoResize": true,
       "lineHeight": 1.25
     },
@@ -166,8 +166,8 @@
       "type": "rectangle",
       "x": 1926.3703409830723,
       "y": -888.0371729532878,
-      "width": 1111.5060763888894,
-      "height": 796.6420830620659,
+      "width": 1175.5060492621533,
+      "height": 1191.3087632921006,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -183,11 +183,11 @@
         "type": 3
       },
       "seed": 432070381,
-      "version": 365,
-      "versionNonce": 271536166,
+      "version": 498,
+      "versionNonce": 1947256221,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366021,
+      "updated": 1761110423889,
       "link": null,
       "locked": false
     },
@@ -197,7 +197,7 @@
       "x": 1940.9633280436192,
       "y": -867.5433714124894,
       "width": 1150.55908203125,
-      "height": 1200,
+      "height": 1675,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -211,2415 +211,22 @@
       "index": "a7",
       "roundness": null,
       "seed": 210695555,
-      "version": 3634,
-      "versionNonce": 190733158,
+      "version": 4030,
+      "versionNonce": 110172189,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366021,
+      "updated": 1761111181333,
       "link": null,
       "locked": false,
-      "text": "my initial design:\nmsa <- log agent that pulls from msa asynchronously with a time interval  (wat happen if msa goes down before \nlog agent pulls within that time interval?) -> kafka queue (topic: log) -> worker nodes that consume the \nmessage (can apply consistent normalising here so that we can scale this independently and once that is \nprocessed, another worker takes that processed log and store to log db (could be s3, wat about cassandra \nthe system is AP anyway) -> alert manager -> pagerduty/slack\n\nkafka message could containe timestamp, trace id, span id, service name, message and user_id\n\ngpt design:\n1) so i thought this log agent is a separate network call from the msa but its within the msa server that pulls\nlogs, which the msa writes logs into a disk/buffer (NOT NETWORK CALL). Logs stored in buffer/disk are immune\nto server crashes so its the best. MSA shouldnt directly push cuz it increases complexity to do retries or handle\nfailures and should have local log agents do that to decouple application.\n\n2) 2 separate workers to normalise and store is good. I thought normalsiing would be compute heavy \n\nkafka (topic: raw-logs) -> noramlise workers format the logs -> kafka(topic:normalised-logs) -> storage workers\nstore logs to db and alert workers consume those logs in parallel \n\nadv of  this is \n1) independent scaling based on bottleneck\n2) failure isolation - dont lose data, just backpressure. With 1 worker doing both work, if that worker fails and\ndb is down, work fails. Log has been consumed from kafka but not stored anywhere. Worker must reconsume and\nrenormalise same log again. But with 2 stage, if storage worker cannot write to db, it can leave a message in\nkafka without committing offset. Normalised log stays in kafka queue and worker retries later when storage db\nis up. No need to renormalise. The key point is normalised logs are safe in kafka and storage workers just need\nto retry writing.\n3) multiple consumers - alert manager and storage workers reads from normalised logs topic in parallel so\ndont have to duplicate this work for both types of workers\n4) replay capability - maybe theres bug in storage code that corrupted data. Maybe storage worker stored normalised\nlogs with wrong timestamps and i discovered bugs later. Without normalised-logs topic, only have raw logs so need\nto normalise and store again. But with normalised logs can just fix bug in storage worker side and restore it, \neffectively skipping unnecessary normalising process\n\n3) storage choice\ncassandra is for ap but bad for querying so\nES for hot data (7 days) 2.5Gb/s for 7 days is 1.5 Pb. Cost is high but it allows fast queries (~1s) and full text\nindexing\n\nS3 + Athena for warm (8~90days). We can compress and archive to s3 and query via athena\n\nS3 Glacier (91d - 1 year): rarely access, just for compliance\n\n4)  querying logic\nuser -> api gateway(rest/graphql) -> query service (routes query to correct storage)\n\n",
+      "text": "my initial design:\nmsa <- log agent that pulls from msa asynchronously with a time interval  (wat happen if msa goes down before \nlog agent pulls within that time interval?) -> kafka queue (topic: log) -> worker nodes that consume the \nmessage (can apply consistent normalising here so that we can scale this independently and once that is \nprocessed, another worker takes that processed log and store to log db (could be s3, wat about cassandra \nthe system is AP anyway) -> alert manager -> pagerduty/slack\n\nkafka message could containe timestamp, trace id, span id, service name, message and user_id\n\ngpt design:\n1) so i thought this log agent is a separate network call from the msa but its within the msa server that pulls\nlogs, which the msa writes logs into a disk/buffer (NOT NETWORK CALL). Logs stored in buffer/disk are immune\nto server crashes so its the best. MSA shouldnt directly push cuz it increases complexity to do retries or handle\nfailures and should have local log agents do that to decouple application.\n\n2) 2 separate workers to normalise and store is good. I thought normalsiing would be compute heavy \n\nkafka (topic: raw-logs) -> noramlise workers format the logs -> kafka(topic:normalised-logs) -> storage workers\nstore logs to db and alert workers consume those logs in parallel \n\nadv of  this is \n1) independent scaling based on bottleneck\n2) failure isolation - dont lose data, just backpressure. With 1 worker doing both work, if that worker fails and\ndb is down, work fails. Log has been consumed from kafka but not stored anywhere. Worker must reconsume and\nrenormalise same log again. But with 2 stage, if storage worker cannot write to db, it can leave a message in\nkafka without committing offset. Normalised log stays in kafka queue and worker retries later when storage db\nis up. No need to renormalise. The key point is normalised logs are safe in kafka and storage workers just need\nto retry writing.\n3) multiple consumers - alert manager and storage workers reads from normalised logs topic in parallel so\ndont have to duplicate this work for both types of workers\n4) replay capability - maybe theres bug in storage code that corrupted data. Maybe storage worker stored normalised\nlogs with wrong timestamps and i discovered bugs later. Without normalised-logs topic, only have raw logs so need\nto normalise and store again. But with normalised logs can just fix bug in storage worker side and restore it, \neffectively skipping unnecessary normalising process\n\n3) storage choice\ncassandra is for ap but bad for querying so\nES for hot data (7 days) 2.5Gb/s for 7 days is 1.5 Pb. Cost is high but it allows fast queries (~1s) and full text\nindexing. Actually loki is better cuz instead of full text indexing, it indexes on certain fields like timestamp, service \nname, userId , etc that can be used to search s3 quickly.\n\nMOST IMPT: index maps lables -> chunks \n\nfor e.g. \nthe chunks (compressed log data) is in s3 and the indexes can be stored in Cass/local/s3 \n**Index (stored in DynamoDB):**\n```\ntrace_id=abc123 → [chunk_001.gz, chunk_045.gz]\nservice=checkout → [chunk_001.gz, chunk_002.gz, chunk_010.gz]\ntimestamp=2025-10-22T10:00 → [chunk_001.gz]\n```\n\n**Without index:**\n- Scan all 10,000 chunks in S3 (10 TB) ❌\n\n**With index:**\n- Index says: \"Only download chunk_001.gz (100 MB)\" ✅\n- 100x faster!\n\nS3 + Athena for warm (8~90days). We can compress and archive to s3 and query via athena\n\nS3 Glacier (91d - 1 year): rarely access, just for compliance\n\n4)  querying logic\nuser -> api gateway(rest/graphql) -> query service (routes query to correct storage)\n\n",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "my initial design:\nmsa <- log agent that pulls from msa asynchronously with a time interval  (wat happen if msa goes down before \nlog agent pulls within that time interval?) -> kafka queue (topic: log) -> worker nodes that consume the \nmessage (can apply consistent normalising here so that we can scale this independently and once that is \nprocessed, another worker takes that processed log and store to log db (could be s3, wat about cassandra \nthe system is AP anyway) -> alert manager -> pagerduty/slack\n\nkafka message could containe timestamp, trace id, span id, service name, message and user_id\n\ngpt design:\n1) so i thought this log agent is a separate network call from the msa but its within the msa server that pulls\nlogs, which the msa writes logs into a disk/buffer (NOT NETWORK CALL). Logs stored in buffer/disk are immune\nto server crashes so its the best. MSA shouldnt directly push cuz it increases complexity to do retries or handle\nfailures and should have local log agents do that to decouple application.\n\n2) 2 separate workers to normalise and store is good. I thought normalsiing would be compute heavy \n\nkafka (topic: raw-logs) -> noramlise workers format the logs -> kafka(topic:normalised-logs) -> storage workers\nstore logs to db and alert workers consume those logs in parallel \n\nadv of  this is \n1) independent scaling based on bottleneck\n2) failure isolation - dont lose data, just backpressure. With 1 worker doing both work, if that worker fails and\ndb is down, work fails. Log has been consumed from kafka but not stored anywhere. Worker must reconsume and\nrenormalise same log again. But with 2 stage, if storage worker cannot write to db, it can leave a message in\nkafka without committing offset. Normalised log stays in kafka queue and worker retries later when storage db\nis up. No need to renormalise. The key point is normalised logs are safe in kafka and storage workers just need\nto retry writing.\n3) multiple consumers - alert manager and storage workers reads from normalised logs topic in parallel so\ndont have to duplicate this work for both types of workers\n4) replay capability - maybe theres bug in storage code that corrupted data. Maybe storage worker stored normalised\nlogs with wrong timestamps and i discovered bugs later. Without normalised-logs topic, only have raw logs so need\nto normalise and store again. But with normalised logs can just fix bug in storage worker side and restore it, \neffectively skipping unnecessary normalising process\n\n3) storage choice\ncassandra is for ap but bad for querying so\nES for hot data (7 days) 2.5Gb/s for 7 days is 1.5 Pb. Cost is high but it allows fast queries (~1s) and full text\nindexing\n\nS3 + Athena for warm (8~90days). We can compress and archive to s3 and query via athena\n\nS3 Glacier (91d - 1 year): rarely access, just for compliance\n\n4)  querying logic\nuser -> api gateway(rest/graphql) -> query service (routes query to correct storage)\n\n",
+      "originalText": "my initial design:\nmsa <- log agent that pulls from msa asynchronously with a time interval  (wat happen if msa goes down before \nlog agent pulls within that time interval?) -> kafka queue (topic: log) -> worker nodes that consume the \nmessage (can apply consistent normalising here so that we can scale this independently and once that is \nprocessed, another worker takes that processed log and store to log db (could be s3, wat about cassandra \nthe system is AP anyway) -> alert manager -> pagerduty/slack\n\nkafka message could containe timestamp, trace id, span id, service name, message and user_id\n\ngpt design:\n1) so i thought this log agent is a separate network call from the msa but its within the msa server that pulls\nlogs, which the msa writes logs into a disk/buffer (NOT NETWORK CALL). Logs stored in buffer/disk are immune\nto server crashes so its the best. MSA shouldnt directly push cuz it increases complexity to do retries or handle\nfailures and should have local log agents do that to decouple application.\n\n2) 2 separate workers to normalise and store is good. I thought normalsiing would be compute heavy \n\nkafka (topic: raw-logs) -> noramlise workers format the logs -> kafka(topic:normalised-logs) -> storage workers\nstore logs to db and alert workers consume those logs in parallel \n\nadv of  this is \n1) independent scaling based on bottleneck\n2) failure isolation - dont lose data, just backpressure. With 1 worker doing both work, if that worker fails and\ndb is down, work fails. Log has been consumed from kafka but not stored anywhere. Worker must reconsume and\nrenormalise same log again. But with 2 stage, if storage worker cannot write to db, it can leave a message in\nkafka without committing offset. Normalised log stays in kafka queue and worker retries later when storage db\nis up. No need to renormalise. The key point is normalised logs are safe in kafka and storage workers just need\nto retry writing.\n3) multiple consumers - alert manager and storage workers reads from normalised logs topic in parallel so\ndont have to duplicate this work for both types of workers\n4) replay capability - maybe theres bug in storage code that corrupted data. Maybe storage worker stored normalised\nlogs with wrong timestamps and i discovered bugs later. Without normalised-logs topic, only have raw logs so need\nto normalise and store again. But with normalised logs can just fix bug in storage worker side and restore it, \neffectively skipping unnecessary normalising process\n\n3) storage choice\ncassandra is for ap but bad for querying so\nES for hot data (7 days) 2.5Gb/s for 7 days is 1.5 Pb. Cost is high but it allows fast queries (~1s) and full text\nindexing. Actually loki is better cuz instead of full text indexing, it indexes on certain fields like timestamp, service \nname, userId , etc that can be used to search s3 quickly.\n\nMOST IMPT: index maps lables -> chunks \n\nfor e.g. \nthe chunks (compressed log data) is in s3 and the indexes can be stored in Cass/local/s3 \n**Index (stored in DynamoDB):**\n```\ntrace_id=abc123 → [chunk_001.gz, chunk_045.gz]\nservice=checkout → [chunk_001.gz, chunk_002.gz, chunk_010.gz]\ntimestamp=2025-10-22T10:00 → [chunk_001.gz]\n```\n\n**Without index:**\n- Scan all 10,000 chunks in S3 (10 TB) ❌\n\n**With index:**\n- Index says: \"Only download chunk_001.gz (100 MB)\" ✅\n- 100x faster!\n\nS3 + Athena for warm (8~90days). We can compress and archive to s3 and query via athena\n\nS3 Glacier (91d - 1 year): rarely access, just for compliance\n\n4)  querying logic\nuser -> api gateway(rest/graphql) -> query service (routes query to correct storage)\n\n",
       "autoResize": true,
       "lineHeight": 1.25
-    },
-    {
-      "id": "_3LMSY1KT_nrqbrUBiBfc",
-      "type": "rectangle",
-      "x": 216.46914866613923,
-      "y": 376.04721977597194,
-      "width": 173.9682442801339,
-      "height": 144.12697928292414,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "a8",
-      "roundness": {
-        "type": 3
-      },
-      "seed": 1988799821,
-      "version": 310,
-      "versionNonce": 990510758,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "Ix5sg5Mu1GSYMfBj44FzY",
-      "type": "text",
-      "x": 259.32624792674176,
-      "y": 441.92030588785815,
-      "width": 125.35987854003906,
-      "height": 25,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aA",
-      "roundness": null,
-      "seed": 1951163107,
-      "version": 129,
-      "versionNonce": 333396454,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "text": "microservices",
-      "fontSize": 20,
-      "fontFamily": 5,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "microservices",
-      "autoResize": true,
-      "lineHeight": 1.25
-    },
-    {
-      "id": "L8co5Gb21z9Pb-ayO01Mk",
-      "type": "rectangle",
-      "x": 919.326291523282,
-      "y": 456.047263372512,
-      "width": 239.36505998883945,
-      "height": 194.28567068917414,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aB",
-      "roundness": {
-        "type": 3
-      },
-      "seed": 101474989,
-      "version": 137,
-      "versionNonce": 1827343654,
-      "isDeleted": false,
-      "boundElements": [
-        {
-          "id": "2cR-loxyXWa8f7n1dDSPn",
-          "type": "arrow"
-        }
-      ],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "buNZKG_hw4RJ2MKVqMah0",
-      "type": "text",
-      "x": 976.7865314786392,
-      "y": 529.3805676414854,
-      "width": 129.3599090576172,
-      "height": 25,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aD",
-      "roundness": null,
-      "seed": 458892109,
-      "version": 24,
-      "versionNonce": 532315046,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "text": "log processor",
-      "fontSize": 20,
-      "fontFamily": 5,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "log processor",
-      "autoResize": true,
-      "lineHeight": 1.25
-    },
-    {
-      "id": "2mY9I570MSJWIBxzjK7OO",
-      "type": "rectangle",
-      "x": 1444.4057244194873,
-      "y": 447.15845198858347,
-      "width": 324.4444928850446,
-      "height": 216.50791713169644,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aG",
-      "roundness": {
-        "type": 3
-      },
-      "seed": 1752734435,
-      "version": 76,
-      "versionNonce": 1735923430,
-      "isDeleted": false,
-      "boundElements": [
-        {
-          "id": "2cR-loxyXWa8f7n1dDSPn",
-          "type": "arrow"
-        }
-      ],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "2cR-loxyXWa8f7n1dDSPn",
-      "type": "arrow",
-      "x": 1159.9611443413623,
-      "y": 557.3167149292974,
-      "width": 282.5397600446429,
-      "height": 4.509814577454222,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aH",
-      "roundness": {
-        "type": 2
-      },
-      "seed": 454945635,
-      "version": 101,
-      "versionNonce": 446633146,
-      "isDeleted": false,
-      "boundElements": [
-        {
-          "type": "text",
-          "id": "198qDiUxQW1V_DDRuSprr"
-        }
-      ],
-      "updated": 1760853366110,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          282.5397600446429,
-          -4.509814577454222
-        ]
-      ],
-      "lastCommittedPoint": null,
-      "startBinding": {
-        "elementId": "L8co5Gb21z9Pb-ayO01Mk",
-        "focus": 0.0611512045223231,
-        "gap": 1.2697928292409415
-      },
-      "endBinding": {
-        "elementId": "2mY9I570MSJWIBxzjK7OO",
-        "focus": 0.04714093645506953,
-        "gap": 1.9048200334821104
-      },
-      "startArrowhead": null,
-      "endArrowhead": "arrow",
-      "elbowed": false
-    },
-    {
-      "id": "198qDiUxQW1V_DDRuSprr",
-      "type": "text",
-      "x": 1161.7891657995795,
-      "y": 526.6956892467683,
-      "width": 149.35987854003906,
-      "height": 75,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aI",
-      "roundness": null,
-      "seed": 736601101,
-      "version": 45,
-      "versionNonce": 2056017333,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760753989601,
-      "link": null,
-      "locked": false,
-      "text": "process log\ninto usable\nfields and data",
-      "fontSize": 20,
-      "fontFamily": 5,
-      "textAlign": "center",
-      "verticalAlign": "middle",
-      "containerId": "2cR-loxyXWa8f7n1dDSPn",
-      "originalText": "process log\ninto usable\nfields and data",
-      "autoResize": true,
-      "lineHeight": 1.25
-    },
-    {
-      "id": "DeStDBoFUNOa4DvgdO90R",
-      "type": "text",
-      "x": 1552.6596829853356,
-      "y": 519.8567290533158,
-      "width": 110.31993103027344,
-      "height": 25,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aL",
-      "roundness": null,
-      "seed": 1818550605,
-      "version": 44,
-      "versionNonce": 767850662,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "text": "log storage",
-      "fontSize": 20,
-      "fontFamily": 5,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "log storage",
-      "autoResize": true,
-      "lineHeight": 1.25
-    },
-    {
-      "id": "GjkH0ogSg8aqSHyKnqemw",
-      "type": "rectangle",
-      "x": 634.246945820157,
-      "y": 746.8408511933826,
-      "width": 267.9364885602679,
-      "height": 87.61910574776789,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aN",
-      "roundness": {
-        "type": 3
-      },
-      "seed": 78761101,
-      "version": 33,
-      "versionNonce": 2100982758,
-      "isDeleted": false,
-      "boundElements": [
-        {
-          "type": "text",
-          "id": "mT4ulOEvoylCep0rurQYD"
-        },
-        {
-          "id": "7f253G8oEk77pGb4z5tOm",
-          "type": "arrow"
-        }
-      ],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "mT4ulOEvoylCep0rurQYD",
-      "type": "text",
-      "x": 710.3452255006815,
-      "y": 753.1504040672665,
-      "width": 115.73992919921875,
-      "height": 75,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aO",
-      "roundness": null,
-      "seed": 747111715,
-      "version": 45,
-      "versionNonce": 986646310,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "text": "event queue\nfail queue\nretry queue",
-      "fontSize": 20,
-      "fontFamily": 5,
-      "textAlign": "center",
-      "verticalAlign": "middle",
-      "containerId": "GjkH0ogSg8aqSHyKnqemw",
-      "originalText": "event queue\nfail queue\nretry queue",
-      "autoResize": true,
-      "lineHeight": 1.25
-    },
-    {
-      "id": "QtcN9V1RCnhuQoISUEipv",
-      "type": "arrow",
-      "x": 535.8341650584382,
-      "y": 634.4599569411505,
-      "width": 120.00004359654031,
-      "height": 137.14281354631703,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aP",
-      "roundness": {
-        "type": 2
-      },
-      "seed": 508772845,
-      "version": 73,
-      "versionNonce": 745010598,
-      "isDeleted": false,
-      "boundElements": [
-        {
-          "type": "text",
-          "id": "4nZ2hdIgKh5Dun6YL6l9_"
-        }
-      ],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          120.00004359654031,
-          137.14281354631703
-        ]
-      ],
-      "lastCommittedPoint": null,
-      "startBinding": null,
-      "endBinding": null,
-      "startArrowhead": null,
-      "endArrowhead": "arrow",
-      "elbowed": false
-    },
-    {
-      "id": "4nZ2hdIgKh5Dun6YL6l9_",
-      "type": "text",
-      "x": 515.1942485022162,
-      "y": 667.0130938575383,
-      "width": 161.27987670898438,
-      "height": 75,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aQ",
-      "roundness": null,
-      "seed": 1857155043,
-      "version": 69,
-      "versionNonce": 440320347,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760753989601,
-      "link": null,
-      "locked": false,
-      "text": "produce & push\nevents in parallel\n",
-      "fontSize": 20,
-      "fontFamily": 5,
-      "textAlign": "center",
-      "verticalAlign": "middle",
-      "containerId": "QtcN9V1RCnhuQoISUEipv",
-      "originalText": "produce & push events in parallel\n",
-      "autoResize": true,
-      "lineHeight": 1.25
-    },
-    {
-      "id": "41i10cwKJko4N4APnSHFH",
-      "type": "rectangle",
-      "x": 652.0246557810947,
-      "y": 957.6345698038735,
-      "width": 243.17461286272328,
-      "height": 145.3968157087054,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aR",
-      "roundness": {
-        "type": 3
-      },
-      "seed": 1405050787,
-      "version": 93,
-      "versionNonce": 879120614,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "GO5k9bVrhGQoQ6C2OIs_i",
-      "type": "text",
-      "x": 698.532572912791,
-      "y": 1009.6980812436061,
-      "width": 143.39991760253906,
-      "height": 50,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aT",
-      "roundness": null,
-      "seed": 1779426691,
-      "version": 92,
-      "versionNonce": 980894758,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "text": "retry log query\nstorage",
-      "fontSize": 20,
-      "fontFamily": 5,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "retry log query\nstorage",
-      "autoResize": true,
-      "lineHeight": 1.25
-    },
-    {
-      "id": "mOvc6CBGnN-G-u6B-xcnz",
-      "type": "arrow",
-      "x": 972.0246557810947,
-      "y": 623.031385512579,
-      "width": 106.66669573102695,
-      "height": 137.14285714285722,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aU",
-      "roundness": {
-        "type": 2
-      },
-      "seed": 905867203,
-      "version": 22,
-      "versionNonce": 277335910,
-      "isDeleted": false,
-      "boundElements": [
-        {
-          "type": "text",
-          "id": "OTCUUzlrdljqAiR7ePbso"
-        }
-      ],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          -106.66669573102695,
-          137.14285714285722
-        ]
-      ],
-      "lastCommittedPoint": null,
-      "startBinding": null,
-      "endBinding": null,
-      "startArrowhead": null,
-      "endArrowhead": "arrow",
-      "elbowed": false
-    },
-    {
-      "id": "OTCUUzlrdljqAiR7ePbso",
-      "type": "text",
-      "x": 843.2713631523976,
-      "y": 680.5845442272368,
-      "width": 150.8398895263672,
-      "height": 25,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aV",
-      "roundness": null,
-      "seed": 663769101,
-      "version": 18,
-      "versionNonce": 412903067,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760753989601,
-      "link": null,
-      "locked": false,
-      "text": "consume events",
-      "fontSize": 20,
-      "fontFamily": 5,
-      "textAlign": "center",
-      "verticalAlign": "middle",
-      "containerId": "mOvc6CBGnN-G-u6B-xcnz",
-      "originalText": "consume events",
-      "autoResize": true,
-      "lineHeight": 1.25
-    },
-    {
-      "id": "7f253G8oEk77pGb4z5tOm",
-      "type": "arrow",
-      "x": 785.9929000612285,
-      "y": 838.9043626331148,
-      "width": 1.2697928292411689,
-      "height": 145.39690290178578,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aW",
-      "roundness": {
-        "type": 2
-      },
-      "seed": 1710755971,
-      "version": 24,
-      "versionNonce": 101739898,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366110,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          -1.2697928292411689,
-          145.39690290178578
-        ]
-      ],
-      "lastCommittedPoint": null,
-      "startBinding": {
-        "elementId": "GjkH0ogSg8aqSHyKnqemw",
-        "focus": -0.135459702711192,
-        "gap": 4.444405691964334
-      },
-      "endBinding": null,
-      "startArrowhead": null,
-      "endArrowhead": "arrow",
-      "elbowed": false
-    },
-    {
-      "id": "Zm7i1gyhYFYFRM4gy9q4t",
-      "type": "rectangle",
-      "x": 324.40559362986687,
-      "y": 746.8408511933827,
-      "width": 233.6508178710937,
-      "height": 99.68252999441972,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aX",
-      "roundness": {
-        "type": 3
-      },
-      "seed": 1937012867,
-      "version": 54,
-      "versionNonce": 1278979558,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "xo2RhGcpcwCnTfdjUfZEi",
-      "type": "text",
-      "x": 348.5326165093312,
-      "y": 783.8251041230702,
-      "width": 184.83982849121094,
-      "height": 25,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aa",
-      "roundness": null,
-      "seed": 979471779,
-      "version": 76,
-      "versionNonce": 1234764070,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "text": "side car containers",
-      "fontSize": 20,
-      "fontFamily": 5,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "side car containers",
-      "autoResize": true,
-      "lineHeight": 1.25
-    },
-    {
-      "id": "yOpsgao6V6P_Zx_4PfNkq",
-      "type": "rectangle",
-      "x": 402.50086078946515,
-      "y": 546.8409383864631,
-      "width": 165.079345703125,
-      "height": 110,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "ac",
-      "roundness": {
-        "type": 3
-      },
-      "seed": 1701336653,
-      "version": 69,
-      "versionNonce": 778693734,
-      "isDeleted": false,
-      "boundElements": [
-        {
-          "type": "text",
-          "id": "RRLmgaaLdxOxPCmmggEnr"
-        }
-      ],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "RRLmgaaLdxOxPCmmggEnr",
-      "type": "text",
-      "x": 413.00059376065656,
-      "y": 551.8409383864631,
-      "width": 144.0798797607422,
-      "height": 100,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "acV",
-      "roundness": null,
-      "seed": 1147370691,
-      "version": 89,
-      "versionNonce": 2021355430,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "text": "parallel \nprocess in the\nsame server as\nMSA",
-      "fontSize": 20,
-      "fontFamily": 5,
-      "textAlign": "center",
-      "verticalAlign": "middle",
-      "containerId": "yOpsgao6V6P_Zx_4PfNkq",
-      "originalText": "parallel \nprocess in the\nsame server as MSA",
-      "autoResize": true,
-      "lineHeight": 1.25
-    },
-    {
-      "id": "YgYKh1KiJYMfm0MDu0eLH",
-      "type": "arrow",
-      "x": 355.5167386493981,
-      "y": 496.04726337251213,
-      "width": 64.76187569754467,
-      "height": 54.603184291294724,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "ag",
-      "roundness": {
-        "type": 2
-      },
-      "seed": 1753397293,
-      "version": 25,
-      "versionNonce": 1677363942,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          64.76187569754467,
-          54.603184291294724
-        ]
-      ],
-      "lastCommittedPoint": null,
-      "startBinding": null,
-      "endBinding": null,
-      "startArrowhead": null,
-      "endArrowhead": "arrow",
-      "elbowed": false
-    },
-    {
-      "id": "QWMH_eQnIJPhxmxeqPVO8",
-      "type": "rectangle",
-      "x": 1093.2946229964964,
-      "y": 785.5710801624118,
-      "width": 411.42857142857133,
-      "height": 299.6825299944196,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "ah",
-      "roundness": {
-        "type": 3
-      },
-      "seed": 214077901,
-      "version": 54,
-      "versionNonce": 527711782,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "F5hVrVEkRZtuYaonDUKKf",
-      "type": "text",
-      "x": 1098.2152772933714,
-      "y": 806.3647115798224,
-      "width": 313.4398193359375,
-      "height": 75,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "ak",
-      "roundness": null,
-      "seed": 1826741677,
-      "version": 119,
-      "versionNonce": 2144700774,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "text": "consistent hashing\nhash(log_id) % number of nodes\n",
-      "fontSize": 20,
-      "fontFamily": 5,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "consistent hashing\nhash(log_id) % number of nodes\n",
-      "autoResize": true,
-      "lineHeight": 1.25
-    },
-    {
-      "id": "UgrwC9K3nmcjcCkjywU2e",
-      "type": "ellipse",
-      "x": 1656.4692358592197,
-      "y": 795.0949187505814,
-      "width": 337.7777971540179,
-      "height": 300.95232282366055,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "al",
-      "roundness": {
-        "type": 2
-      },
-      "seed": 1213599149,
-      "version": 23,
-      "versionNonce": 879455398,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "ZcHLT8z2DN3XG39RRulXb",
-      "type": "freedraw",
-      "x": 1820.913641551184,
-      "y": 750.6504258655368,
-      "width": 56.50791713169633,
-      "height": 91.42857142857133,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "am",
-      "roundness": null,
-      "seed": 447224707,
-      "version": 11,
-      "versionNonce": 2061690854,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          8.88898577008922,
-          14.60318429129461
-        ],
-        [
-          26.03184291294633,
-          43.17461286272305
-        ],
-        [
-          41.26988002232133,
-          66.03175571986594
-        ],
-        [
-          55.87297712053578,
-          90.79371861049094
-        ],
-        [
-          56.50791713169633,
-          91.42857142857133
-        ],
-        [
-          56.50791713169633,
-          91.42857142857133
-        ]
-      ],
-      "pressures": [],
-      "simulatePressure": true,
-      "lastCommittedPoint": null
-    },
-    {
-      "id": "SNpn7kpUqYXiYj_5SsZ6U",
-      "type": "freedraw",
-      "x": 1875.516913035559,
-      "y": 765.2536101568314,
-      "width": 85.71428571428578,
-      "height": 43.80955287388406,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "an",
-      "roundness": null,
-      "seed": 1891392835,
-      "version": 11,
-      "versionNonce": 1397291814,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          -0.6349400111607792
-        ],
-        [
-          -15.873151506696331,
-          3.1746128627232792
-        ],
-        [
-          -58.41273716517867,
-          19.68252999441961
-        ],
-        [
-          -84.444580078125,
-          39.36505998883922
-        ],
-        [
-          -85.71428571428578,
-          43.17461286272328
-        ],
-        [
-          -85.71428571428578,
-          43.17461286272328
-        ]
-      ],
-      "pressures": [],
-      "simulatePressure": true,
-      "lastCommittedPoint": null
-    },
-    {
-      "id": "vwtruBoWVYBNIjt0AwQZp",
-      "type": "freedraw",
-      "x": 1818.3740558927018,
-      "y": 1058.5870016188849,
-      "width": 48.25387137276789,
-      "height": 76.82538713727695,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "aq",
-      "roundness": null,
-      "seed": 1834843341,
-      "version": 12,
-      "versionNonce": 873113190,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          1.9046456473213311,
-          5.714285714285779
-        ],
-        [
-          11.428571428571331,
-          20.95232282366078
-        ],
-        [
-          34.920654296875,
-          57.14285714285711
-        ],
-        [
-          45.71428571428578,
-          73.01583426339289
-        ],
-        [
-          48.25387137276789,
-          76.19044712611617
-        ],
-        [
-          48.25387137276789,
-          76.82538713727695
-        ],
-        [
-          48.25387137276789,
-          76.82538713727695
-        ]
-      ],
-      "pressures": [],
-      "simulatePressure": true,
-      "lastCommittedPoint": null
-    },
-    {
-      "id": "f14nkARSsJhaJT7rcO67u",
-      "type": "freedraw",
-      "x": 1881.8661387610052,
-      "y": 1067.4758130028135,
-      "width": 143.49208286830344,
-      "height": 67.93648856026789,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "ar",
-      "roundness": null,
-      "seed": 824853571,
-      "version": 12,
-      "versionNonce": 1039460774,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          -0.6348528180803896
-        ],
-        [
-          -0.6349400111605519,
-          -0.6348528180803896
-        ],
-        [
-          -20.95249720982133,
-          6.98416573660711
-        ],
-        [
-          -85.07952008928555,
-          33.65086146763383
-        ],
-        [
-          -127.61910574776766,
-          55.87306431361594
-        ],
-        [
-          -143.49208286830344,
-          67.3016357421875
-        ],
-        [
-          -143.49208286830344,
-          67.3016357421875
-        ]
-      ],
-      "pressures": [],
-      "simulatePressure": true,
-      "lastCommittedPoint": null
-    },
-    {
-      "id": "zSjixUDKlsWpqjSLV-u8b",
-      "type": "freedraw",
-      "x": 1628.5327472989518,
-      "y": 894.777448745001,
-      "width": 112.38089425223211,
-      "height": 76.82538713727672,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "as",
-      "roundness": null,
-      "seed": 1803263917,
-      "version": 12,
-      "versionNonce": 1882506470,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          12.69845145089289,
-          9.52383858816961
-        ],
-        [
-          31.11101422991078,
-          22.85714285714289
-        ],
-        [
-          62.85714285714289,
-          42.5396728515625
-        ],
-        [
-          105.396728515625,
-          71.11110142299117
-        ],
-        [
-          111.74595424107133,
-          76.82538713727672
-        ],
-        [
-          112.38089425223211,
-          76.82538713727672
-        ],
-        [
-          112.38089425223211,
-          76.82538713727672
-        ]
-      ],
-      "pressures": [],
-      "simulatePressure": true,
-      "lastCommittedPoint": null
-    },
-    {
-      "id": "Y4VZ3lez9sEs2wZsCAcwY",
-      "type": "freedraw",
-      "x": 1737.739115881541,
-      "y": 906.2060201735726,
-      "width": 190.47624860491078,
-      "height": 62.22220284598211,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "at",
-      "roundness": null,
-      "seed": 703424355,
-      "version": 12,
-      "versionNonce": 1549219878,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          -1.2698800223213311,
-          0
-        ],
-        [
-          -60.95249720982133,
-          14.60318429129461
-        ],
-        [
-          -125.079345703125,
-          34.920654296875
-        ],
-        [
-          -175.2381243024554,
-          57.14285714285711
-        ],
-        [
-          -188.57151576450883,
-          62.22220284598211
-        ],
-        [
-          -190.47624860491078,
-          62.22220284598211
-        ],
-        [
-          -190.47624860491078,
-          62.22220284598211
-        ]
-      ],
-      "pressures": [],
-      "simulatePressure": true,
-      "lastCommittedPoint": null
-    },
-    {
-      "id": "LSdk0hHUb6dEF6AxzPr9Q",
-      "type": "freedraw",
-      "x": 1854.5644158257376,
-      "y": 746.8409601847331,
-      "width": 34.28571428571445,
-      "height": 49.52375139508922,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "ax",
-      "roundness": null,
-      "seed": 923533389,
-      "version": 17,
-      "versionNonce": 1514750822,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          -8.25387137276789,
-          0
-        ],
-        [
-          -12.698277064732338,
-          0
-        ],
-        [
-          -22.222202845982338,
-          6.349138532366169
-        ],
-        [
-          -30.47607421875,
-          19.68252999441961
-        ],
-        [
-          -34.28571428571445,
-          31.11110142299117
-        ],
-        [
-          -34.28571428571445,
-          42.5396728515625
-        ],
-        [
-          -32.38089425223234,
-          49.52375139508922
-        ],
-        [
-          -31.11101422991078,
-          49.52375139508922
-        ],
-        [
-          -26.66660853794656,
-          48.25395856584828
-        ],
-        [
-          -25.396728515625,
-          46.34913853236617
-        ],
-        [
-          -24.12684849330367,
-          45.71428571428578
-        ],
-        [
-          -24.12684849330367,
-          45.71428571428578
-        ]
-      ],
-      "pressures": [],
-      "simulatePressure": true,
-      "lastCommittedPoint": null
-    },
-    {
-      "id": "qjdqRz0Y4c5T9-cVTBHjH",
-      "type": "freedraw",
-      "x": 1895.1993558368981,
-      "y": 785.5710801624118,
-      "width": 157.4604143415179,
-      "height": 337.1428571428571,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "ay",
-      "roundness": null,
-      "seed": 178025485,
-      "version": 115,
-      "versionNonce": 1012393638,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          1.9048200334821104,
-          0
-        ],
-        [
-          19.047677176339448,
-          1.9047328404017208
-        ],
-        [
-          29.206368582589448,
-          3.809552873883831
-        ],
-        [
-          44.44440569196445,
-          8.253958565848052
-        ],
-        [
-          57.14285714285734,
-          13.333304268973052
-        ],
-        [
-          71.11118861607156,
-          19.68252999441961
-        ],
-        [
-          84.44440569196445,
-          27.93648856026789
-        ],
-        [
-          93.33339146205367,
-          34.920654296875
-        ],
-        [
-          99.04767717633945,
-          41.26988002232133
-        ],
-        [
-          102.85714285714289,
-          45.079345703125
-        ],
-        [
-          108.57142857142867,
-          55.23812430245539
-        ],
-        [
-          114.28571428571445,
-          65.39681570870539
-        ],
-        [
-          120,
-          76.19044712611594
-        ],
-        [
-          126.34922572544656,
-          89.52383858816961
-        ],
-        [
-          130.79363141741078,
-          100.95241001674094
-        ],
-        [
-          132.06351143973234,
-          111.11110142299094
-        ],
-        [
-          135.23821149553578,
-          125.079345703125
-        ],
-        [
-          137.14285714285734,
-          137.1428571428571
-        ],
-        [
-          138.41273716517867,
-          148.57142857142844
-        ],
-        [
-          138.41273716517867,
-          157.4603271484375
-        ],
-        [
-          139.04767717633945,
-          165.079345703125
-        ],
-        [
-          139.04767717633945,
-          175.2381243024554
-        ],
-        [
-          139.04767717633945,
-          175.87306431361594
-        ],
-        [
-          139.04767717633945,
-          184.12702287946422
-        ],
-        [
-          137.7777971540179,
-          191.74604143415172
-        ],
-        [
-          135.87297712053578,
-          200
-        ],
-        [
-          134.603271484375,
-          204.4444928850446
-        ],
-        [
-          133.33339146205367,
-          209.5238385881696
-        ],
-        [
-          130.79363141741078,
-          215.87306431361594
-        ],
-        [
-          128.88898577008945,
-          219.04758998325883
-        ],
-        [
-          126.34922572544656,
-          224.12702287946422
-        ],
-        [
-          123.17470005580367,
-          229.84130859375
-        ],
-        [
-          119.36505998883945,
-          235.55559430803578
-        ],
-        [
-          116.82547433035734,
-          240
-        ],
-        [
-          113.65077427455367,
-          245.079345703125
-        ],
-        [
-          109.84130859375,
-          250.79363141741055
-        ],
-        [
-          105.39690290178578,
-          255.87306431361594
-        ],
-        [
-          101.58726283482156,
-          260.31747000558016
-        ],
-        [
-          99.6826171875,
-          262.85714285714266
-        ],
-        [
-          95.87297712053578,
-          264.7618756975446
-        ],
-        [
-          92.69845145089289,
-          266.6666957310267
-        ],
-        [
-          88.88898577008945,
-          269.2063685825892
-        ],
-        [
-          87.61910574776789,
-          270.47616141183016
-        ],
-        [
-          83.17470005580367,
-          271.7460414341517
-        ],
-        [
-          80.63494001116078,
-          273.65077427455344
-        ],
-        [
-          78.09535435267867,
-          274.2857142857142
-        ],
-        [
-          75.55559430803578,
-          275.55559430803555
-        ],
-        [
-          73.01583426339289,
-          276.8253871372767
-        ],
-        [
-          71.74612862723234,
-          277.4603271484375
-        ],
-        [
-          69.84130859375,
-          278.09526715959805
-        ],
-        [
-          67.93648856026789,
-          278.73020717075883
-        ],
-        [
-          66.66678292410734,
-          279.3650599888392
-        ],
-        [
-          63.49208286830367,
-          280
-        ],
-        [
-          61.58726283482156,
-          280
-        ],
-        [
-          60.31755719866078,
-          280.63494001116055
-        ],
-        [
-          57.77779715401789,
-          281.9047328404017
-        ],
-        [
-          55.87297712053578,
-          283.80955287388383
-        ],
-        [
-          52.69845145089289,
-          285.71428571428555
-        ],
-        [
-          50.15869140625,
-          286.9841657366071
-        ],
-        [
-          50.15869140625,
-          288.25395856584805
-        ],
-        [
-          49.52392578125,
-          288.25395856584805
-        ],
-        [
-          47.61910574776789,
-          289.5238385881696
-        ],
-        [
-          45.079345703125,
-          290.79363141741055
-        ],
-        [
-          43.80964006696445,
-          290.79363141741055
-        ],
-        [
-          41.90482003348211,
-          291.42857142857133
-        ],
-        [
-          40,
-          292.69845145089266
-        ],
-        [
-          38.73011997767867,
-          292.69845145089266
-        ],
-        [
-          36.19053431919656,
-          292.69845145089266
-        ],
-        [
-          33.65077427455367,
-          292.69845145089266
-        ],
-        [
-          31.11118861607156,
-          293.33330426897305
-        ],
-        [
-          29.84130859375,
-          293.33330426897305
-        ],
-        [
-          24.761962890625,
-          293.96824428013383
-        ],
-        [
-          19.047677176339448,
-          294.6031842912946
-        ],
-        [
-          15.87297712053578,
-          294.6031842912946
-        ],
-        [
-          13.333391462053669,
-          295.23812430245516
-        ],
-        [
-          11.428571428571558,
-          295.87306431361594
-        ],
-        [
-          9.52392578125,
-          296.50791713169633
-        ],
-        [
-          6.98416573660711,
-          296.50791713169633
-        ],
-        [
-          -5.079345703125,
-          297.1428571428571
-        ],
-        [
-          -9.52375139508922,
-          298.41273716517844
-        ],
-        [
-          -10.15869140625,
-          298.41273716517844
-        ],
-        [
-          -10.793631417410552,
-          298.41273716517844
-        ],
-        [
-          -12.69845145089289,
-          299.04758998325883
-        ],
-        [
-          -13.33321707589289,
-          299.04758998325883
-        ],
-        [
-          -15.872977120535552,
-          299.6825299944196
-        ],
-        [
-          -17.77779715401789,
-          300.31747000558016
-        ],
-        [
-          -18.41273716517844,
-          300.31747000558016
-        ],
-        [
-          -15.238037109375,
-          300.31747000558016
-        ],
-        [
-          -3.1745256696428896,
-          294.6031842912946
-        ],
-        [
-          4.444405691964448,
-          290.79363141741055
-        ],
-        [
-          12.69845145089289,
-          286.9841657366071
-        ],
-        [
-          19.047677176339448,
-          285.079345703125
-        ],
-        [
-          22.22220284598211,
-          283.80955287388383
-        ],
-        [
-          18.41273716517867,
-          283.80955287388383
-        ],
-        [
-          8.888985770089448,
-          286.34922572544633
-        ],
-        [
-          -1.9046456473213311,
-          290.15877859933016
-        ],
-        [
-          -7.61893136160711,
-          292.69845145089266
-        ],
-        [
-          -11.428571428571331,
-          294.6031842912946
-        ],
-        [
-          -12.69845145089289,
-          295.87306431361594
-        ],
-        [
-          -14.60309709821422,
-          297.77779715401766
-        ],
-        [
-          -15.238037109375,
-          297.77779715401766
-        ],
-        [
-          -15.238037109375,
-          298.41273716517844
-        ],
-        [
-          -15.872977120535552,
-          298.41273716517844
-        ],
-        [
-          -15.872977120535552,
-          299.04758998325883
-        ],
-        [
-          -12.69845145089289,
-          302.2222028459821
-        ],
-        [
-          1.9048200334821104,
-          312.3809814453125
-        ],
-        [
-          24.761962890625,
-          328.25395856584805
-        ],
-        [
-          33.01583426339289,
-          335.87306431361594
-        ],
-        [
-          35.55559430803578,
-          337.1428571428571
-        ],
-        [
-          35.55559430803578,
-          337.1428571428571
-        ]
-      ],
-      "pressures": [],
-      "simulatePressure": true,
-      "lastCommittedPoint": null
-    },
-    {
-      "id": "MCTNCbOrBkXrN4XLoykSL",
-      "type": "freedraw",
-      "x": 1834.8819730243981,
-      "y": 1117.634591602144,
-      "width": 219.04767717633922,
-      "height": 196.19044712611617,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "az",
-      "roundness": null,
-      "seed": 688916941,
-      "version": 61,
-      "versionNonce": 53486054,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          0.6349400111605519
-        ],
-        [
-          -5.714285714285552,
-          8.253958565848052
-        ],
-        [
-          -10.15869140625,
-          12.6983642578125
-        ],
-        [
-          -17.14285714285711,
-          18.412649972098052
-        ],
-        [
-          -28.57142857142844,
-          25.39681570870539
-        ],
-        [
-          -44.44440569196422,
-          31.11110142299094
-        ],
-        [
-          -58.41273716517844,
-          33.65077427455344
-        ],
-        [
-          -69.20636858258922,
-          38.09526715959805
-        ],
-        [
-          -93.96833147321422,
-          42.5396728515625
-        ],
-        [
-          -113.01583426339289,
-          41.90473284040172
-        ],
-        [
-          -141.58726283482133,
-          35.55550711495539
-        ],
-        [
-          -149.84130859375,
-          31.74604143415172
-        ],
-        [
-          -168.25404575892844,
-          17.77779715401789
-        ],
-        [
-          -178.41273716517844,
-          8.888898577008831
-        ],
-        [
-          -187.3015485491071,
-          0
-        ],
-        [
-          -198.09535435267844,
-          -12.06351143973211
-        ],
-        [
-          -205.71428571428555,
-          -21.587350027901948
-        ],
-        [
-          -215.23821149553555,
-          -38.09526715959828
-        ],
-        [
-          -218.41273716517844,
-          -48.88889857700906
-        ],
-        [
-          -219.04767717633922,
-          -66.03175571986617
-        ],
-        [
-          -219.04767717633922,
-          -76.82538713727695
-        ],
-        [
-          -216.50791713169633,
-          -91.42857142857156
-        ],
-        [
-          -212.6984514508929,
-          -102.85714285714289
-        ],
-        [
-          -208.25404575892844,
-          -114.28571428571422
-        ],
-        [
-          -204.44440569196422,
-          -120
-        ],
-        [
-          -197.4604143415179,
-          -128.25395856584828
-        ],
-        [
-          -191.7461286272321,
-          -135.2381243024554
-        ],
-        [
-          -183.49208286830344,
-          -143.49208286830367
-        ],
-        [
-          -179.6826171875,
-          -147.3016357421875
-        ],
-        [
-          -176.50791713169633,
-          -149.20636858258922
-        ],
-        [
-          -173.96833147321422,
-          -150.4761614118304
-        ],
-        [
-          -173.33339146205344,
-          -151.74604143415172
-        ],
-        [
-          -172.6984514508929,
-          -152.3809814453125
-        ],
-        [
-          -173.33339146205344,
-          -152.3809814453125
-        ],
-        [
-          -178.41273716517844,
-          -153.01592145647328
-        ],
-        [
-          -184.761962890625,
-          -153.01592145647328
-        ],
-        [
-          -197.4604143415179,
-          -153.01592145647328
-        ],
-        [
-          -205.71428571428555,
-          -153.01592145647328
-        ],
-        [
-          -212.6984514508929,
-          -153.01592145647328
-        ],
-        [
-          -213.33339146205344,
-          -152.3809814453125
-        ],
-        [
-          -209.52392578125,
-          -152.3809814453125
-        ],
-        [
-          -201.26988002232133,
-          -152.3809814453125
-        ],
-        [
-          -193.65077427455344,
-          -153.01592145647328
-        ],
-        [
-          -186.03184291294633,
-          -153.65077427455367
-        ],
-        [
-          -184.761962890625,
-          -153.65077427455367
-        ],
-        [
-          -182.8571428571429,
-          -153.65077427455367
-        ],
-        [
-          -182.2222028459821,
-          -153.01592145647328
-        ],
-        [
-          -180.31755719866055,
-          -147.3016357421875
-        ],
-        [
-          -175.87297712053555,
-          -135.87306431361617
-        ],
-        [
-          -169.52392578125,
-          -117.4603271484375
-        ],
-        [
-          -169.52392578125,
-          -109.20636858258922
-        ],
-        [
-          -169.52392578125,
-          -103.49208286830367
-        ],
-        [
-          -169.52392578125,
-          -99.68252999441961
-        ],
-        [
-          -169.52392578125,
-          -96.50791713169633
-        ],
-        [
-          -169.52392578125,
-          -95.87306431361617
-        ],
-        [
-          -169.52392578125,
-          -95.87306431361617
-        ]
-      ],
-      "pressures": [],
-      "simulatePressure": true,
-      "lastCommittedPoint": null
-    },
-    {
-      "id": "AraZhJ97lKwIwfs-RTu1U",
-      "type": "freedraw",
-      "x": 1667.2628672766302,
-      "y": 889.0631630307153,
-      "width": 182.2222028459821,
-      "height": 146.03166852678578,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "b00",
-      "roundness": null,
-      "seed": 101092205,
-      "version": 33,
-      "versionNonce": 299824422,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          -2.5395856584821104,
-          0.6349400111607792
-        ],
-        [
-          -4.444405691964221,
-          1.2697928292411689
-        ],
-        [
-          -6.98416573660711,
-          1.2697928292411689
-        ],
-        [
-          -12.06351143973211,
-          -5.079345703125
-        ],
-        [
-          -22.22220284598211,
-          -26.66669573102672
-        ],
-        [
-          -30.476248604910552,
-          -54.60318429129461
-        ],
-        [
-          -34.28571428571422,
-          -82.5396728515625
-        ],
-        [
-          -32.38089425223211,
-          -95.87306431361594
-        ],
-        [
-          -26.66660853794633,
-          -105.39681570870539
-        ],
-        [
-          -18.41273716517844,
-          -111.74604143415172
-        ],
-        [
-          -3.8094656808034415,
-          -122.5396728515625
-        ],
-        [
-          10.15869140625,
-          -128.88889857700883
-        ],
-        [
-          26.66660853794656,
-          -136.50791713169633
-        ],
-        [
-          40,
-          -141.58735002790172
-        ],
-        [
-          50.15869140625,
-          -143.49208286830344
-        ],
-        [
-          63.49208286830367,
-          -144.7618756975446
-        ],
-        [
-          81.90482003348234,
-          -143.49208286830344
-        ],
-        [
-          109.84130859375,
-          -138.41273716517844
-        ],
-        [
-          118.73011997767867,
-          -137.1428571428571
-        ],
-        [
-          125.71428571428578,
-          -133.33330426897305
-        ],
-        [
-          132.06351143973234,
-          -129.5238385881696
-        ],
-        [
-          135.87297712053578,
-          -125.71428571428555
-        ],
-        [
-          139.6826171875,
-          -122.5396728515625
-        ],
-        [
-          142.22220284598234,
-          -118.73020717075883
-        ],
-        [
-          144.12702287946445,
-          -115.55559430803555
-        ],
-        [
-          146.03184291294656,
-          -113.01592145647305
-        ],
-        [
-          147.9364885602679,
-          -110.47616141183039
-        ],
-        [
-          147.9364885602679,
-          -110.47616141183039
-        ]
-      ],
-      "pressures": [],
-      "simulatePressure": true,
-      "lastCommittedPoint": null
-    },
-    {
-      "id": "EsRDYTjbXrHhxhPqOrspy",
-      "type": "freedraw",
-      "x": 1803.7707844083268,
-      "y": 722.0790408906485,
-      "width": 43.17452566964289,
-      "height": 67.30159214564719,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "b01",
-      "roundness": null,
-      "seed": 688970701,
-      "version": 16,
-      "versionNonce": 1641111654,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366021,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          3.1745692661829708
-        ],
-        [
-          6.349225725446331,
-          19.047633579798912
-        ],
-        [
-          10.15869140625,
-          35.55555071149547
-        ],
-        [
-          16.50791713169633,
-          51.42852783203125
-        ],
-        [
-          17.14285714285711,
-          53.33334786551336
-        ],
-        [
-          10.15869140625,
-          55.87302071707586
-        ],
-        [
-          -8.25387137276789,
-          60.31742640904008
-        ],
-        [
-          -21.58726283482156,
-          66.03171212332586
-        ],
-        [
-          -25.396728515625,
-          67.30159214564719
-        ],
-        [
-          -26.03166852678578,
-          67.30159214564719
-        ],
-        [
-          -26.03166852678578,
-          67.30159214564719
-        ]
-      ],
-      "pressures": [],
-      "simulatePressure": true,
-      "lastCommittedPoint": null
     },
     {
       "id": "XevQSAIvKE188cd-3L2dC",
@@ -2738,20 +345,20 @@
       "index": "b09",
       "roundness": null,
       "seed": 1766949708,
-      "version": 744,
-      "versionNonce": 434306406,
+      "version": 758,
+      "versionNonce": 1283710589,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366021,
+      "updated": 1761112150108,
       "link": null,
       "locked": false,
-      "text": "Non-functional req:\nDAU: ~10 million daily active users\nPeak traffic: When popular events go on sale (e.g., Taylor Swift concert), \nexpect 500K-1M concurrent users trying to buy tickets for the same event\nTotal events: ~50,000 active events at any time\nTicket inventory per event: Ranges from 100 to 100,000 tickets\n\nLets assume average ticket size is 1Kb\nAverage memory space at given time: 1Kb * 50k events * 100k tickets\n= 5000 x 10^9 = 5 Pb of data (wrong calc its GTP, not GPT)\n\ncorrect:\n1Kb * 50k * 100k = 5000 * 10 ^9= 5*10^12= 5Tb (terra, not peta)\n\nPeak traffic data = 1M* 1Kb = 1 Gb/popular_event\n\nCap theorem:\nStrong consistency, Highly available, less priority on fault tolerance \n(is this right?)\n\nAPI: (not sure of restful api endpoints)\nUser: \nGET /ticket/user_id\nPOST /event_id/ticket\n\nPlatform:\nGET /event_id \n",
+      "text": "Non-functional req:\nDAU: ~10 million daily active users\nPeak traffic: When popular events go on sale (e.g., Taylor Swift concert), \nexpect 500K-1M concurrent users trying to buy tickets for the same event\nTotal events: ~50,000 active events at any time\nTicket inventory per event: Ranges from 100 to 100,000 tickets\n\nLets assume average ticket size is 1Kb\nAverage memory space at given time: 1Kb * 50k events * 100k tickets\n= 5000 x 10^9 = 5 Pb of data (wrong calc its GTP, not GPT)\n\ncorrect:\n1Kb * 50k * 100k = 5000 * 10 ^9= 5*10^12= 5Tb (terra, not peta)\n\nPeak traffic data = 1M* 1Kb = 1 Gb/popular_event\n\nCap theorem: (wron try)\nStrong consistency, Highly available, less priority on fault tolerance \n(is this right?)\n\nAPI: (not sure of restful api endpoints)\nUser: \nGET /ticket/user_id\nPOST /event_id/ticket\n\nPlatform:\nGET /event_id \n",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Non-functional req:\nDAU: ~10 million daily active users\nPeak traffic: When popular events go on sale (e.g., Taylor Swift concert), \nexpect 500K-1M concurrent users trying to buy tickets for the same event\nTotal events: ~50,000 active events at any time\nTicket inventory per event: Ranges from 100 to 100,000 tickets\n\nLets assume average ticket size is 1Kb\nAverage memory space at given time: 1Kb * 50k events * 100k tickets\n= 5000 x 10^9 = 5 Pb of data (wrong calc its GTP, not GPT)\n\ncorrect:\n1Kb * 50k * 100k = 5000 * 10 ^9= 5*10^12= 5Tb (terra, not peta)\n\nPeak traffic data = 1M* 1Kb = 1 Gb/popular_event\n\nCap theorem:\nStrong consistency, Highly available, less priority on fault tolerance \n(is this right?)\n\nAPI: (not sure of restful api endpoints)\nUser: \nGET /ticket/user_id\nPOST /event_id/ticket\n\nPlatform:\nGET /event_id \n",
+      "originalText": "Non-functional req:\nDAU: ~10 million daily active users\nPeak traffic: When popular events go on sale (e.g., Taylor Swift concert), \nexpect 500K-1M concurrent users trying to buy tickets for the same event\nTotal events: ~50,000 active events at any time\nTicket inventory per event: Ranges from 100 to 100,000 tickets\n\nLets assume average ticket size is 1Kb\nAverage memory space at given time: 1Kb * 50k events * 100k tickets\n= 5000 x 10^9 = 5 Pb of data (wrong calc its GTP, not GPT)\n\ncorrect:\n1Kb * 50k * 100k = 5000 * 10 ^9= 5*10^12= 5Tb (terra, not peta)\n\nPeak traffic data = 1M* 1Kb = 1 Gb/popular_event\n\nCap theorem: (wron try)\nStrong consistency, Highly available, less priority on fault tolerance \n(is this right?)\n\nAPI: (not sure of restful api endpoints)\nUser: \nGET /ticket/user_id\nPOST /event_id/ticket\n\nPlatform:\nGET /event_id \n",
       "autoResize": true,
       "lineHeight": 1.25
     },
@@ -3415,7 +1022,7 @@
       "x": 1792.6596602182542,
       "y": 1582.4070478166848,
       "width": 807.95947265625,
-      "height": 500,
+      "height": 600,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -3429,20 +1036,20 @@
       "index": "b0P",
       "roundness": null,
       "seed": 132105113,
-      "version": 553,
-      "versionNonce": 845695078,
+      "version": 827,
+      "versionNonce": 2003787709,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366022,
+      "updated": 1761113087334,
       "link": null,
       "locked": false,
-      "text": "Corrected non-functional req:\nnot all events have 100k events so lets assume 10k tickets\n1Kb * 50k events * 10k = 0.5 Tb = 500 Gb of data\n\nplus db replicas, backups and indexes its like 1Tb\n\nFor CAP, P is unavoidable so we need to prioritise C or A. In ticket system, CP is \nbetter cuz when we buy tickets, we dont wanna overbuy tickets. \n\nAPI:\nUser:\nGET /events/{event_id, user_id}\n\nPOST /bookings/\nDELETE /bookings/{booking_id}\n\nPlatform:\nPOST /events\n\n",
+      "text": "Corrected non-functional req:\nnot all events have 100k events so lets assume 10k tickets\n1Kb * 50k events * 10k = 0.5 Tb = 500 Gb of data for storing ticket info\n\nplus db replicas, backups and indexes its like 1Tb\n\nFor CAP, P is unavoidable so we need to prioritise C or A. In ticket system, CP is \nbetter cuz when we buy tickets, we dont wanna overbuy tickets. \n\nAPI:\nUser:\nGET /events/{event_id, user_id}\n\nPOST /bookings/\nDELETE /bookings/{booking_id}\n\nPlatform:\nPOST /events\n\n500Gb of ticket info read might be dealt ok with postgres with read replicas AND\nREDIS!! I FORGOT REDIS!. But if reads become more than a few Tb, sharding \nbecomes necessary or more aggressive use of redis.\n\n",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Corrected non-functional req:\nnot all events have 100k events so lets assume 10k tickets\n1Kb * 50k events * 10k = 0.5 Tb = 500 Gb of data\n\nplus db replicas, backups and indexes its like 1Tb\n\nFor CAP, P is unavoidable so we need to prioritise C or A. In ticket system, CP is \nbetter cuz when we buy tickets, we dont wanna overbuy tickets. \n\nAPI:\nUser:\nGET /events/{event_id, user_id}\n\nPOST /bookings/\nDELETE /bookings/{booking_id}\n\nPlatform:\nPOST /events\n\n",
+      "originalText": "Corrected non-functional req:\nnot all events have 100k events so lets assume 10k tickets\n1Kb * 50k events * 10k = 0.5 Tb = 500 Gb of data for storing ticket info\n\nplus db replicas, backups and indexes its like 1Tb\n\nFor CAP, P is unavoidable so we need to prioritise C or A. In ticket system, CP is \nbetter cuz when we buy tickets, we dont wanna overbuy tickets. \n\nAPI:\nUser:\nGET /events/{event_id, user_id}\n\nPOST /bookings/\nDELETE /bookings/{booking_id}\n\nPlatform:\nPOST /events\n\n500Gb of ticket info read might be dealt ok with postgres with read replicas AND\nREDIS!! I FORGOT REDIS!. But if reads become more than a few Tb, sharding \nbecomes necessary or more aggressive use of redis.\n\n",
       "autoResize": true,
       "lineHeight": 1.25
     },
@@ -3905,8 +1512,8 @@
       "type": "text",
       "x": 2469.2271147228425,
       "y": 2512.279947916666,
-      "width": 741.6795043945312,
-      "height": 1275,
+      "width": 775.8994750976562,
+      "height": 1225,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -3920,20 +1527,20 @@
       "index": "b0g",
       "roundness": null,
       "seed": 1429356473,
-      "version": 1683,
-      "versionNonce": 733220390,
+      "version": 1983,
+      "versionNonce": 194400093,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366022,
+      "updated": 1761115163614,
       "link": null,
       "locked": false,
-      "text": "i think while explaining, good to incroporate the numbers inside the \ndiscussion like hashing event id on redis, average is 10k tickets so its good\nstrat and just need to deal with those 100k tickets event\n\nFor concurrency strategy, redis + queue \n\nredis cuz its fast (in-memory) and atomic (Redis's atomic commands ensure \nonly one transaction can successfully reserve the last ticket)\n\nclient -> redis decrements DECRBY 1 the ticket count and this is atomic\ncommand on the key that is holding that specific event \n\n[event_id, count]\n[event_id, event_info]\nSet(popular_event_id) - Sorted set of event_ids by popularity\n\nand\n# 3. Search results (popular queries)\nKey: \"search:new_york:2025-12-25:concerts\"\nthis colon is for name spacing, and Redis has SCAN command to search for\nkey easily if it follows this convertion like SCAN search:*\nValue: [event_id_1, event_id_2, ...]\nTTL: 5 minutes (search results can be slightly stale)\n\nAnd if it succeeds, redis can return a positive integer and if it fails, it can\nreturn a negative number\n\nif it succeeds, the request is directed to the payment service and if its ok\nwe get 200 success code. But if it fails the redis counter needs to be \nincremented again\n\nfor redis cluster, since we are hashing on event id, we can use consistent\nhash ring with vnodes for even load distribution (BUT it doesnt solve \nhotspot issues)\n\nBooking Service (Producer)\n    ↓ produces to\nKafka Topic: \"booking-requests\"\n    ↓ consumed by\nBooking Worker (Consumer)\n    ↓ produces to\nKafka Topic: \"payment-requests\"\n    ↓ consumed by\nPayment Worker (Consumer)\n\nevent:\nnot sharding event db with event id cuz there are search queries laid out in\nfunctional req (search via artist, location, etc) that dont use event id and \ncross shard joins are exp\n\ninstead, read replicas ",
+      "text": "i think while explaining, good to incroporate the numbers inside the \ndiscussion like hashing event id on redis, average is 10k tickets so its good\nstrat and just need to deal with those 100k tickets event\n\nFor concurrency strategy, redis + queue \n\nredis cuz its fast (in-memory) and atomic (Redis's atomic commands ensure \nonly one transaction can successfully reserve the last ticket)\n\nclient -> redis decrements DECRBY 1 the ticket count and this is atomic\ncommand on the key that is holding that specific event \n\n[event_id, count]\n[event_id, event_info]\nSet(popular_event_id) - Sorted set of event_ids by popularity\n\nand\n# 3. Search results (popular queries)\nKey: \"search:new_york:2025-12-25:concerts\"\nthis colon is for name spacing, and Redis has SCAN command to search for\nkey easily if it follows this convertion like SCAN search:*\nValue: [event_id_1, event_id_2, ...]\nTTL: 5 minutes (search results can be slightly stale)\n\nAnd if it succeeds, redis can return a positive integer and if it fails, it can\nreturn a negative number\n\nif it succeeds, the request is directed to the payment service and if its ok\nwe get 200 success code. But if it fails the redis counter needs to be \nincremented again\n\nfor redis cluster, since we are hashing on event id, we can use consistent\nhash ring with vnodes for even load distribution (BUT it doesnt solve \nhotspot issues)\n\nevent:\nnot sharding event db with event id cuz there are search queries laid out in\nfunctional req (search via artist, location, etc) that dont use event id and \ncross shard joins are exp\n\ninstead, read replicas \n\noptimisation:\nbloom filter when querying shard, indexes on (location, date, category) for fast\nqueries\n\nfor global deployment:\nGlobal load balancer (route 53) to route user to nearest DC -> US/EU/APAC\nDC that has its own api gw, services, redis ,etc ",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "i think while explaining, good to incroporate the numbers inside the \ndiscussion like hashing event id on redis, average is 10k tickets so its good\nstrat and just need to deal with those 100k tickets event\n\nFor concurrency strategy, redis + queue \n\nredis cuz its fast (in-memory) and atomic (Redis's atomic commands ensure \nonly one transaction can successfully reserve the last ticket)\n\nclient -> redis decrements DECRBY 1 the ticket count and this is atomic\ncommand on the key that is holding that specific event \n\n[event_id, count]\n[event_id, event_info]\nSet(popular_event_id) - Sorted set of event_ids by popularity\n\nand\n# 3. Search results (popular queries)\nKey: \"search:new_york:2025-12-25:concerts\"\nthis colon is for name spacing, and Redis has SCAN command to search for\nkey easily if it follows this convertion like SCAN search:*\nValue: [event_id_1, event_id_2, ...]\nTTL: 5 minutes (search results can be slightly stale)\n\nAnd if it succeeds, redis can return a positive integer and if it fails, it can\nreturn a negative number\n\nif it succeeds, the request is directed to the payment service and if its ok\nwe get 200 success code. But if it fails the redis counter needs to be \nincremented again\n\nfor redis cluster, since we are hashing on event id, we can use consistent\nhash ring with vnodes for even load distribution (BUT it doesnt solve \nhotspot issues)\n\nBooking Service (Producer)\n    ↓ produces to\nKafka Topic: \"booking-requests\"\n    ↓ consumed by\nBooking Worker (Consumer)\n    ↓ produces to\nKafka Topic: \"payment-requests\"\n    ↓ consumed by\nPayment Worker (Consumer)\n\nevent:\nnot sharding event db with event id cuz there are search queries laid out in\nfunctional req (search via artist, location, etc) that dont use event id and \ncross shard joins are exp\n\ninstead, read replicas ",
+      "originalText": "i think while explaining, good to incroporate the numbers inside the \ndiscussion like hashing event id on redis, average is 10k tickets so its good\nstrat and just need to deal with those 100k tickets event\n\nFor concurrency strategy, redis + queue \n\nredis cuz its fast (in-memory) and atomic (Redis's atomic commands ensure \nonly one transaction can successfully reserve the last ticket)\n\nclient -> redis decrements DECRBY 1 the ticket count and this is atomic\ncommand on the key that is holding that specific event \n\n[event_id, count]\n[event_id, event_info]\nSet(popular_event_id) - Sorted set of event_ids by popularity\n\nand\n# 3. Search results (popular queries)\nKey: \"search:new_york:2025-12-25:concerts\"\nthis colon is for name spacing, and Redis has SCAN command to search for\nkey easily if it follows this convertion like SCAN search:*\nValue: [event_id_1, event_id_2, ...]\nTTL: 5 minutes (search results can be slightly stale)\n\nAnd if it succeeds, redis can return a positive integer and if it fails, it can\nreturn a negative number\n\nif it succeeds, the request is directed to the payment service and if its ok\nwe get 200 success code. But if it fails the redis counter needs to be \nincremented again\n\nfor redis cluster, since we are hashing on event id, we can use consistent\nhash ring with vnodes for even load distribution (BUT it doesnt solve \nhotspot issues)\n\nevent:\nnot sharding event db with event id cuz there are search queries laid out in\nfunctional req (search via artist, location, etc) that dont use event id and \ncross shard joins are exp\n\ninstead, read replicas \n\noptimisation:\nbloom filter when querying shard, indexes on (location, date, category) for fast\nqueries\n\nfor global deployment:\nGlobal load balancer (route 53) to route user to nearest DC -> US/EU/APAC\nDC that has its own api gw, services, redis ,etc ",
       "autoResize": true,
       "lineHeight": 1.25
     },
@@ -4120,78 +1727,6 @@
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false
-    },
-    {
-      "id": "Ey3flanWBpvOJxWtVLVEb",
-      "type": "rectangle",
-      "x": 3290.3384428478425,
-      "y": 2500.502146402994,
-      "width": 912.889038085937,
-      "height": 2660,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "b0l",
-      "roundness": {
-        "type": 3
-      },
-      "seed": 901103383,
-      "version": 56,
-      "versionNonce": 739817894,
-      "isDeleted": false,
-      "boundElements": [
-        {
-          "type": "text",
-          "id": "7VfZi58nSCMsgPd1KIj2O"
-        }
-      ],
-      "updated": 1760853366022,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "7VfZi58nSCMsgPd1KIj2O",
-      "type": "text",
-      "x": 3300.430422828311,
-      "y": 2505.502146402994,
-      "width": 892.705078125,
-      "height": 2650,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "b0m",
-      "roundness": null,
-      "seed": 1374946457,
-      "version": 8,
-      "versionNonce": 157193446,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760853366022,
-      "link": null,
-      "locked": false,
-      "text": "## **Complete System Architecture Diagram:**\n\n```\n┌──────────────────────────────────────────────────────────────\n───────┐\n│                            CLIENT/USER                               │\n└────────────────────────────────┬─────────────────────────────\n───────┘\n                                 ↓\n                    ┌────────────────────────┐\n                    │   Load Balancer (LB)   │\n                    └────────────┬───────────┘\n                                 ↓\n                    ┌────────────────────────┐\n                    │  API Gateway (cluster) │\n                    │  - Auth                │\n                    │  - Rate Limiting       │\n                    └────────────┬───────────┘\n                                 ↓\n        ┌────────────────────────┼────────────────────────┐\n        ↓                        ↓                         ↓\n┌───────────────┐      ┌─────────────────┐      ┌─────────────────┐\n│ Event Service │      │ Booking Service │      │  User Service   │\n│  (stateless)  │      │   (stateless)   │      │   (stateless)   │\n│  - Browse     │      │  - Reserve      │      │  - Profile      │\n│  - Search     │      │  - Cancel       │      │  - History      │\n└───────┬───────┘      └────────┬────────┘      └────────┬────────┘\n        │                       │                         │\n        │ ┌─────────────────────┘                         │\n        │ │                                                │\n        ↓ ↓                                                ↓\n┌────────────────────┐                          ┌──────────────────┐\n│   Redis Cluster    │                          │   PostgreSQL     │\n│  (Consistent Hash) │                          │   - User DB      │\n│  - Event cache     │                          │   - Read Replica │\n│  - Inventory count │                          └──────────────────┘\n└─────────┬──────────┘\n          │\n          ↓ (cache miss)\n┌────────────────────┐\n│   PostgreSQL       │\n│   - Event DB       │\n│   - Read Replicas  │\n└────────────────────┘\n\n\n┌──────────────────────────────────────────────────────────────\n───────┐\n│                    BOOKING FLOW (Async Processing)                   │\n└──────────────────────────────────────────────────────────────\n───────┘\n\nBooking Service\n    ↓\n1. Check Redis (atomic DECRBY)\n    ↓\n2. Produce to Kafka\n    ↓\n┌─────────────────────────┐\n│  Kafka Topic:           │\n│  \"booking-requests\"     │\n└────────────┬────────────┘\n             ↓ (consumes)\n┌─────────────────────────┐\n│   Booking Worker        │\n│   (Consumer Service)    │\n│   - Write to DB         │\n│   - Create tickets      │\n└────────────┬────────────┘\n             ↓ (produces)\n┌─────────────────────────┐\n│  Kafka Topic:           │\n│  \"payment-requests\"     │\n└────────────┬────────────┘\n             ↓ (consumes)\n┌─────────────────────────┐\n│   Payment Worker        │\n│   (Consumer Service)    │\n│   - Call Stripe         │\n│   - Update booking      │\n└────────────┬────────────┘\n             ↓\n┌─────────────────────────┐\n│   PostgreSQL            │\n│   - Bookings DB         │\n│   - Tickets DB          │\n│   (Sharded by user_id)  │\n└─────────────────────────┘\n\n\n┌──────────────────────────────────────────────────────────────\n───────┐\n│                    BACKGROUND JOBS                                   │\n└──────────────────────────────────────────────────────────────\n───────┘\n\n┌─────────────────────────┐\n│  Timeout Handler        │\n│  (Cron job every 1 min) │\n│  - Release expired      │\n│    bookings (>10 min)   │\n│  - Return to inventory  │\n└────────────┬────────────┘\n             ↓\n        Redis + PostgreSQL\n",
-      "fontSize": 20,
-      "fontFamily": 5,
-      "textAlign": "center",
-      "verticalAlign": "middle",
-      "containerId": "Ey3flanWBpvOJxWtVLVEb",
-      "originalText": "## **Complete System Architecture Diagram:**\n\n```\n┌─────────────────────────────────────────────────────────────────────┐\n│                            CLIENT/USER                               │\n└────────────────────────────────┬────────────────────────────────────┘\n                                 ↓\n                    ┌────────────────────────┐\n                    │   Load Balancer (LB)   │\n                    └────────────┬───────────┘\n                                 ↓\n                    ┌────────────────────────┐\n                    │  API Gateway (cluster) │\n                    │  - Auth                │\n                    │  - Rate Limiting       │\n                    └────────────┬───────────┘\n                                 ↓\n        ┌────────────────────────┼────────────────────────┐\n        ↓                        ↓                         ↓\n┌───────────────┐      ┌─────────────────┐      ┌─────────────────┐\n│ Event Service │      │ Booking Service │      │  User Service   │\n│  (stateless)  │      │   (stateless)   │      │   (stateless)   │\n│  - Browse     │      │  - Reserve      │      │  - Profile      │\n│  - Search     │      │  - Cancel       │      │  - History      │\n└───────┬───────┘      └────────┬────────┘      └────────┬────────┘\n        │                       │                         │\n        │ ┌─────────────────────┘                         │\n        │ │                                                │\n        ↓ ↓                                                ↓\n┌────────────────────┐                          ┌──────────────────┐\n│   Redis Cluster    │                          │   PostgreSQL     │\n│  (Consistent Hash) │                          │   - User DB      │\n│  - Event cache     │                          │   - Read Replica │\n│  - Inventory count │                          └──────────────────┘\n└─────────┬──────────┘\n          │\n          ↓ (cache miss)\n┌────────────────────┐\n│   PostgreSQL       │\n│   - Event DB       │\n│   - Read Replicas  │\n└────────────────────┘\n\n\n┌─────────────────────────────────────────────────────────────────────┐\n│                    BOOKING FLOW (Async Processing)                   │\n└─────────────────────────────────────────────────────────────────────┘\n\nBooking Service\n    ↓\n1. Check Redis (atomic DECRBY)\n    ↓\n2. Produce to Kafka\n    ↓\n┌─────────────────────────┐\n│  Kafka Topic:           │\n│  \"booking-requests\"     │\n└────────────┬────────────┘\n             ↓ (consumes)\n┌─────────────────────────┐\n│   Booking Worker        │\n│   (Consumer Service)    │\n│   - Write to DB         │\n│   - Create tickets      │\n└────────────┬────────────┘\n             ↓ (produces)\n┌─────────────────────────┐\n│  Kafka Topic:           │\n│  \"payment-requests\"     │\n└────────────┬────────────┘\n             ↓ (consumes)\n┌─────────────────────────┐\n│   Payment Worker        │\n│   (Consumer Service)    │\n│   - Call Stripe         │\n│   - Update booking      │\n└────────────┬────────────┘\n             ↓\n┌─────────────────────────┐\n│   PostgreSQL            │\n│   - Bookings DB         │\n│   - Tickets DB          │\n│   (Sharded by user_id)  │\n└─────────────────────────┘\n\n\n┌─────────────────────────────────────────────────────────────────────┐\n│                    BACKGROUND JOBS                                   │\n└─────────────────────────────────────────────────────────────────────┘\n\n┌─────────────────────────┐\n│  Timeout Handler        │\n│  (Cron job every 1 min) │\n│  - Release expired      │\n│    bookings (>10 min)   │\n│  - Return to inventory  │\n└────────────┬────────────┘\n             ↓\n        Redis + PostgreSQL\n",
-      "autoResize": true,
-      "lineHeight": 1.25
     },
     {
       "id": "UCGhLl0lW_5dqF-zdIhT6",
@@ -4410,6 +1945,954 @@
       "updated": 1760853366022,
       "link": null,
       "locked": false
+    },
+    {
+      "id": "6TNMAao-2QcrlHfJNO1e9",
+      "type": "rectangle",
+      "x": 59.23432316855536,
+      "y": 302.2655255756711,
+      "width": 358.6666870117188,
+      "height": 246.66671752929682,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1K",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 29954333,
+      "version": 112,
+      "versionNonce": 970124989,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "s8As874_fFTRghrYijaij"
+        },
+        {
+          "id": "VPtpQsSLUcDPyZXpVvUcd",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761111520224,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "s8As874_fFTRghrYijaij",
+      "type": "text",
+      "x": 68.06766667441477,
+      "y": 388.0988843403195,
+      "width": 341,
+      "height": 75,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1L",
+      "roundness": null,
+      "seed": 1784834365,
+      "version": 114,
+      "versionNonce": 1769211059,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761111425864,
+      "link": null,
+      "locked": false,
+      "text": "MSA -> Local disk\n(/var/log/*.log) <- Log agent\n(fluentd) pulls from local disk",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "6TNMAao-2QcrlHfJNO1e9",
+      "originalText": "MSA -> Local disk (/var/log/*.log) <- Log agent (fluentd) pulls from local disk",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "pHY7JW07pzkD2worz8s3R",
+      "type": "rectangle",
+      "x": 563.2343638586594,
+      "y": 307.5988792540566,
+      "width": 333.3333333333335,
+      "height": 242.66677856445307,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1M",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1168815091,
+      "version": 60,
+      "versionNonce": 1969456755,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "HgyXaD8c_ztkCSgCFeEBt"
+        },
+        {
+          "id": "VPtpQsSLUcDPyZXpVvUcd",
+          "type": "arrow"
+        },
+        {
+          "id": "8N-G6NB4UNe7aVibWyrro",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761111522103,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "HgyXaD8c_ztkCSgCFeEBt",
+      "type": "text",
+      "x": 581.4010305253262,
+      "y": 416.4322685362831,
+      "width": 297,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1N",
+      "roundness": null,
+      "seed": 579262557,
+      "version": 33,
+      "versionNonce": 2006618301,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761111450811,
+      "link": null,
+      "locked": false,
+      "text": "Kafka queue(topic:raw-logs)",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "pHY7JW07pzkD2worz8s3R",
+      "originalText": "Kafka queue(topic:raw-logs)",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "bZEj-4ZY6LtqgVHredRr1",
+      "type": "rectangle",
+      "x": 997.9010101802739,
+      "y": 306.26556626577536,
+      "width": 320,
+      "height": 234.6666971842447,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1O",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 2009963731,
+      "version": 70,
+      "versionNonce": 4806141,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "6dO8enwVRnljMPEdwWCHx"
+        },
+        {
+          "id": "8N-G6NB4UNe7aVibWyrro",
+          "type": "arrow"
+        },
+        {
+          "id": "d6Zlk1mE1XJghREuYbCNt",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761111523336,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "6dO8enwVRnljMPEdwWCHx",
+      "type": "text",
+      "x": 1053.401010180274,
+      "y": 411.09891485789774,
+      "width": 209,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1P",
+      "roundness": null,
+      "seed": 1600068275,
+      "version": 25,
+      "versionNonce": 768148307,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761111459959,
+      "link": null,
+      "locked": false,
+      "text": "Normalising workers",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "bZEj-4ZY6LtqgVHredRr1",
+      "originalText": "Normalising workers",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "7VfesfxdKyI5Pnu0B5BYr",
+      "type": "rectangle",
+      "x": 1432.5677582271492,
+      "y": 300.9322634500201,
+      "width": 306.66666666666674,
+      "height": 231.99996948242188,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1Q",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 302603293,
+      "version": 85,
+      "versionNonce": 1354895251,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "VD6nxjbY7WMGv0gBp5Svg"
+        },
+        {
+          "id": "d6Zlk1mE1XJghREuYbCNt",
+          "type": "arrow"
+        },
+        {
+          "id": "BPUnZPHKxobK00J4WTVtA",
+          "type": "arrow"
+        },
+        {
+          "id": "SoowYCNJ2jvVJvkqquLuS",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761111525544,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "VD6nxjbY7WMGv0gBp5Svg",
+      "type": "text",
+      "x": 1459.4010915604827,
+      "y": 379.43224819123105,
+      "width": 253,
+      "height": 75,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1R",
+      "roundness": null,
+      "seed": 1803963933,
+      "version": 40,
+      "versionNonce": 989588765,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761111482750,
+      "link": null,
+      "locked": false,
+      "text": "Kafka\nqueue(topic:normalised-\nlogs)",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "7VfesfxdKyI5Pnu0B5BYr",
+      "originalText": "Kafka queue(topic:normalised-logs)",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "t3X_zFSkXaNhzcIVP9HUe",
+      "type": "rectangle",
+      "x": 1265.9009898352222,
+      "y": 720.93221258739,
+      "width": 252.000020345052,
+      "height": 260,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1S",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1434766963,
+      "version": 45,
+      "versionNonce": 838405331,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "zVGiRQvSZ1SoSmSeZRL4Y"
+        },
+        {
+          "id": "BPUnZPHKxobK00J4WTVtA",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761111524470,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "zVGiRQvSZ1SoSmSeZRL4Y",
+      "type": "text",
+      "x": 1309.4010000077483,
+      "y": 825.93221258739,
+      "width": 165,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1T",
+      "roundness": null,
+      "seed": 2102011251,
+      "version": 30,
+      "versionNonce": 40716851,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761111496908,
+      "link": null,
+      "locked": false,
+      "text": "storage workers\n(loki+s3)",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "t3X_zFSkXaNhzcIVP9HUe",
+      "originalText": "storage workers (loki+s3)",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "Pg4sIVoFezQJgukhA3Qvj",
+      "type": "rectangle",
+      "x": 1628.5675140865242,
+      "y": 723.5988894265824,
+      "width": 253.33333333333348,
+      "height": 237.3333740234375,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1U",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1110481267,
+      "version": 71,
+      "versionNonce": 1409254301,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "WHfDPO4FJXbOWzO8-z7Ly"
+        },
+        {
+          "id": "SoowYCNJ2jvVJvkqquLuS",
+          "type": "arrow"
+        },
+        {
+          "id": "cCSwR0syV84NoIXosQZlm",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761111526783,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "WHfDPO4FJXbOWzO8-z7Ly",
+      "type": "text",
+      "x": 1639.734180753191,
+      "y": 767.2655764383012,
+      "width": 231,
+      "height": 150,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1V",
+      "roundness": null,
+      "seed": 1103527677,
+      "version": 115,
+      "versionNonce": 1377459027,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761111627339,
+      "link": null,
+      "locked": false,
+      "text": "alert rule engine\n(checks logs against\nthreshold)-> alert\nmanager (notification\nrole, not checking\nlogs)",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "Pg4sIVoFezQJgukhA3Qvj",
+      "originalText": "alert rule engine (checks logs against threshold)-> alert manager (notification role, not checking logs)",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "PL55vb4DI8NovHsLUFJSF",
+      "type": "rectangle",
+      "x": 1668.567717537045,
+      "y": 1100.93221258739,
+      "width": 238.66658528645848,
+      "height": 227.99997965494777,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1W",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 2125380957,
+      "version": 42,
+      "versionNonce": 1495203933,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "UFFoNMLpr9E5HOYXbHkGn"
+        },
+        {
+          "id": "cCSwR0syV84NoIXosQZlm",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761111526783,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "UFFoNMLpr9E5HOYXbHkGn",
+      "type": "text",
+      "x": 1705.4010101802742,
+      "y": 1202.432202414864,
+      "width": 165,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1X",
+      "roundness": null,
+      "seed": 1017821875,
+      "version": 25,
+      "versionNonce": 1673569107,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761111518164,
+      "link": null,
+      "locked": false,
+      "text": "pagerduty/slack",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "PL55vb4DI8NovHsLUFJSF",
+      "originalText": "pagerduty/slack",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "VPtpQsSLUcDPyZXpVvUcd",
+      "type": "arrow",
+      "x": 437.9010101802741,
+      "y": 418.2655611795123,
+      "width": 110.66670735677081,
+      "height": 2.666651407877623,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1Y",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 130268189,
+      "version": 13,
+      "versionNonce": 643829533,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761111520224,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          110.66670735677081,
+          2.666651407877623
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "6TNMAao-2QcrlHfJNO1e9",
+        "focus": -0.09507299628426302,
+        "gap": 19.999999999999943
+      },
+      "endBinding": {
+        "elementId": "pHY7JW07pzkD2worz8s3R",
+        "focus": 0.028963874530420923,
+        "gap": 14.666646321614508
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "8N-G6NB4UNe7aVibWyrro",
+      "type": "arrow",
+      "x": 913.9010712154304,
+      "y": 434.26554592072324,
+      "width": 70.66660563151049,
+      "height": 1.3333384195963163,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1Z",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1569211923,
+      "version": 29,
+      "versionNonce": 783302675,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761111522104,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          70.66660563151049,
+          -1.3333384195963163
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "pHY7JW07pzkD2worz8s3R",
+        "focus": 0.0707352977950995,
+        "gap": 17.3333740234375
+      },
+      "endBinding": {
+        "elementId": "bZEj-4ZY6LtqgVHredRr1",
+        "focus": -0.050375776659567974,
+        "gap": 13.33333333333303
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "d6Zlk1mE1XJghREuYbCNt",
+      "type": "arrow",
+      "x": 1323.2343638586597,
+      "y": 435.5989352029498,
+      "width": 101.33331298828125,
+      "height": 0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1a",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 641796029,
+      "version": 11,
+      "versionNonce": 2013761117,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761111523336,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          101.33331298828125,
+          0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "bZEj-4ZY6LtqgVHredRr1",
+        "focus": 0.10227288736782611,
+        "gap": 5.33335367838572
+      },
+      "endBinding": {
+        "elementId": "7VfesfxdKyI5Pnu0B5BYr",
+        "focus": -0.1609197367858528,
+        "gap": 8.000081380208258
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "BPUnZPHKxobK00J4WTVtA",
+      "type": "arrow",
+      "x": 1509.9011322505867,
+      "y": 542.2655764383014,
+      "width": 134.666748046875,
+      "height": 163.99998982747388,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1b",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 627217107,
+      "version": 27,
+      "versionNonce": 251063091,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761111524470,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -134.666748046875,
+          163.99998982747388
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "7VfesfxdKyI5Pnu0B5BYr",
+        "focus": -0.10827704455575275,
+        "gap": 9.333343505859375
+      },
+      "endBinding": {
+        "elementId": "t3X_zFSkXaNhzcIVP9HUe",
+        "focus": -0.581994164397484,
+        "gap": 14.666646321614735
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "SoowYCNJ2jvVJvkqquLuS",
+      "type": "arrow",
+      "x": 1615.2343842037117,
+      "y": 544.9322024148639,
+      "width": 102.66662597656273,
+      "height": 178.66668701171875,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1c",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 976685725,
+      "version": 22,
+      "versionNonce": 1805690163,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761111525544,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          102.66662597656273,
+          178.66668701171875
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "7VfesfxdKyI5Pnu0B5BYr",
+        "focus": 0.20100404986531678,
+        "gap": 11.999969482421875
+      },
+      "endBinding": {
+        "elementId": "Pg4sIVoFezQJgukhA3Qvj",
+        "focus": 0.1583523670294227,
+        "gap": 1
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "cCSwR0syV84NoIXosQZlm",
+      "type": "arrow",
+      "x": 1767.2343028235034,
+      "y": 967.5988792540566,
+      "width": 8.000081380208485,
+      "height": 122.66672770182299,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1d",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1879027869,
+      "version": 15,
+      "versionNonce": 2078738429,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761111526783,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          8.000081380208485,
+          122.66672770182299
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "Pg4sIVoFezQJgukhA3Qvj",
+        "focus": -0.02846699955037543,
+        "gap": 6.66661580403661
+      },
+      "endBinding": {
+        "elementId": "PL55vb4DI8NovHsLUFJSF",
+        "focus": -0.035782783774532714,
+        "gap": 10.666605631510492
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "LvVEUxwcUI-f23SDQIU25",
+      "type": "rectangle",
+      "x": 2694.186798580105,
+      "y": 1568.047064311927,
+      "width": 1326.8572126116073,
+      "height": 723.4286063058034,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1e",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1800071581,
+      "version": 141,
+      "versionNonce": 100070131,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "G-H9uUcXcU35fiEdZpe-C"
+        }
+      ],
+      "updated": 1761113166246,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "G-H9uUcXcU35fiEdZpe-C",
+      "type": "text",
+      "x": 2699.186798580105,
+      "y": 1592.2613674648287,
+      "width": 1298,
+      "height": 675,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1e2",
+      "roundness": null,
+      "seed": 1508236637,
+      "version": 1871,
+      "versionNonce": 2116654013,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761115087743,
+      "link": null,
+      "locked": false,
+      "text": "correct flow:\ntheres mainly 2 services - event info service & booking/ticket service\nevent service:\napi gw-> event service (stateless) -> redis cluster (consistent hashing on event_id to distribute load evenly)\n-> postgresql (primary + read replicas) (no sharding yet cuz 1. only 500gb/day read 2.**VERY IMPT REASON** sharding on\nevent_ids BREAK MOST QUERIES! If user search via conditions like location, artist name, etc we have to query all\nshards! cross-shard query is exp so unless data size is huge, dont just shard)\n\nmaybe later can add postgres + es where\nevent service -> postgres -> Change Data Capture (CDC) -> kafka (topic:event-changes) -> ES sync worker that indexes\nonto ES cluster. So if I search \n\nbooking/ticket service:\napi gw -> booking service (producer) -> checks redis first (inventory counter of atomic DECR) and if inventory is\navailable-> kafka queue (topic:booking-request) -> booking worker (Consumer) -> postgresql (sharded by user_id if\nneeded) creates booking record-> kafka(topic:payment-request) -> payment worker consumes this event -> Stripe API  \n\nbtw consistent hash ring is for stateful flows\n1) redis cache 2) db sharding 3) websocket connection server\n\ncache all events:\nspecial pre-warming and multi-layer caching for popular events\nevent:{event_id}\nevent:{event_id}:avaialble for inventory counter\n\nfor booking db, although it is more write-heavy, postgres with ACID and CP is recommended. Optimisation can be done on\nconnection pooling, batch inserts and indexing.",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "left",
+      "verticalAlign": "middle",
+      "containerId": "LvVEUxwcUI-f23SDQIU25",
+      "originalText": "correct flow:\ntheres mainly 2 services - event info service & booking/ticket service\nevent service:\napi gw-> event service (stateless) -> redis cluster (consistent hashing on event_id to distribute load evenly)\n-> postgresql (primary + read replicas) (no sharding yet cuz 1. only 500gb/day read 2.**VERY IMPT REASON** sharding on\nevent_ids BREAK MOST QUERIES! If user search via conditions like location, artist name, etc we have to query all shards! cross-shard query is exp so unless data size is huge, dont just shard)\n\nmaybe later can add postgres + es where\nevent service -> postgres -> Change Data Capture (CDC) -> kafka (topic:event-changes) -> ES sync worker that indexes\nonto ES cluster. So if I search \n\nbooking/ticket service:\napi gw -> booking service (producer) -> checks redis first (inventory counter of atomic DECR) and if inventory is available-> kafka queue (topic:booking-request) -> booking worker (Consumer) -> postgresql (sharded by user_id if needed) creates booking record-> kafka(topic:payment-request) -> payment worker consumes this event -> Stripe API  \n\nbtw consistent hash ring is for stateful flows\n1) redis cache 2) db sharding 3) websocket connection server\n\ncache all events:\nspecial pre-warming and multi-layer caching for popular events\nevent:{event_id}\nevent:{event_id}:avaialble for inventory counter\n\nfor booking db, although it is more write-heavy, postgres with ACID and CP is recommended. Optimisation can be done on\nconnection pooling, batch inserts and indexing.",
+      "autoResize": true,
+      "lineHeight": 1.25
     }
   ],
   "appState": {
