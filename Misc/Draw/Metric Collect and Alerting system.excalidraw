@@ -28,7 +28,7 @@
       "version": 61,
       "versionNonce": 377896329,
       "isDeleted": false,
-      "boundElements": null,
+      "boundElements": [],
       "updated": 1760663635516,
       "link": null,
       "locked": false
@@ -56,7 +56,7 @@
       "version": 1222,
       "versionNonce": 287808615,
       "isDeleted": false,
-      "boundElements": null,
+      "boundElements": [],
       "updated": 1760664399657,
       "link": null,
       "locked": false,
@@ -95,7 +95,7 @@
       "version": 82,
       "versionNonce": 757673671,
       "isDeleted": false,
-      "boundElements": null,
+      "boundElements": [],
       "updated": 1760664421962,
       "link": null,
       "locked": false
@@ -106,7 +106,7 @@
       "x": 1653.3889277278927,
       "y": 759.5416598600975,
       "width": 1090.0592041015625,
-      "height": 550,
+      "height": 525,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -120,20 +120,20 @@
       "index": "aj",
       "roundness": null,
       "seed": 1489555177,
-      "version": 1120,
-      "versionNonce": 609980489,
+      "version": 1122,
+      "versionNonce": 993401725,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1760667255895,
+      "boundElements": [],
+      "updated": 1761106901576,
       "link": null,
       "locked": false,
-      "text": "non-functional:\nCAP theorem: must be AP as we still want to keep monitoring and alerting system even during network\nsplits until isolated nodes sync\nlater \n\ncalc:\n50k transactions/minute produced across entire system\neach transaction is 1.2Kb\n\ntotal data valume (logs):\n50k/60s * 1.2kb = lets say 1 min is 50s, 1.2Mb/s logs produced = 1.2M*100k = 120Gb/day of logs stored/day\n\ntotal metrics volume:\neach instance produces 15 metrics like cpu usage, memory usage, etc \nsize of each metric data point (timestamp + value) = 12 bytes\nmetrics emitted every 10s\n\n15 metrics * 12 bytes * 6 times = 1Kb/min of metric data produced per instance\n1Kb * 1000 instances = 1Mb/min of metric data produced\n\nso u can see log volume/s is much higher than metric volume produced/s! This is v important in design cuz using\nkafka for metrics is overkill but for log its ok. The pull model for collecting logs is also impt",
+      "text": "non-functional:\nCAP theorem: must be AP as we still want to keep monitoring and alerting system even during network\nsplits until isolated nodes sync later \n\ncalc:\n50k transactions/minute produced across entire system\neach transaction is 1.2Kb\n\ntotal data valume (logs):\n50k/60s * 1.2kb = lets say 1 min is 50s, 1.2Mb/s logs produced = 1.2M*100k = 120Gb/day of logs stored/day\n\ntotal metrics volume:\neach instance produces 15 metrics like cpu usage, memory usage, etc \nsize of each metric data point (timestamp + value) = 12 bytes\nmetrics emitted every 10s\n\n15 metrics * 12 bytes * 6 times = 1Kb/min of metric data produced per instance\n1Kb * 1000 instances = 1Mb/min of metric data produced\n\nso u can see log volume/s is much higher than metric volume produced/s! This is v important in design cuz using\nkafka for metrics is overkill but for log its ok. The pull model for collecting logs is also impt",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "non-functional:\nCAP theorem: must be AP as we still want to keep monitoring and alerting system even during network\nsplits until isolated nodes sync\nlater \n\ncalc:\n50k transactions/minute produced across entire system\neach transaction is 1.2Kb\n\ntotal data valume (logs):\n50k/60s * 1.2kb = lets say 1 min is 50s, 1.2Mb/s logs produced = 1.2M*100k = 120Gb/day of logs stored/day\n\ntotal metrics volume:\neach instance produces 15 metrics like cpu usage, memory usage, etc \nsize of each metric data point (timestamp + value) = 12 bytes\nmetrics emitted every 10s\n\n15 metrics * 12 bytes * 6 times = 1Kb/min of metric data produced per instance\n1Kb * 1000 instances = 1Mb/min of metric data produced\n\nso u can see log volume/s is much higher than metric volume produced/s! This is v important in design cuz using\nkafka for metrics is overkill but for log its ok. The pull model for collecting logs is also impt",
+      "originalText": "non-functional:\nCAP theorem: must be AP as we still want to keep monitoring and alerting system even during network\nsplits until isolated nodes sync later \n\ncalc:\n50k transactions/minute produced across entire system\neach transaction is 1.2Kb\n\ntotal data valume (logs):\n50k/60s * 1.2kb = lets say 1 min is 50s, 1.2Mb/s logs produced = 1.2M*100k = 120Gb/day of logs stored/day\n\ntotal metrics volume:\neach instance produces 15 metrics like cpu usage, memory usage, etc \nsize of each metric data point (timestamp + value) = 12 bytes\nmetrics emitted every 10s\n\n15 metrics * 12 bytes * 6 times = 1Kb/min of metric data produced per instance\n1Kb * 1000 instances = 1Mb/min of metric data produced\n\nso u can see log volume/s is much higher than metric volume produced/s! This is v important in design cuz using\nkafka for metrics is overkill but for log its ok. The pull model for collecting logs is also impt",
       "autoResize": true,
       "lineHeight": 1.25
     },
@@ -162,7 +162,7 @@
       "version": 215,
       "versionNonce": 2116250281,
       "isDeleted": false,
-      "boundElements": null,
+      "boundElements": [],
       "updated": 1760670321048,
       "link": null,
       "locked": false
@@ -172,8 +172,8 @@
       "type": "text",
       "x": 630.1506973405224,
       "y": 1656.61784481406,
-      "width": 1022.4591674804688,
-      "height": 1875,
+      "width": 1046.4593505859375,
+      "height": 2300,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -187,20 +187,20 @@
       "index": "al",
       "roundness": null,
       "seed": 431301289,
-      "version": 2551,
-      "versionNonce": 1652519337,
+      "version": 3095,
+      "versionNonce": 552672371,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1760670325399,
+      "boundElements": [],
+      "updated": 1761108924441,
       "link": null,
       "locked": false,
-      "text": "design:\ni will not be designing payment service so i will assume starting point as when transaction comes\nto payment service\n\nclient transaction -> payment service \n\ni will be checking payment service whether all business logic is decoupled via kafka queue. For \nsyncrhonous operations that might be decoupled via queue that increases false positives (insuff.\nfunds), request should be rejected with 400 status codes and not be processed further. After\nchecking this,\n\nclient transaction -> payment service -> metrics agent pull from payment service (pull-model) and\npush to kafka queue -> kafka queue (async operations like collecting metrics, \nsaving log and transaction data to db, etc) -> central log storage (maybe they are using Cassandra\nfor high write throughput NO they using log + s3, cass is bad)\n\ni chose pull mdoel to reduce responsibility of payment service and increase availability\n\nthen connect grafana to s3 to see a visualisation of logs and set up alerting channels (pagerduty\nand slack) if metrics exceed threshold\n\nidk wats prometheus/thanos/grafana \n\ncorrect design:\nthe important distinction between logs and metrics is that metrics produced is CONSTANT, while\nlogs depend on the traffic and transaction volume. Furthermore, non functional req theres 1.2mb/s \nof logs produced and 1mb/min of metrics produced so log has much higher volume! \n\nso while log needs a buffer like kafka for that high spikes and data volume, metrics dont need. \nThere needs to be distinction between log and metric collection and storage flow.\n\nmetrics:\npayment service exposes metrics endpoint (/metrics) -> Prometheus scrapes metrics (not logs) every 10s\nand stores it in its time-series db on disk (30 days) -> thanos uplods to S3 for long term storage \n(13 months) and provides global query layer across regions using Grafana and query \nlang called PromQL-> grafana dashboard and alert \nmanager (pagerduty/slack)\n\nmetrics is time-series data, while log is structured so for log u can use AWS Athena.\n\ncustom metrics can be done on the application logic side\n\nto reduce false positive, add MULTI-CONDITION alert (maybe latency AND error rate should both\nbe high to be an error), or add ML model\n\nUS-East: Prometheus → Thanos Sidecar → S3 us-east-1\nUS-West: Prometheus → Thanos Sidecar → S3 us-west-2\nEU:      Prometheus → Thanos Sidecar → S3 eu-west-1\nAPAC:    Prometheus → Thanos Sidecar → S3 ap-south-1\nSA:      Prometheus → Thanos Sidecar → S3 sa-east-1\n\n                ↓ (Thanos Query reads from all buckets)\n                \n            Thanos Query (can be in any region)\n                    ↓\n                Grafana\n```\n\n**Benefits:**\n- ✅ No cross-region write costs (data stays in region)\n- ✅ Faster writes (lower latency)\n- ✅ Regional data sovereignty compliance\n- ✅ If one region fails, others unaffected\n\n**How Thanos Query works:**\n- Configured to read from all 5 S3 buckets\n- Queries in parallel across regions\n- Merges results\n- Only cross-region on READ (queries), not WRITE (storage)\n\nlog:\nservice -> fluentd (separate daemon that pulls from service) -> kafka queue -> loki + s3\n\n\n",
+      "text": "design:\ni will not be designing payment service so i will assume starting point as when transaction comes\nto payment service\n\nclient transaction -> payment service \n\ni will be checking payment service whether all business logic is decoupled via kafka queue. For \nsyncrhonous operations that might be decoupled via queue that increases false positives (insuff.\nfunds), request should be rejected with 400 status codes and not be processed further. After\nchecking this,\n\nclient transaction -> payment service -> metrics agent pull from payment service (pull-model) and\npush to kafka queue -> kafka queue (async operations like collecting metrics, \nsaving log and transaction data to db, etc) -> central log storage (maybe they are using Cassandra\nfor high write throughput NO they using log + s3, cass is bad)\n\ni chose pull mdoel to reduce responsibility of payment service and increase availability\n\nthen connect grafana to s3 to see a visualisation of logs and set up alerting channels (pagerduty\nand slack) if metrics exceed threshold\n\nidk wats prometheus/thanos/grafana \n\ncorrect design:\nthe important distinction between logs and metrics is that metrics produced is CONSTANT, while\nlogs depend on the traffic and transaction volume. Furthermore, non functional req theres 1.2mb/s \nof logs produced and 1mb/min of metrics produced so log has much higher volume! \n\nso while log needs a buffer like kafka for that high spikes and data volume, metrics dont need. \nThere needs to be distinction between log and metric collection and storage flow.\n\nmetrics:\npush vs pull model? pull here\npayment service exposes metrics endpoint (/metrics) -> Prometheus scrapes metrics (not logs) every 10s\nand stores it in its time-series db on disk (30 days) -> thanos uplods to S3 for long term storage \n(13 months) and provides global query layer across regions using Grafana and query \nlang called PromQL-> grafana dashboard and alert \nmanager (pagerduty/slack)\n\nmetrics is time-series data, while log is structured so for log u can use AWS Athena.\n\ncustom metrics can be done on the application logic side\n\nto reduce false positive, add MULTI-CONDITION alert (maybe latency AND error rate should both\nbe high to be an error), or add ML model\n\nlog:\nservice -> fluentd (separate daemon that pulls from service) -> kafka queue -> loki + s3 -> grafana\nloki is like prometheus but for logs, not metrics \n\nWhile ES indexes **everythiing** which is exp, loki indexes labels like level or service name or timestamp and\nstores the actuall ogs in S3. So if we are to query \"show me all ERROR logs from payment-worker in\nlast 10min\", loki can find matching logs via labels fast and retrieiving content from s3 is cheap.\n\nmulti region strat:\nUS-East: Prometheus → Thanos Sidecar → S3 us-east-1\nUS-West: Prometheus → Thanos Sidecar → S3 us-west-2\nEU:      Prometheus → Thanos Sidecar → S3 eu-west-1\nAPAC:    Prometheus → Thanos Sidecar → S3 ap-south-1\nSA:      Prometheus → Thanos Sidecar → S3 sa-east-1\n\n                ↓ (Thanos Query reads from all buckets)\n                \n            Thanos Query (can be in any region)\n                    ↓\n                Grafana\n```\n\n**Benefits:**\n- ✅ No cross-region write costs (data stays in region)\n- ✅ Faster writes (lower latency)\n- ✅ Regional data sovereignty compliance\n- ✅ If one region fails, others unaffected\n\n**How Thanos Query works:**\n- Configured to read from all 5 S3 buckets\n- Queries in parallel across regions\n- Merges results\n- Only cross-region on READ (queries), not WRITE (storage)\n\nor can have single s3 per region with replication \nUS-East: Prometheus → Thanos → S3 us-east-1 (primary)\n                                     ↓\n                            S3 Replication (async)\n                                     ↓\n                    ┌────────────────┼────────────────┐\n                    ↓                ↓                ↓\n            S3 us-west-2     S3 eu-west-1     S3 ap-south-1\n              (replica)        (replica)        (replica)\n\n\n",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "design:\ni will not be designing payment service so i will assume starting point as when transaction comes\nto payment service\n\nclient transaction -> payment service \n\ni will be checking payment service whether all business logic is decoupled via kafka queue. For \nsyncrhonous operations that might be decoupled via queue that increases false positives (insuff.\nfunds), request should be rejected with 400 status codes and not be processed further. After\nchecking this,\n\nclient transaction -> payment service -> metrics agent pull from payment service (pull-model) and\npush to kafka queue -> kafka queue (async operations like collecting metrics, \nsaving log and transaction data to db, etc) -> central log storage (maybe they are using Cassandra\nfor high write throughput NO they using log + s3, cass is bad)\n\ni chose pull mdoel to reduce responsibility of payment service and increase availability\n\nthen connect grafana to s3 to see a visualisation of logs and set up alerting channels (pagerduty\nand slack) if metrics exceed threshold\n\nidk wats prometheus/thanos/grafana \n\ncorrect design:\nthe important distinction between logs and metrics is that metrics produced is CONSTANT, while\nlogs depend on the traffic and transaction volume. Furthermore, non functional req theres 1.2mb/s \nof logs produced and 1mb/min of metrics produced so log has much higher volume! \n\nso while log needs a buffer like kafka for that high spikes and data volume, metrics dont need. \nThere needs to be distinction between log and metric collection and storage flow.\n\nmetrics:\npayment service exposes metrics endpoint (/metrics) -> Prometheus scrapes metrics (not logs) every 10s\nand stores it in its time-series db on disk (30 days) -> thanos uplods to S3 for long term storage \n(13 months) and provides global query layer across regions using Grafana and query \nlang called PromQL-> grafana dashboard and alert \nmanager (pagerduty/slack)\n\nmetrics is time-series data, while log is structured so for log u can use AWS Athena.\n\ncustom metrics can be done on the application logic side\n\nto reduce false positive, add MULTI-CONDITION alert (maybe latency AND error rate should both\nbe high to be an error), or add ML model\n\nUS-East: Prometheus → Thanos Sidecar → S3 us-east-1\nUS-West: Prometheus → Thanos Sidecar → S3 us-west-2\nEU:      Prometheus → Thanos Sidecar → S3 eu-west-1\nAPAC:    Prometheus → Thanos Sidecar → S3 ap-south-1\nSA:      Prometheus → Thanos Sidecar → S3 sa-east-1\n\n                ↓ (Thanos Query reads from all buckets)\n                \n            Thanos Query (can be in any region)\n                    ↓\n                Grafana\n```\n\n**Benefits:**\n- ✅ No cross-region write costs (data stays in region)\n- ✅ Faster writes (lower latency)\n- ✅ Regional data sovereignty compliance\n- ✅ If one region fails, others unaffected\n\n**How Thanos Query works:**\n- Configured to read from all 5 S3 buckets\n- Queries in parallel across regions\n- Merges results\n- Only cross-region on READ (queries), not WRITE (storage)\n\nlog:\nservice -> fluentd (separate daemon that pulls from service) -> kafka queue -> loki + s3\n\n\n",
+      "originalText": "design:\ni will not be designing payment service so i will assume starting point as when transaction comes\nto payment service\n\nclient transaction -> payment service \n\ni will be checking payment service whether all business logic is decoupled via kafka queue. For \nsyncrhonous operations that might be decoupled via queue that increases false positives (insuff.\nfunds), request should be rejected with 400 status codes and not be processed further. After\nchecking this,\n\nclient transaction -> payment service -> metrics agent pull from payment service (pull-model) and\npush to kafka queue -> kafka queue (async operations like collecting metrics, \nsaving log and transaction data to db, etc) -> central log storage (maybe they are using Cassandra\nfor high write throughput NO they using log + s3, cass is bad)\n\ni chose pull mdoel to reduce responsibility of payment service and increase availability\n\nthen connect grafana to s3 to see a visualisation of logs and set up alerting channels (pagerduty\nand slack) if metrics exceed threshold\n\nidk wats prometheus/thanos/grafana \n\ncorrect design:\nthe important distinction between logs and metrics is that metrics produced is CONSTANT, while\nlogs depend on the traffic and transaction volume. Furthermore, non functional req theres 1.2mb/s \nof logs produced and 1mb/min of metrics produced so log has much higher volume! \n\nso while log needs a buffer like kafka for that high spikes and data volume, metrics dont need. \nThere needs to be distinction between log and metric collection and storage flow.\n\nmetrics:\npush vs pull model? pull here\npayment service exposes metrics endpoint (/metrics) -> Prometheus scrapes metrics (not logs) every 10s\nand stores it in its time-series db on disk (30 days) -> thanos uplods to S3 for long term storage \n(13 months) and provides global query layer across regions using Grafana and query \nlang called PromQL-> grafana dashboard and alert \nmanager (pagerduty/slack)\n\nmetrics is time-series data, while log is structured so for log u can use AWS Athena.\n\ncustom metrics can be done on the application logic side\n\nto reduce false positive, add MULTI-CONDITION alert (maybe latency AND error rate should both\nbe high to be an error), or add ML model\n\nlog:\nservice -> fluentd (separate daemon that pulls from service) -> kafka queue -> loki + s3 -> grafana\nloki is like prometheus but for logs, not metrics \n\nWhile ES indexes **everythiing** which is exp, loki indexes labels like level or service name or timestamp and\nstores the actuall ogs in S3. So if we are to query \"show me all ERROR logs from payment-worker in\nlast 10min\", loki can find matching logs via labels fast and retrieiving content from s3 is cheap.\n\nmulti region strat:\nUS-East: Prometheus → Thanos Sidecar → S3 us-east-1\nUS-West: Prometheus → Thanos Sidecar → S3 us-west-2\nEU:      Prometheus → Thanos Sidecar → S3 eu-west-1\nAPAC:    Prometheus → Thanos Sidecar → S3 ap-south-1\nSA:      Prometheus → Thanos Sidecar → S3 sa-east-1\n\n                ↓ (Thanos Query reads from all buckets)\n                \n            Thanos Query (can be in any region)\n                    ↓\n                Grafana\n```\n\n**Benefits:**\n- ✅ No cross-region write costs (data stays in region)\n- ✅ Faster writes (lower latency)\n- ✅ Regional data sovereignty compliance\n- ✅ If one region fails, others unaffected\n\n**How Thanos Query works:**\n- Configured to read from all 5 S3 buckets\n- Queries in parallel across regions\n- Merges results\n- Only cross-region on READ (queries), not WRITE (storage)\n\nor can have single s3 per region with replication \nUS-East: Prometheus → Thanos → S3 us-east-1 (primary)\n                                     ↓\n                            S3 Replication (async)\n                                     ↓\n                    ┌────────────────┼────────────────┐\n                    ↓                ↓                ↓\n            S3 us-west-2     S3 eu-west-1     S3 ap-south-1\n              (replica)        (replica)        (replica)\n\n\n",
       "autoResize": true,
       "lineHeight": 1.25
     },
@@ -229,7 +229,7 @@
       "version": 100,
       "versionNonce": 1992937449,
       "isDeleted": false,
-      "boundElements": null,
+      "boundElements": [],
       "updated": 1760670334496,
       "link": null,
       "locked": false
@@ -240,7 +240,7 @@
       "x": 1741.7222381730417,
       "y": 1652.225107834166,
       "width": 1017.8992309570312,
-      "height": 150,
+      "height": 225,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -254,22 +254,1362 @@
       "index": "an",
       "roundness": null,
       "seed": 1761861991,
-      "version": 434,
-      "versionNonce": 1549227113,
+      "version": 456,
+      "versionNonce": 780357203,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1760670743739,
+      "boundElements": [],
+      "updated": 1761108858544,
       "link": null,
       "locked": false,
-      "text": "alerting:\nprometheus scrapes metrics -> prometheus checks metric data against alert rule every 15s -> \nif exceeded, sends fired alert to alert manager -> alert manager received alert from Prom and routes to\ncorrent destination like Pagerduty/slack/email\n\npagerduty: incident management platform that ensures right person gets alerted  ",
+      "text": "alerting:\nprometheus scrapes metrics -> prometheus checks metric data against alert rule every 15s -> \nif exceeded, sends fired alert to alert manager -> alert manager received alert from Prom and routes to\ncorrent destination like Pagerduty/slack/email\n\npagerduty: incident management platform that ensures right person gets alerted  \n\nmulti region start:\n",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "alerting:\nprometheus scrapes metrics -> prometheus checks metric data against alert rule every 15s -> \nif exceeded, sends fired alert to alert manager -> alert manager received alert from Prom and routes to\ncorrent destination like Pagerduty/slack/email\n\npagerduty: incident management platform that ensures right person gets alerted  ",
+      "originalText": "alerting:\nprometheus scrapes metrics -> prometheus checks metric data against alert rule every 15s -> \nif exceeded, sends fired alert to alert manager -> alert manager received alert from Prom and routes to\ncorrent destination like Pagerduty/slack/email\n\npagerduty: incident management platform that ensures right person gets alerted  \n\nmulti region start:\n",
       "autoResize": true,
       "lineHeight": 1.25
+    },
+    {
+      "id": "4za5pgqbu6xXlSNDpZfyn",
+      "type": "rectangle",
+      "x": 1830.916271780644,
+      "y": 2626.2178914411707,
+      "width": 395.4285539899556,
+      "height": 229.71426827566938,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "ao",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1875878003,
+      "version": 98,
+      "versionNonce": 1442230643,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "A04EMzrPTLcRRLaB-xB-E"
+        },
+        {
+          "id": "TKMKGJ2l8BJMBYqkZ2Ria",
+          "type": "arrow"
+        },
+        {
+          "id": "wVZXeMgJBUuVzrgwzOq2I",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761108464739,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "A04EMzrPTLcRRLaB-xB-E",
+      "type": "text",
+      "x": 1869.1305487756217,
+      "y": 2703.5750255790053,
+      "width": 319,
+      "height": 75,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "ap",
+      "roundness": null,
+      "seed": 148409779,
+      "version": 66,
+      "versionNonce": 734127347,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761108258079,
+      "link": null,
+      "locked": false,
+      "text": "payment service \n- /metrics endpoints exposed \n- logs stdout",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "4za5pgqbu6xXlSNDpZfyn",
+      "originalText": "payment service \n- /metrics endpoints exposed \n- logs stdout",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "mks1WKR1Nk-Yi2XZfea3j",
+      "type": "rectangle",
+      "x": 2418.3448606478314,
+      "y": 2629.6464541504342,
+      "width": 381.71421595982156,
+      "height": 220.5715070452011,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "aq",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 218254461,
+      "version": 92,
+      "versionNonce": 448556627,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "mQI_FSL4pizambuEh2Yl4"
+        },
+        {
+          "id": "TKMKGJ2l8BJMBYqkZ2Ria",
+          "type": "arrow"
+        },
+        {
+          "id": "SRIurgEPore4cr6AEVc0G",
+          "type": "arrow"
+        },
+        {
+          "id": "kgdzF7ucQGg_NILT8Fw9N",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761108337948,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "mQI_FSL4pizambuEh2Yl4",
+      "type": "text",
+      "x": 2444.201968627742,
+      "y": 2714.9322076730346,
+      "width": 330,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "ar",
+      "roundness": null,
+      "seed": 504934963,
+      "version": 83,
+      "versionNonce": 788157821,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761108280331,
+      "link": null,
+      "locked": false,
+      "text": "fluentd (local log agent pulls\nlogs from disk)",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "mks1WKR1Nk-Yi2XZfea3j",
+      "originalText": "fluentd (local log agent pulls logs from disk)",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "xxvGkxBx32LljQzALFdCk",
+      "type": "rectangle",
+      "x": 2961.2020035049745,
+      "y": 2463.9321684361485,
+      "width": 299.42853655133877,
+      "height": 227.4285888671875,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "as",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 966425203,
+      "version": 78,
+      "versionNonce": 315671859,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "2MDFm6cTqRB3SsZBxxf7y"
+        },
+        {
+          "id": "SRIurgEPore4cr6AEVc0G",
+          "type": "arrow"
+        },
+        {
+          "id": "SHr9KMGWvX9NqHHr60f2o",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761108340204,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "2MDFm6cTqRB3SsZBxxf7y",
+      "type": "text",
+      "x": 2973.416271780644,
+      "y": 2515.146462869742,
+      "width": 275,
+      "height": 125,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "at",
+      "roundness": null,
+      "seed": 873532275,
+      "version": 120,
+      "versionNonce": 696389469,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761108329824,
+      "link": null,
+      "locked": false,
+      "text": "loki (indexes several\nfields of logs, not all\nlike ES so that can query\nlogs from s3 quickly with\nthese indexes)",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "xxvGkxBx32LljQzALFdCk",
+      "originalText": "loki (indexes several fields of logs, not all like ES so that can query logs from s3 quickly with these indexes)",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "q1TSgxGMhnpuw59R0oerN",
+      "type": "rectangle",
+      "x": 2976.0591812393495,
+      "y": 2788.503614446193,
+      "width": 299.42853655133877,
+      "height": 227.4285888671875,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "au",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 164684029,
+      "version": 45,
+      "versionNonce": 103896179,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "6FRTv7-kNIxF_Iv07uXuv"
+        },
+        {
+          "id": "kgdzF7ucQGg_NILT8Fw9N",
+          "type": "arrow"
+        },
+        {
+          "id": "SHr9KMGWvX9NqHHr60f2o",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761108340204,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "6FRTv7-kNIxF_Iv07uXuv",
+      "type": "text",
+      "x": 3114.773449515019,
+      "y": 2889.7179088797866,
+      "width": 22,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "av",
+      "roundness": null,
+      "seed": 671514291,
+      "version": 4,
+      "versionNonce": 1098124595,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761108301116,
+      "link": null,
+      "locked": false,
+      "text": "s3",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "q1TSgxGMhnpuw59R0oerN",
+      "originalText": "s3",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "TKMKGJ2l8BJMBYqkZ2Ria",
+      "type": "arrow",
+      "x": 2240.0591638007336,
+      "y": 2753.0750168596974,
+      "width": 163.42851911272282,
+      "height": 6.857125418526721,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "aw",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 116148883,
+      "version": 39,
+      "versionNonce": 1990133939,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761108334520,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          163.42851911272282,
+          -6.857125418526721
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "4za5pgqbu6xXlSNDpZfyn",
+        "focus": 0.16947319861384555,
+        "gap": 13.714338030134058
+      },
+      "endBinding": {
+        "elementId": "mks1WKR1Nk-Yi2XZfea3j",
+        "focus": 0.01982916380777836,
+        "gap": 14.857177734375
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "SRIurgEPore4cr6AEVc0G",
+      "type": "arrow",
+      "x": 2814.916254342028,
+      "y": 2746.2178914411707,
+      "width": 125.71428571428578,
+      "height": 131.42857142857156,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "ax",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1487770909,
+      "version": 22,
+      "versionNonce": 815645363,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761108336252,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          125.71428571428578,
+          -131.42857142857156
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "mks1WKR1Nk-Yi2XZfea3j",
+        "focus": 0.7144532820893152,
+        "gap": 14.857177734375
+      },
+      "endBinding": {
+        "elementId": "xxvGkxBx32LljQzALFdCk",
+        "focus": 0.5213380327589404,
+        "gap": 20.57146344866078
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "kgdzF7ucQGg_NILT8Fw9N",
+      "type": "arrow",
+      "x": 2821.773466953635,
+      "y": 2782.789328731907,
+      "width": 133.7142508370539,
+      "height": 102.85714285714312,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "ay",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1255226141,
+      "version": 26,
+      "versionNonce": 744565747,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761108337948,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          133.7142508370539,
+          102.85714285714312
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "mks1WKR1Nk-Yi2XZfea3j",
+        "focus": -0.4693113601604977,
+        "gap": 21.714390345981883
+      },
+      "endBinding": {
+        "elementId": "q1TSgxGMhnpuw59R0oerN",
+        "focus": -0.49990408985320056,
+        "gap": 20.57146344866078
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "SHr9KMGWvX9NqHHr60f2o",
+      "type": "arrow",
+      "x": 3121.2020035049745,
+      "y": 2708.503614446193,
+      "width": 1.1429268973215585,
+      "height": 67.42854527064719,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "az",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 2070871517,
+      "version": 28,
+      "versionNonce": 294102739,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761108340204,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -1.1429268973215585,
+          67.42854527064719
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "xxvGkxBx32LljQzALFdCk",
+        "focus": -0.08245609127035762,
+        "gap": 17.142857142856883
+      },
+      "endBinding": {
+        "elementId": "q1TSgxGMhnpuw59R0oerN",
+        "focus": -0.05179932921731987,
+        "gap": 12.571454729352808
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "ZTyRp2Vh8afKmVEkRLfP2",
+      "type": "rectangle",
+      "x": 1857.2020209435905,
+      "y": 3047.932194594072,
+      "width": 389.7142682756694,
+      "height": 235.42859758649547,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b00",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1825273085,
+      "version": 53,
+      "versionNonce": 821358045,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "TqqsBf2Ox6Ic60twz9zmn"
+        },
+        {
+          "id": "wVZXeMgJBUuVzrgwzOq2I",
+          "type": "arrow"
+        },
+        {
+          "id": "SqWJQjzaZfu3QiJkHPsa_",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761108479053,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "TqqsBf2Ox6Ic60twz9zmn",
+      "type": "text",
+      "x": 1865.0591550814252,
+      "y": 3078.1464933873194,
+      "width": 374,
+      "height": 175,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b01",
+      "roundness": null,
+      "seed": 1141646227,
+      "version": 234,
+      "versionNonce": 1494152349,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761109074262,
+      "link": null,
+      "locked": false,
+      "text": "prometheus\n(scrapes every 10s and stores in\nits time-series db on disk)\ndoes rule evaluation (not alert\nmanager) where it checks metric\ndata against alert rules and sends\nfired alerts to alert manager",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "ZTyRp2Vh8afKmVEkRLfP2",
+      "originalText": "prometheus\n(scrapes every 10s and stores in its time-series db on disk)\ndoes rule evaluation (not alert manager) where it checks metric data against alert rules and sends fired alerts to alert manager",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "48S1bAR3BIfn-7I8x7V9G",
+      "type": "rectangle",
+      "x": 1881.202003504974,
+      "y": 3421.646336439774,
+      "width": 381.7143031529017,
+      "height": 210.28573172433016,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b02",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1340531645,
+      "version": 106,
+      "versionNonce": 507731443,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "K4xITBawlo_xAGMR5nnJU"
+        },
+        {
+          "id": "SqWJQjzaZfu3QiJkHPsa_",
+          "type": "arrow"
+        },
+        {
+          "id": "dgR0JgTMSsQ_l6F64sgim",
+          "type": "arrow"
+        },
+        {
+          "id": "-37DY8i5NpaPk-28bF8og",
+          "type": "arrow"
+        },
+        {
+          "id": "twSzInafmLItJ8bEqWUc6",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761108492696,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "K4xITBawlo_xAGMR5nnJU",
+      "type": "text",
+      "x": 1901.559155081425,
+      "y": 3501.7892023019394,
+      "width": 341,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b03",
+      "roundness": null,
+      "seed": 668196765,
+      "version": 61,
+      "versionNonce": 1921983101,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761108413109,
+      "link": null,
+      "locked": false,
+      "text": "thanos (provides query language\nto query metrics)",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "48S1bAR3BIfn-7I8x7V9G",
+      "originalText": "thanos (provides query language to query metrics)",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "EKv7iTFkRg9o10ihCeB2j",
+      "type": "rectangle",
+      "x": 2411.487560843144,
+      "y": 3421.646336439774,
+      "width": 285.7142857142858,
+      "height": 204.57144601004438,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b04",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1108244243,
+      "version": 52,
+      "versionNonce": 1906617757,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "hbw91y89MmmTujdUm77oF"
+        },
+        {
+          "id": "dgR0JgTMSsQ_l6F64sgim",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761108482611,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "hbw91y89MmmTujdUm77oF",
+      "type": "text",
+      "x": 2416.844703700287,
+      "y": 3486.4320594447963,
+      "width": 275,
+      "height": 75,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b05",
+      "roundness": null,
+      "seed": 1825585693,
+      "version": 80,
+      "versionNonce": 720926749,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761108432626,
+      "link": null,
+      "locked": false,
+      "text": "s3 for long term 13 month\nstorage, then can go to\ns3 glacier",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "EKv7iTFkRg9o10ihCeB2j",
+      "originalText": "s3 for long term 13 month storage, then can go to s3 glacier",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "qbwREFUy7phRAORu8XHAx",
+      "type": "rectangle",
+      "x": 1904.0591463621172,
+      "y": 3749.6463451590816,
+      "width": 365.71437290736594,
+      "height": 214.8571341378347,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b06",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 776287091,
+      "version": 71,
+      "versionNonce": 1565421949,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "OSnIjIFQAO99pK91T2x8l"
+        },
+        {
+          "id": "-37DY8i5NpaPk-28bF8og",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761108485603,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "OSnIjIFQAO99pK91T2x8l",
+      "type": "text",
+      "x": 2048.4163328158,
+      "y": 3844.574912227999,
+      "width": 77,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b07",
+      "roundness": null,
+      "seed": 81633171,
+      "version": 9,
+      "versionNonce": 1881903667,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761108438127,
+      "link": null,
+      "locked": false,
+      "text": "grafana",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "qbwREFUy7phRAORu8XHAx",
+      "originalText": "grafana",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "J1jPS03lu8BDIASb3Objn",
+      "type": "rectangle",
+      "x": 2395.487804983769,
+      "y": 3761.074916587653,
+      "width": 326.85703822544656,
+      "height": 197.7142769949778,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b08",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 2063393139,
+      "version": 43,
+      "versionNonce": 1920775453,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "PFqiBCmvb26kgip3N7j7R"
+        },
+        {
+          "id": "twSzInafmLItJ8bEqWUc6",
+          "type": "arrow"
+        },
+        {
+          "id": "OhnIYp83YHe2LyC44YCwf",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761108494700,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "PFqiBCmvb26kgip3N7j7R",
+      "type": "text",
+      "x": 2404.916324096492,
+      "y": 3772.432055085142,
+      "width": 308,
+      "height": 175,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b09",
+      "roundness": null,
+      "seed": 795801469,
+      "version": 198,
+      "versionNonce": 1505957565,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761109083326,
+      "link": null,
+      "locked": false,
+      "text": "alert manager (role:\nnotification. receives alert\nfrom Prometheus and routes\nalert to correct\ndestination. DOES NOT\nEVALUATE METRICS thats role\nof Prometheus)",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "J1jPS03lu8BDIASb3Objn",
+      "originalText": "alert manager (role: notification. receives alert from Prometheus and routes alert to correct destination. DOES NOT EVALUATE METRICS thats role of Prometheus)",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "jue4_I_qla4zG_F772176",
+      "type": "rectangle",
+      "x": 2416.059094046269,
+      "y": 4052.5035316127646,
+      "width": 313.14296177455344,
+      "height": 157.71423339843795,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0A",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 989208819,
+      "version": 31,
+      "versionNonce": 605934045,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "rIgmi8X9vXiEbG5_y7EIA"
+        },
+        {
+          "id": "OhnIYp83YHe2LyC44YCwf",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761108494700,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "rIgmi8X9vXiEbG5_y7EIA",
+      "type": "text",
+      "x": 2490.1305749335456,
+      "y": 4118.860648311984,
+      "width": 165,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0B",
+      "roundness": null,
+      "seed": 198870163,
+      "version": 21,
+      "versionNonce": 1832190643,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761108453990,
+      "link": null,
+      "locked": false,
+      "text": "pagerduty/slack",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "jue4_I_qla4zG_F772176",
+      "originalText": "pagerduty/slack",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "wVZXeMgJBUuVzrgwzOq2I",
+      "type": "arrow",
+      "x": 2046.9162892192599,
+      "y": 2883.3606395926763,
+      "width": 4.571446010044838,
+      "height": 140.5715070452011,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0C",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 470044413,
+      "version": 42,
+      "versionNonce": 161876755,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761108464740,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -4.571446010044838,
+          140.5715070452011
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "4za5pgqbu6xXlSNDpZfyn",
+        "focus": -0.11374032781302416,
+        "gap": 27.428479875836274
+      },
+      "endBinding": {
+        "elementId": "ZTyRp2Vh8afKmVEkRLfP2",
+        "focus": -0.072088508041206,
+        "gap": 24.00004795619452
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "SqWJQjzaZfu3QiJkHPsa_",
+      "type": "arrow",
+      "x": 2050.3448955250633,
+      "y": 3297.0749340262696,
+      "width": 4.571358816964221,
+      "height": 114.28571428571422,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0D",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1625263293,
+      "version": 25,
+      "versionNonce": 1822920189,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761108466575,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          4.571358816964221,
+          114.28571428571422
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "ZTyRp2Vh8afKmVEkRLfP2",
+        "focus": 0.0349324521269841,
+        "gap": 13.714141845702216
+      },
+      "endBinding": {
+        "elementId": "48S1bAR3BIfn-7I8x7V9G",
+        "focus": -0.06421433969472559,
+        "gap": 10.285688127790308
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "dgR0JgTMSsQ_l6F64sgim",
+      "type": "arrow",
+      "x": 2280.059163800733,
+      "y": 3543.9321030413366,
+      "width": 113.14278738839266,
+      "height": 3.4285191127232792,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0F",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1664428605,
+      "version": 13,
+      "versionNonce": 619273533,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761108482611,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          113.14278738839266,
+          3.4285191127232792
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "48S1bAR3BIfn-7I8x7V9G",
+        "focus": 0.09772217599850085,
+        "gap": 17.142857142857338
+      },
+      "endBinding": {
+        "elementId": "EKv7iTFkRg9o10ihCeB2j",
+        "focus": -0.2655507589062228,
+        "gap": 18.285609654018117
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "-37DY8i5NpaPk-28bF8og",
+      "type": "arrow",
+      "x": 2098.3448606478314,
+      "y": 3641.0749165876528,
+      "width": 1.1428397042409415,
+      "height": 99.42858014787953,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0G",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 789214707,
+      "version": 32,
+      "versionNonce": 2088115485,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761108485603,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -1.1428397042409415,
+          99.42858014787953
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "48S1bAR3BIfn-7I8x7V9G",
+        "focus": -0.14369727843518373,
+        "gap": 9.142848423548458
+      },
+      "endBinding": {
+        "elementId": "qbwREFUy7phRAORu8XHAx",
+        "focus": 0.04859422681070195,
+        "gap": 9.142848423549367
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "twSzInafmLItJ8bEqWUc6",
+      "type": "arrow",
+      "x": 2169.201968627742,
+      "y": 3646.7892023019385,
+      "width": 338.2856968470983,
+      "height": 105.14286586216531,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0H",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 568023059,
+      "version": 85,
+      "versionNonce": 1823025043,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761108492696,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          338.2856968470983,
+          105.14286586216531
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "48S1bAR3BIfn-7I8x7V9G",
+        "focus": 0.5460606562405494,
+        "gap": 14.857134137834237
+      },
+      "endBinding": {
+        "elementId": "J1jPS03lu8BDIASb3Objn",
+        "focus": 0.6148604549191649,
+        "gap": 9.142848423549367
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "OhnIYp83YHe2LyC44YCwf",
+      "type": "arrow",
+      "x": 2584.0592335551974,
+      "y": 3975.932050725488,
+      "width": 1.1427525111607792,
+      "height": 77.71427699497735,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0I",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 915941437,
+      "version": 25,
+      "versionNonce": 113379709,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761108494700,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          1.1427525111607792,
+          77.71427699497735
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "J1jPS03lu8BDIASb3Objn",
+        "focus": -0.1421450451194807,
+        "gap": 17.142857142856883
+      },
+      "endBinding": {
+        "elementId": "jue4_I_qla4zG_F772176",
+        "focus": 0.08694651623691649,
+        "gap": 1.142796107700633
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
     }
   ],
   "appState": {
