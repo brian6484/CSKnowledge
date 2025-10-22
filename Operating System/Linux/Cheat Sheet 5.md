@@ -5,7 +5,7 @@ grep -i "checkpoint"
 ```
 when -i is used with grep, it means case-insensitive. 
 
-search multiple stuff with -E
+search multiple stuff with -E which enables extended regex so that the | works as an OR operator
 ```
 ps aux | grep -E "1247|8901"
 ```
