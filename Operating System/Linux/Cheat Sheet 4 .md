@@ -13,6 +13,13 @@ it on a specific file, u can view file permission
 ls -la
 ```
 
+### find file
+if i wanna search for specific file like postgre's config file i can use the `find` command
+```
+find /etc/conf/postgresql -name "*.conf" 2>/dev/null
+```
+2>/dev/null redirects error messages (fd 2 = stderr) to /dev/null (throws them away)
+
 ## Log
 ### Finding Postgres Log
 It could be in /var/log or in postgres data directory or in the systemd journal for Postgres.
