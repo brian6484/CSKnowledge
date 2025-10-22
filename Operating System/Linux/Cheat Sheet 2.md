@@ -14,9 +14,9 @@ procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
 ```
 b = blocked processes (normally to be below 5)
 
-si,so = swapping memory to disk
+si,so = swapping memory to disk, shows system is running out of memory
 
-bi,bo = disk i/o operations per second 
+bi,bo = disk i/o operations per second, shows system is v busy with i/o
 
 in = interrupts/s. Remember interrupt is when a device (disk, network, timer) needs CPU's attention or resource
 
