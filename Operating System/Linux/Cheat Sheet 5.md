@@ -5,6 +5,11 @@ grep -i "checkpoint"
 ```
 when -i is used with grep, it means case-insensitive. 
 
+search multiple stuff with -E
+```
+ps aux | grep -E "1247|8901"
+```
+
 ### crontab
 check cron jobs 
 
