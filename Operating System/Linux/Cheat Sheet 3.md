@@ -79,6 +79,19 @@ Total DISK READ:        12.34 M/s | Total DISK WRITE:      128.56 M/s
 this checkpoint in postgres is when **db writes all dirty pages to disk** to ensure durability. It can be heavy i/o if thers lots of data
 to flush.
 
+can check why via
+```
+cat /etc/postgresql/14/main/postgresql.conf | grep -i "checkpoint"
+#checkpoint_timeout = 5min                  # range 30s to 1d
+checkpoint_timeout = 30s
+#checkpoint_completion_target = 0.9         # default
+checkpoint_completion_target = 0.5
+#max_wal_size = 1GB
+max_wal_size = 256MB
+#min_wal_size = 80MB
+min_wal_size = 50MB
+```
+
 #### show active queries
 stat activity shows whats happening inside the db
 ```
