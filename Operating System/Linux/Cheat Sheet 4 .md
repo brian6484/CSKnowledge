@@ -3,6 +3,8 @@
 
 /etc: stores system and application **config files**.
 
+/var/lib: applications store their variable data like db files, indexes, configs, logs. It stores the application state basically
+
 ## File
 ### Viewing directory and FILE PERMISSION
 ls -la and u can add -h to show the memory too. But this command is useful not only to see what files there are in directory but if u use
