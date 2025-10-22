@@ -93,10 +93,33 @@ min_wal_size = 50MB
 ```
 
 #### show active queries
-stat activity shows whats happening inside the db
+stat activity shows whats happening inside the db. pg stat activity shows real time info about **all db connections and queries**.
 ```
 sudo -u postgres psql
 SELECT pid, query, state FROM pg_stat_activity;
+  pid  |                                query                                 |       state
+-------+-----------------------------------------------------------------------+-----------------
+ 18492 | VACUUM ANALYZE table_transactions;                                   | active
+ 18493 | INSERT INTO table_transactions SELECT * FROM staging_transactions;   | active
+ 18494 | INSERT INTO table_transactions SELECT * FROM staging_transactions;   | active
+ 18495 | INSERT INTO table_transactions SELECT * FROM staging_transactions;   | active
+ 18496 | INSERT INTO table_transactions SELECT * FROM staging_transactions;   | active
+ 18497 | <IDLE> in transaction                                                | idle in transaction
+ 18498 | SELECT COUNT(*) FROM table_transactions;                             | active
+ 18499 | <IDLE> in transaction                                                | idle in transaction
+ 18500 | autovacuum: VACUUM ANALYZE pg_catalog.pg_depend                      | active
+ 18501 | <IDLE> in transaction                                                | active
+```
+vaccuum is postgres's garbage collection. When we delete or update rows, postgres doenst delete the old data but mark it as dead (kinda like Cass marking record with 'tombstone'). Vaccuum cleans that up and reclaims space which is **heavy i/o work**.
+
+the idle in transaction means a connection opened a transaction but isnt doing anything. So this transaction means it ran some queries but **did not commit or rollback**. So its waiting and doing nothing.
+
+THE PROBLEM is when transaction is open, postgres must preserve consistency for that transaction's view of data. **SO IT KEEPS LOCKS ON ANY ROWS/TABLES THAT THIS TRANSACTION IS TOUCHING**!! So theres lock contention. 
+
+we should sigterm or kill via postgres
+```
+kill 18497 18499 18501
+sudo -u postgres psql -c "SELECT pg_terminate_backend(18497), pg_terminate_backend(18499), pg_terminate_backend(18501);"
 ```
 
 ## check remote drives
