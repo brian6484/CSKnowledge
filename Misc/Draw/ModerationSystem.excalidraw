@@ -39,7 +39,7 @@
       "x": 486.00911797417484,
       "y": 1297.2961520240422,
       "width": 563.2996215820312,
-      "height": 550,
+      "height": 575,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -53,20 +53,20 @@
       "index": "b0s",
       "roundness": null,
       "seed": 181307315,
-      "version": 1072,
-      "versionNonce": 20236669,
+      "version": 1102,
+      "versionNonce": 434489651,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760326856024,
+      "updated": 1761181701627,
       "link": null,
       "locked": false,
-      "text": "Scenario: Design Real-time content moderation system \nfor FB\n\nclarifying question:\ndoes system need to detect automatically or do users\nreport and then our system detects it? \nits both automatic and user-report based\nwhat kind of content could there be? images, videos, etc?\nso 4 types - images, text, short videos and harmful links\n\n\nfunctional requirements:\nsystem: \n- accept different media type inputs \n- kind of scoring mechanism to see if it exceeds a \nthreshold value\n- a delete admin privilege for that post if high score, \nqueue for review by human moderators if medium score\n- reporting and analytics \n- user initiated report queue \n\n",
+      "text": "Scenario: Design Real-time content moderation system \nfor FB\n\nclarifying question:\ndoes system need to detect automatically or do users\nreport and then our system detects it? \nits both automatic and user-report based\nwhat kind of content could there be? images, videos, etc?\nso 4 types - images, text, short videos and harmful links\n\n\nfunctional requirements:\nsystem: \n- accept different media type inputs \n- kind of scoring mechanism to see if it exceeds a \nthreshold value\n- system should have a delete admin privilege for that \npost if high score, and use queue for review by human \nmoderators if medium score\n- reporting and analytics \n- user initiated report queue \n\n",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Scenario: Design Real-time content moderation system \nfor FB\n\nclarifying question:\ndoes system need to detect automatically or do users\nreport and then our system detects it? \nits both automatic and user-report based\nwhat kind of content could there be? images, videos, etc?\nso 4 types - images, text, short videos and harmful links\n\n\nfunctional requirements:\nsystem: \n- accept different media type inputs \n- kind of scoring mechanism to see if it exceeds a \nthreshold value\n- a delete admin privilege for that post if high score, \nqueue for review by human moderators if medium score\n- reporting and analytics \n- user initiated report queue \n\n",
+      "originalText": "Scenario: Design Real-time content moderation system \nfor FB\n\nclarifying question:\ndoes system need to detect automatically or do users\nreport and then our system detects it? \nits both automatic and user-report based\nwhat kind of content could there be? images, videos, etc?\nso 4 types - images, text, short videos and harmful links\n\n\nfunctional requirements:\nsystem: \n- accept different media type inputs \n- kind of scoring mechanism to see if it exceeds a \nthreshold value\n- system should have a delete admin privilege for that \npost if high score, and use queue for review by human \nmoderators if medium score\n- reporting and analytics \n- user initiated report queue \n\n",
       "autoResize": true,
       "lineHeight": 1.25
     },
@@ -103,10 +103,10 @@
     {
       "id": "xnPBZ0X1nB-10rG5q54Z-",
       "type": "text",
-      "x": 1128.601687961154,
-      "y": 1310.6295362200055,
+      "x": 1112.601728651258,
+      "y": 1298.185078212193,
       "width": 700.4594116210938,
-      "height": 550,
+      "height": 575,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -120,20 +120,20 @@
       "index": "b0u",
       "roundness": null,
       "seed": 111937619,
-      "version": 927,
-      "versionNonce": 1278295133,
+      "version": 1017,
+      "versionNonce": 1129468979,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760337235401,
+      "updated": 1761181781055,
       "link": null,
       "locked": false,
-      "text": "non-functional req:\nCAP theorem: AP system with eventual consistency cuz we cannot allow\nthis moderation system to be unavailable at any given time\n\nactually CP is better cuz if its inconsistent, this post might be flagged\ninappr in 1 region but allowed in another region which is bad for user\nexperience. It is better to let posts be posted unmoderated first \n(temporary unavailability)\n\n500 mil posts per day and average media size is 2Kb\nmemory:\n500M * 2K = 1000 G = 1Tb/day\nfor 7 days of data retention thats 7 Tb\n\nhow many kafka worker nodes do we need:\n500 m posts / 100k s = 5k posts/s\nlets say average processing time = 1s = 1000ms\ntotal concurrent workload = 5k/1s = 5k \n# of worker nodes = total concur work/each node's capacity(how multi-\nthreaded it is)\n= 5k/like 5\n= 1k worker nodes",
+      "text": "non-functional req:\nCAP theorem: AP system with eventual consistency cuz we cannot allow\nthis moderation system to be unavailable at any given time\n\nactually CP is better cuz if its inconsistent, this post might be flagged\ninappr in 1 region but allowed in another region which is bad for user\nexperience. It is better to let posts be posted unmoderated first \n(temporary unavailability)\n\n500 mil posts per day and average media size is 2Kb\nmemory:\n500M * 2K = 1000 G = 1Tb/day\nfor 7 days of data retention thats 7 Tb\nif we include images and videos, its around 1PB/7 day\n\nhow many kafka worker nodes do we need:\n500 m posts / 100k s = 5k posts/s\nlets say average processing time = 1s = 1000ms\ntotal concurrent workload = 5k/1s = 5k \n# of worker nodes = total concur work/each node's capacity(how multi-\nthreaded it is)\n= 5k/like 5\n= 1k worker nodes",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "non-functional req:\nCAP theorem: AP system with eventual consistency cuz we cannot allow\nthis moderation system to be unavailable at any given time\n\nactually CP is better cuz if its inconsistent, this post might be flagged\ninappr in 1 region but allowed in another region which is bad for user\nexperience. It is better to let posts be posted unmoderated first \n(temporary unavailability)\n\n500 mil posts per day and average media size is 2Kb\nmemory:\n500M * 2K = 1000 G = 1Tb/day\nfor 7 days of data retention thats 7 Tb\n\nhow many kafka worker nodes do we need:\n500 m posts / 100k s = 5k posts/s\nlets say average processing time = 1s = 1000ms\ntotal concurrent workload = 5k/1s = 5k \n# of worker nodes = total concur work/each node's capacity(how multi-\nthreaded it is)\n= 5k/like 5\n= 1k worker nodes",
+      "originalText": "non-functional req:\nCAP theorem: AP system with eventual consistency cuz we cannot allow\nthis moderation system to be unavailable at any given time\n\nactually CP is better cuz if its inconsistent, this post might be flagged\ninappr in 1 region but allowed in another region which is bad for user\nexperience. It is better to let posts be posted unmoderated first \n(temporary unavailability)\n\n500 mil posts per day and average media size is 2Kb\nmemory:\n500M * 2K = 1000 G = 1Tb/day\nfor 7 days of data retention thats 7 Tb\nif we include images and videos, its around 1PB/7 day\n\nhow many kafka worker nodes do we need:\n500 m posts / 100k s = 5k posts/s\nlets say average processing time = 1s = 1000ms\ntotal concurrent workload = 5k/1s = 5k \n# of worker nodes = total concur work/each node's capacity(how multi-\nthreaded it is)\n= 5k/like 5\n= 1k worker nodes",
       "autoResize": true,
       "lineHeight": 1.25
     },
@@ -235,8 +235,8 @@
         "type": 3
       },
       "seed": 1929558013,
-      "version": 43,
-      "versionNonce": 1795614195,
+      "version": 45,
+      "versionNonce": 1581804595,
       "isDeleted": false,
       "boundElements": [
         {
@@ -258,9 +258,17 @@
         {
           "id": "-PjWB5A1m5luXs5hPStvB",
           "type": "arrow"
+        },
+        {
+          "id": "9oYx66BP5g6gQzVX_xp5r",
+          "type": "arrow"
+        },
+        {
+          "id": "YhlUlEFP3Zya-ctTAEn48",
+          "type": "arrow"
         }
       ],
-      "updated": 1760336130472,
+      "updated": 1761182731137,
       "link": null,
       "locked": false
     },
@@ -343,9 +351,9 @@
     {
       "id": "AyJVwrRDaexa0-tH7-lCQ",
       "type": "text",
-      "x": 1330.3804406060108,
+      "x": 1296.2904747856983,
       "y": 2594.610986618769,
-      "width": 83.47994995117188,
+      "width": 151.65988159179688,
       "height": 25,
       "angle": 0,
       "strokeColor": "#1e1e1e",
@@ -360,20 +368,20 @@
       "index": "b10",
       "roundness": null,
       "seed": 314721427,
-      "version": 33,
-      "versionNonce": 2028351731,
+      "version": 42,
+      "versionNonce": 428087293,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760336144059,
+      "updated": 1761183089004,
       "link": null,
       "locked": false,
-      "text": "post DB",
+      "text": "post DB (cass)",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "center",
       "verticalAlign": "middle",
       "containerId": "ymNdYPafP7RCAYCsmf6Zu",
-      "originalText": "post DB",
+      "originalText": "post DB (cass)",
       "autoResize": true,
       "lineHeight": 1.25
     },
@@ -399,8 +407,8 @@
         "type": 3
       },
       "seed": 1489984019,
-      "version": 133,
-      "versionNonce": 1399204467,
+      "version": 138,
+      "versionNonce": 882844669,
       "isDeleted": false,
       "boundElements": [
         {
@@ -414,9 +422,21 @@
         {
           "id": "8-BHQ_CnFvaMERqJbHSZi",
           "type": "arrow"
+        },
+        {
+          "id": "9oYx66BP5g6gQzVX_xp5r",
+          "type": "arrow"
+        },
+        {
+          "id": "UsrSB8V0wFmUifn1627-S",
+          "type": "arrow"
+        },
+        {
+          "id": "iDknsPmHlUDXaH-8DtAX_",
+          "type": "arrow"
         }
       ],
-      "updated": 1760334262577,
+      "updated": 1761182848160,
       "link": null,
       "locked": false
     },
@@ -440,11 +460,11 @@
       "index": "b12",
       "roundness": null,
       "seed": 42809203,
-      "version": 277,
-      "versionNonce": 366793053,
+      "version": 278,
+      "versionNonce": 216472637,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760335879524,
+      "updated": 1761182583120,
       "link": null,
       "locked": false,
       "text": "content moderation workers in \nsystem (lightweight text &\nimage models embedded into\nsystem to minimise latency and\navoid extra network call)",
@@ -568,10 +588,10 @@
     {
       "id": "eiNFnsQlEvwnnFh27DdI-",
       "type": "rectangle",
-      "x": 730.6388380262581,
-      "y": 2975.2591545468294,
+      "x": 728.3530714246956,
+      "y": 2918.116297403972,
       "width": 353.3333333333335,
-      "height": 165.18524169921875,
+      "height": 285,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -587,8 +607,8 @@
         "type": 3
       },
       "seed": 1690359667,
-      "version": 96,
-      "versionNonce": 1949478483,
+      "version": 167,
+      "versionNonce": 28553981,
       "isDeleted": false,
       "boundElements": [
         {
@@ -602,19 +622,31 @@
         {
           "id": "-GLuKrOwZTRv97pfrS1ZR",
           "type": "arrow"
+        },
+        {
+          "id": "9oYx66BP5g6gQzVX_xp5r",
+          "type": "arrow"
+        },
+        {
+          "id": "UsrSB8V0wFmUifn1627-S",
+          "type": "arrow"
+        },
+        {
+          "id": "YhlUlEFP3Zya-ctTAEn48",
+          "type": "arrow"
         }
       ],
-      "updated": 1760334106071,
+      "updated": 1761183227153,
       "link": null,
       "locked": false
     },
     {
       "id": "qYui90NX61D_hxy1ffEv8",
       "type": "text",
-      "x": 739.4756096733936,
-      "y": 3007.851775396439,
-      "width": 335.6597900390625,
-      "height": 100,
+      "x": 748.6698540581592,
+      "y": 2923.116297403972,
+      "width": 312.69976806640625,
+      "height": 275,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -628,30 +660,30 @@
       "index": "b17",
       "roundness": null,
       "seed": 2007005683,
-      "version": 158,
-      "versionNonce": 2097227379,
+      "version": 440,
+      "versionNonce": 1981696861,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760336116740,
+      "updated": 1761183227153,
       "link": null,
       "locked": false,
-      "text": "Kafka queue\ntopic: analyse-content\ndata: s3 data_url (if non-text) or\neven better, CDN_data_url",
+      "text": "Kafka queue\ntopic: analyse-content\ndata: s3 data_url (if non-text)\nfor ML models. we cant use\nCDN_data_url cuz workers need\ndirect access to raw media.\n\ntopic:moderation-actions if\nmoderation deems it need to be\ndeleted by post service (bi\ndirectional communication)",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "center",
       "verticalAlign": "middle",
       "containerId": "eiNFnsQlEvwnnFh27DdI-",
-      "originalText": "Kafka queue\ntopic: analyse-content\ndata: s3 data_url (if non-text) or even better, CDN_data_url",
+      "originalText": "Kafka queue\ntopic: analyse-content\ndata: s3 data_url (if non-text) for ML models. we cant use  CDN_data_url cuz workers need direct access to raw media.\n\ntopic:moderation-actions if moderation deems it need to be deleted by post service (bi directional communication)",
       "autoResize": true,
       "lineHeight": 1.25
     },
     {
       "id": "YzSrTrcr5rX2-sbfGAJES",
       "type": "arrow",
-      "x": 907.6758863661018,
+      "x": 906.5892931194887,
       "y": 2722.6665336972196,
-      "width": 3.7037150065104925,
-      "height": 240.74076334635402,
+      "width": 2.0115714097026967,
+      "height": 183.59790620349668,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -667,11 +699,11 @@
         "type": 2
       },
       "seed": 1470964499,
-      "version": 25,
-      "versionNonce": 386282963,
+      "version": 87,
+      "versionNonce": 1180096445,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760334101264,
+      "updated": 1761183227153,
       "link": null,
       "locked": false,
       "points": [
@@ -680,8 +712,8 @@
           0
         ],
         [
-          3.7037150065104925,
-          240.74076334635402
+          2.0115714097026967,
+          183.59790620349668
         ]
       ],
       "lastCommittedPoint": null,
@@ -702,10 +734,10 @@
     {
       "id": "-GLuKrOwZTRv97pfrS1ZR",
       "type": "arrow",
-      "x": 915.0833163791228,
-      "y": 3157.481393723261,
-      "width": 2.2222900390625,
-      "height": 248.14809163411473,
+      "x": 912.6905870862735,
+      "y": 3220.1532948811855,
+      "width": 0.8610974289251772,
+      "height": 185.4761904761899,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -721,11 +753,11 @@
         "type": 2
       },
       "seed": 1432417789,
-      "version": 32,
-      "versionNonce": 2098162675,
+      "version": 95,
+      "versionNonce": 746510365,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760334106071,
+      "updated": 1761183227153,
       "link": null,
       "locked": false,
       "points": [
@@ -734,8 +766,8 @@
           0
         ],
         [
-          -2.2222900390625,
-          248.14809163411473
+          -0.8610974289251772,
+          185.4761904761899
         ]
       ],
       "lastCommittedPoint": null,
@@ -775,8 +807,8 @@
         "type": 3
       },
       "seed": 104355731,
-      "version": 53,
-      "versionNonce": 680234451,
+      "version": 54,
+      "versionNonce": 70651709,
       "isDeleted": false,
       "boundElements": [
         {
@@ -786,9 +818,13 @@
         {
           "id": "8-BHQ_CnFvaMERqJbHSZi",
           "type": "arrow"
+        },
+        {
+          "id": "iDknsPmHlUDXaH-8DtAX_",
+          "type": "arrow"
         }
       ],
-      "updated": 1760335893583,
+      "updated": 1761182848160,
       "link": null,
       "locked": false
     },
@@ -832,10 +868,10 @@
     {
       "id": "8-BHQ_CnFvaMERqJbHSZi",
       "type": "arrow",
-      "x": 910.9440065751072,
-      "y": 3656.7405795142754,
-      "width": 0.9800137212754407,
-      "height": 195.55552164713617,
+      "x": 910.9410856063547,
+      "y": 3656.740579514276,
+      "width": 0.9669424262432358,
+      "height": 195.55552164713572,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -851,11 +887,11 @@
         "type": 2
       },
       "seed": 1317224787,
-      "version": 32,
-      "versionNonce": 386561299,
+      "version": 33,
+      "versionNonce": 607187197,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760335893583,
+      "updated": 1761182583121,
       "link": null,
       "locked": false,
       "points": [
@@ -864,8 +900,8 @@
           0
         ],
         [
-          0.9800137212754407,
-          195.55552164713617
+          0.9669424262432358,
+          195.55552164713572
         ]
       ],
       "lastCommittedPoint": null,
@@ -1014,15 +1050,15 @@
       "elbowed": false
     },
     {
-      "id": "qU4I_2zcqug6ikeo5V0jG",
+      "id": "w0VB2B2nFwFbobC76sVME",
       "type": "rectangle",
-      "x": 2367.675886366102,
-      "y": 2124.147958664666,
-      "width": 1019.2593383789062,
-      "height": 2160,
+      "x": 1881.7799769810258,
+      "y": 1280.8903721400725,
+      "width": 1263.9999825613836,
+      "height": 788.5714067731583,
       "angle": 0,
       "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
+      "backgroundColor": "#ffffff",
       "fillStyle": "solid",
       "strokeWidth": 2,
       "strokeStyle": "solid",
@@ -1030,34 +1066,34 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "index": "b1H",
+      "index": "b1J",
       "roundness": {
         "type": 3
       },
-      "seed": 194785715,
-      "version": 113,
-      "versionNonce": 492246877,
+      "seed": 288835411,
+      "version": 87,
+      "versionNonce": 590101779,
       "isDeleted": false,
       "boundElements": [
         {
           "type": "text",
-          "id": "63oq4Gz52H2NUUMa06ctD"
+          "id": "i_H4fNGg5l8fPkdtkaBPz"
         }
       ],
-      "updated": 1760337794975,
+      "updated": 1761182027372,
       "link": null,
       "locked": false
     },
     {
-      "id": "63oq4Gz52H2NUUMa06ctD",
+      "id": "i_H4fNGg5l8fPkdtkaBPz",
       "type": "text",
-      "x": 2374.273328993055,
-      "y": 2129.147958664666,
-      "width": 1006.064453125,
-      "height": 2150,
+      "x": 1886.7799769810258,
+      "y": 1300.1760755266516,
+      "width": 1243,
+      "height": 750,
       "angle": 0,
       "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
+      "backgroundColor": "#ffffff",
       "fillStyle": "solid",
       "strokeWidth": 2,
       "strokeStyle": "solid",
@@ -1065,23 +1101,254 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "index": "b1I",
+      "index": "b1K",
       "roundness": null,
-      "seed": 260327485,
-      "version": 89,
-      "versionNonce": 613819325,
+      "seed": 1215381821,
+      "version": 1205,
+      "versionNonce": 1976291261,
       "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760337794975,
+      "boundElements": null,
+      "updated": 1761182468912,
       "link": null,
       "locked": false,
-      "text": "┌─────────────────────────────────────────────────────────────────────┐\n│                           CLIENT LAYER                               │\n└─────────────────────────────────────────────────────────────────────┘\n                                    │\n                    ┌───────────────┼───────────────┐\n                    │               │               │\n                    ▼               ▼               ▼\n            ┌──────────┐    ┌──────────┐   ┌──────────┐\n            │  Post    │    │  Report  │   │  Appeal  │\n            │ Service  │    │ Service  │   │ Service  │\n            └──────────┘    └──────────┘   └──────────┘\n                    │               │               │\n                    │               │               │\n                    ▼               ▼               ▼\n            ┌─────────────────────────────────────────┐\n            │         KAFKA MESSAGE BROKER            │\n            │                                         │\n            │  Topics:                                │\n            │  • content-submitted (partitioned)      │\n            │  • user-reports (high priority)         │\n            │  • moderation-results                   │\n            │  • appeals-queue                        │\n            └─────────────────────────────────────────┘\n                    │               │               │\n        ┌───────────┼───────────────┼───────────────┼──────────┐\n        │           │               │               │          │\n        ▼           ▼               ▼               ▼          ▼\n┌────────────┐ ┌────────────┐ ┌────────────┐ ┌──────────┐ ┌──────────┐\n│   Text     │ │   Image    │ │   Video    │ │  Report  │ │  Appeal  │\n│  Workers   │ │  Workers   │ │  Workers   │ │  Workers │ │  Workers │\n│  (900)     │ │  (5,500)   │ │  (3,000)   │ │  (200)   │ │  (100)   │\n└────────────┘ └────────────┘ └────────────┘ └──────────┘ └──────────┘\n        │           │               │               │          │\n        │ [ML Models Embedded]      │               │          │\n        │           │               │               │          │\n        └───────────┴───────────────┴───────────────┴──────────┘\n                                    │\n                    ┌───────────────┼───────────────┐\n                    │               │               │\n                    ▼               ▼               ▼\n            ┌──────────────┐ ┌─────────────┐ ┌─────────────┐\n            │   Decision   │ │   Cache     │ │  Moderator  │\n            │   Router     │ │   Layer     │ │    Queue    │\n            │              │ │  (Redis)    │ │   Service   │\n            └──────────────┘ └─────────────┘ └─────────────┘\n                    │               │               │\n                    │               │               │\n      ┌─────────────┼───────────────┘               │\n      │             │                               │\n      ▼             ▼                               ▼\n┌──────────┐  ┌──────────┐              ┌─────────────────┐\n│  Auto    │  │  Post    │              │   Moderator     │\n│  Action  │  │ Service  │              │   Dashboard     │\n│ Service  │  │          │              │   (Human UI)    │\n└──────────┘  └──────────┘              └─────────────────┘\n      │             │                               │\n      │             │                               │\n      └─────────────┼───────────────────────────────┘\n                    │\n                    ▼\n┌─────────────────────────────────────────────────────────┐\n│                   DATABASE LAYER                         │\n│                                                          │\n│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐ │\n│  │   Posts DB   │  │ Moderation   │  │   Appeals    │ │\n│  │ (Cassandra)  │  │  Decisions   │  │      DB      │ │\n│  │              │  │  (Postgres)  │  │  (Postgres)  │ │\n│  └──────────────┘  └──────────────┘  └──────────────┘ │\n└─────────────────────────────────────────────────────────┘\n                    │\n                    ▼\n┌─────────────────────────────────────────────────────────┐\n│              OBJECT STORAGE (S3)                         │\n│  • Raw media files (images, videos)                      │\n│  • ML models (versioned)                                 │\n│  • Audit logs                                            │\n└─────────────────────────────────────────────────────────┘\n\n┌─────────────────────────────────────────────────────────┐\n│            MONITORING & OBSERVABILITY                    │\n│                                                          │\n│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐ │\n│  │ Prometheus   │  │   Grafana    │  │  PagerDuty   │ │\n│  │  (Metrics)   │  │ (Dashboards) │  │   (Alerts)   │ │\n│  └──────────────┘  └──────────────┘  └──────────────┘ │\n└─────────────────────────────────────────────────────────┘",
+      "text": "my initial design:\nClient → Post Service → Post DB\n                ↓ (blocking HTTP call)\n         Content Moderation System\n                ↓\n         Post Service (delete if bad)\nclient post -> post service -> post db and once post service saves post to db, it can send a req to content\nmoderation system and get a response back and according to the response status code and score, post service can\ndelete this post.\n\ncurrently i think this design is blocking cuz every req to content moderation system needs to wait for other req\nto complete. There is coupling as post service depends on moderation system's **AVAILABILITY**. And we cant meet\n500ms requirement cuz video processing will be longer and cant do independent scaling. \n\ngpt:\nWith kafka, we can do async decoupling where post service publishes and immediately return to user. We can also\ndo independent scaling and scale moderation workers based on queue depth and consumer. For fault tolerance, if\nmoderation is down messages are not lost and finally theres replay capability where we can reprocess if models\nimprove.\n\nso lets do 2-phase commit where post initially gets posted with \"pending moderation\" state and if flagged, we\nhide/delete post and notify user. Its like youtube when u use copyright music but it still gets posted. \n\nfor text moderation, its v fast so can be syncrhonous while for media, we can async thru kafka and this hybrid is\nbetter for user experience.\n\nkafka topic:\ncontent-submitted (by post service)\ncontent-analysed (by mod workers)\nmoderation-actions (consumed by post service for deletion)",
       "fontSize": 20,
-      "fontFamily": 5,
+      "fontFamily": 8,
+      "textAlign": "left",
+      "verticalAlign": "middle",
+      "containerId": "w0VB2B2nFwFbobC76sVME",
+      "originalText": "my initial design:\nClient → Post Service → Post DB\n                ↓ (blocking HTTP call)\n         Content Moderation System\n                ↓\n         Post Service (delete if bad)\nclient post -> post service -> post db and once post service saves post to db, it can send a req to content moderation system and get a response back and according to the response status code and score, post service can delete this post.\n\ncurrently i think this design is blocking cuz every req to content moderation system needs to wait for other req to complete. There is coupling as post service depends on moderation system's **AVAILABILITY**. And we cant meet 500ms requirement cuz video processing will be longer and cant do independent scaling. \n\ngpt:\nWith kafka, we can do async decoupling where post service publishes and immediately return to user. We can also do independent scaling and scale moderation workers based on queue depth and consumer. For fault tolerance, if moderation is down messages are not lost and finally theres replay capability where we can reprocess if models improve.\n\nso lets do 2-phase commit where post initially gets posted with \"pending moderation\" state and if flagged, we hide/delete post and notify user. Its like youtube when u use copyright music but it still gets posted. \n\nfor text moderation, its v fast so can be syncrhonous while for media, we can async thru kafka and this hybrid is better for user experience.\n\nkafka topic:\ncontent-submitted (by post service)\ncontent-analysed (by mod workers)\nmoderation-actions (consumed by post service for deletion)",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "UsrSB8V0wFmUifn1627-S",
+      "type": "arrow",
+      "x": 999.7067421181895,
+      "y": 3408.77762785412,
+      "width": 0.27317813619185927,
+      "height": 195.4586232503134,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1O",
+      "roundness": null,
+      "seed": 1918755229,
+      "version": 105,
+      "versionNonce": 579325053,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761183227153,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -0.27317813619185927,
+          -195.4586232503134
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "_rqbtbOTyJrtaaPp_3QLR",
+        "focus": 0.5551289486863182,
+        "gap": 5
+      },
+      "endBinding": {
+        "elementId": "eiNFnsQlEvwnnFh27DdI-",
+        "focus": -0.5334950856317322,
+        "gap": 10.202707199834549
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "fixedSegments": null,
+      "startIsSpecial": null,
+      "endIsSpecial": null
+    },
+    {
+      "id": "YhlUlEFP3Zya-ctTAEn48",
+      "type": "arrow",
+      "x": 1001.1265662063992,
+      "y": 2914.3189348493424,
+      "width": 0.02768350237965933,
+      "height": 198.85717119489345,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1P",
+      "roundness": null,
+      "seed": 148666451,
+      "version": 110,
+      "versionNonce": 1748186333,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761183227153,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0.02768350237965933,
+          -198.85717119489345
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "eiNFnsQlEvwnnFh27DdI-",
+        "focus": 0.5441491631041462,
+        "gap": 3.7973625546296716
+      },
+      "endBinding": {
+        "elementId": "IsH3vN-TsTTyk_aQxsv1a",
+        "focus": -0.7329137939788999,
+        "gap": 17.239657447463742
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "iDknsPmHlUDXaH-8DtAX_",
+      "type": "arrow",
+      "x": 1021.4935913085925,
+      "y": 3852.0332118443175,
+      "width": 4.57144601004461,
+      "height": 191.99999128069157,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1Q",
+      "roundness": null,
+      "seed": 1203328275,
+      "version": 30,
+      "versionNonce": 1753948061,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761182848160,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -4.57144601004461,
+          -191.99999128069157
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "1aNYCn9csRUgVbjoOyCcE",
+        "focus": 0.5718837858476397,
+        "gap": 18.040650140661455
+      },
+      "endBinding": {
+        "elementId": "_rqbtbOTyJrtaaPp_3QLR",
+        "focus": -0.6282055121149202,
+        "gap": 22.551877702994716
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "U0IW8mC8WDJNKKiUfzlr1",
+      "type": "rectangle",
+      "x": 3171.2079249790727,
+      "y": 1290.890372140078,
+      "width": 1246.857169015067,
+      "height": 789.7143118722097,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1R",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 825601427,
+      "version": 62,
+      "versionNonce": 122760125,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "wxLwi62_ZPQOlDZdrFzH9"
+        }
+      ],
+      "updated": 1761183520176,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "wxLwi62_ZPQOlDZdrFzH9",
+      "type": "text",
+      "x": 3178.636509486606,
+      "y": 1398.2475280761828,
+      "width": 1232,
+      "height": 575,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b1RV",
+      "roundness": null,
+      "seed": 100531037,
+      "version": 1707,
+      "versionNonce": 2125536701,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761183838887,
+      "link": null,
+      "locked": false,
+      "text": "s3 url or cdn url?\nML workers need to download media file while CDN is for END users (like human moderators or users). If we use\nCDN we might get the old version and for CDN routing, theres 1 additional hop rather than getting straight from\nS3. Furthermore, every request theres CDN pricing. With s3 directly in the **same region**, internal aws data\ntransfer is free. \n\nthen isnt s3 gonna be overloaded with requests? firstly s3 is massively scalable and we need good prefix\npartitioning strategy. If we have like s3://bucket/images/post123.jpg, then all media is under the same prefix\n(images/). But if we have good prefixes like s3://bucket/2025/10/13/14/def456/post456.jpg\ns3://bucket/2025/10/13/15/ghi789/post789.jpg where its by date/hour/hash then its scalable. If worried about\nbandwidth, can enable s3 transfer acceleration and use cloudfront edge location for faster uploads/downloads. It\nis still direct s3 access but just faster routing. Finally, workers can download from image and **cache in local\ndisk**. Though it is likely to be moderated twice, if user updates post like twitter's 15minute time window,\nthen its useful.\n\nfor monitoring & alerting (non-functional):\nall services should send metrics to monitoring system (prometheus/grafana) -> alertmanager -> pagerduty/slack\n\nregional compliance(non-functional):\nGDPR diff contents per law in region. So normally EUu ser data need to stay in EU locally so if posts are tagged\nwith region, route to region-specific kafka topics -> region specific workers\n\n",
+      "fontSize": 20,
+      "fontFamily": 8,
       "textAlign": "center",
       "verticalAlign": "middle",
-      "containerId": "qU4I_2zcqug6ikeo5V0jG",
-      "originalText": "┌─────────────────────────────────────────────────────────────────────┐\n│                           CLIENT LAYER                               │\n└─────────────────────────────────────────────────────────────────────┘\n                                    │\n                    ┌───────────────┼───────────────┐\n                    │               │               │\n                    ▼               ▼               ▼\n            ┌──────────┐    ┌──────────┐   ┌──────────┐\n            │  Post    │    │  Report  │   │  Appeal  │\n            │ Service  │    │ Service  │   │ Service  │\n            └──────────┘    └──────────┘   └──────────┘\n                    │               │               │\n                    │               │               │\n                    ▼               ▼               ▼\n            ┌─────────────────────────────────────────┐\n            │         KAFKA MESSAGE BROKER            │\n            │                                         │\n            │  Topics:                                │\n            │  • content-submitted (partitioned)      │\n            │  • user-reports (high priority)         │\n            │  • moderation-results                   │\n            │  • appeals-queue                        │\n            └─────────────────────────────────────────┘\n                    │               │               │\n        ┌───────────┼───────────────┼───────────────┼──────────┐\n        │           │               │               │          │\n        ▼           ▼               ▼               ▼          ▼\n┌────────────┐ ┌────────────┐ ┌────────────┐ ┌──────────┐ ┌──────────┐\n│   Text     │ │   Image    │ │   Video    │ │  Report  │ │  Appeal  │\n│  Workers   │ │  Workers   │ │  Workers   │ │  Workers │ │  Workers │\n│  (900)     │ │  (5,500)   │ │  (3,000)   │ │  (200)   │ │  (100)   │\n└────────────┘ └────────────┘ └────────────┘ └──────────┘ └──────────┘\n        │           │               │               │          │\n        │ [ML Models Embedded]      │               │          │\n        │           │               │               │          │\n        └───────────┴───────────────┴───────────────┴──────────┘\n                                    │\n                    ┌───────────────┼───────────────┐\n                    │               │               │\n                    ▼               ▼               ▼\n            ┌──────────────┐ ┌─────────────┐ ┌─────────────┐\n            │   Decision   │ │   Cache     │ │  Moderator  │\n            │   Router     │ │   Layer     │ │    Queue    │\n            │              │ │  (Redis)    │ │   Service   │\n            └──────────────┘ └─────────────┘ └─────────────┘\n                    │               │               │\n                    │               │               │\n      ┌─────────────┼───────────────┘               │\n      │             │                               │\n      ▼             ▼                               ▼\n┌──────────┐  ┌──────────┐              ┌─────────────────┐\n│  Auto    │  │  Post    │              │   Moderator     │\n│  Action  │  │ Service  │              │   Dashboard     │\n│ Service  │  │          │              │   (Human UI)    │\n└──────────┘  └──────────┘              └─────────────────┘\n      │             │                               │\n      │             │                               │\n      └─────────────┼───────────────────────────────┘\n                    │\n                    ▼\n┌─────────────────────────────────────────────────────────┐\n│                   DATABASE LAYER                         │\n│                                                          │\n│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐ │\n│  │   Posts DB   │  │ Moderation   │  │   Appeals    │ │\n│  │ (Cassandra)  │  │  Decisions   │  │      DB      │ │\n│  │              │  │  (Postgres)  │  │  (Postgres)  │ │\n│  └──────────────┘  └──────────────┘  └──────────────┘ │\n└─────────────────────────────────────────────────────────┘\n                    │\n                    ▼\n┌─────────────────────────────────────────────────────────┐\n│              OBJECT STORAGE (S3)                         │\n│  • Raw media files (images, videos)                      │\n│  • ML models (versioned)                                 │\n│  • Audit logs                                            │\n└─────────────────────────────────────────────────────────┘\n\n┌─────────────────────────────────────────────────────────┐\n│            MONITORING & OBSERVABILITY                    │\n│                                                          │\n│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐ │\n│  │ Prometheus   │  │   Grafana    │  │  PagerDuty   │ │\n│  │  (Metrics)   │  │ (Dashboards) │  │   (Alerts)   │ │\n│  └──────────────┘  └──────────────┘  └──────────────┘ │\n└─────────────────────────────────────────────────────────┘",
+      "containerId": "U0IW8mC8WDJNKKiUfzlr1",
+      "originalText": "s3 url or cdn url?\nML workers need to download media file while CDN is for END users (like human moderators or users). If we use CDN we might get the old version and for CDN routing, theres 1 additional hop rather than getting straight from S3. Furthermore, every request theres CDN pricing. With s3 directly in the **same region**, internal aws data transfer is free. \n\nthen isnt s3 gonna be overloaded with requests? firstly s3 is massively scalable and we need good prefix partitioning strategy. If we have like s3://bucket/images/post123.jpg, then all media is under the same prefix (images/). But if we have good prefixes like s3://bucket/2025/10/13/14/def456/post456.jpg\ns3://bucket/2025/10/13/15/ghi789/post789.jpg where its by date/hour/hash then its scalable. If worried about bandwidth, can enable s3 transfer acceleration and use cloudfront edge location for faster uploads/downloads. It is still direct s3 access but just faster routing. Finally, workers can download from image and **cache in local disk**. Though it is likely to be moderated twice, if user updates post like twitter's 15minute time window, then its useful.\n\nfor monitoring & alerting (non-functional):\nall services should send metrics to monitoring system (prometheus/grafana) -> alertmanager -> pagerduty/slack\n\nregional compliance(non-functional):\nGDPR diff contents per law in region. So normally EUu ser data need to stay in EU locally so if posts are tagged with region, route to region-specific kafka topics -> region specific workers\n\n",
       "autoResize": true,
       "lineHeight": 1.25
     }
