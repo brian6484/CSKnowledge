@@ -39,21 +39,45 @@ Child calls exec():
 replaces the current process image with new program.
 
 execve(), execl(), execp() etc.
-Replaces memory image but keeps same PID
+Replaces memory image but keeps same child PID
 Commonly used after fork to run different programs
 
 Typical pattern: fork() → exec() to create new processes running different programs.
 
 ## The Detailed Timeline with Fork/Exec:
 
-1. **Bash running** → you type `ls`
+1. **Bash running** → you type `ls`.
+- bash parses the command line, determing ls is command to be executed.
+- Shell searches the directory listed in my `$PATH` environment variable like /bin or /usr/bin for an executable file named `ls`. Once found, shell know its location. $PATH env variable is a crucial list of directories that shell automatically searches thru when u type a command **without specifying its full location**. The value of $PATH is a string of directory names, separated by colon like  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin. When u type command, shell searches these directories from left to right and the first directory that has this executable file called ls is it.
 
-2. **Bash calls fork()** 
-   - Creates identical copy of bash process
+2. **Bash calls fork()**
+- The shell needs to run ls command without terminating itself, so that it can accept new commands in the future. This is done via fork().
+   - shell calling fork() creates identical copy of bash process
+   - in the parent shell process, fork() returns and (parent) receives pid of child, which is needed to **either call wait() or waitpid() to pause its own execution until that child finishes OR send signals (sigterm/ sigkill) to control the child process**
+   - in the child process, fork() returns and (child) receives 0 as child doesnt need to know parent pid to perform its task. 
    - Now you have: Original bash + Copy of bash (both in memory)
+almost like
+```c
+pid_t pid = fork();
+
+if (pid < 0) {
+    // fork failed
+} else if (pid > 0) {
+    // This is the PARENT process
+    // Logic: Wait for the child or immediately continue
+    wait(NULL); 
+} else { 
+    // This is the CHILD process (pid == 0)
+    // Logic: Execute the new program (ls, etc.)
+    execlp("/bin/ls", "ls", NULL);
+}
+```
 
 3. **In the copy: exec() happens**
-   - The copy replaces itself with `ls` program
+   - The copy process is just a copy of the shell, but its job is to run ls. So it replaces itself with `ls` program by calling exec() *with the path to `ls` executable (/bin/ls). Exectuable means full path to the compiled program file on disk.
+   - This exec() is a system call that switches from user to kernel mode.
+   - exec() replaces the entire content of the child process - the child's **memory space (code, data, stack, heap)** is overwritten with the code,data, stack and heap of ls program. The pid of child process remains the same.
+   - rmb code stores the actual machine instructions (program logic) and data stores initialised global and static variables and heap is for dynamic memory allocation and stack is for local variables. heap and stack are dsicarded and new ones are made.
    - Now you have: Original bash + ls process
 
 4. **Original bash goes to sleep** (calls wait())
@@ -61,10 +85,12 @@ Typical pattern: fork() → exec() to create new processes running different pro
    - ls is now the one using CPU
 
 5. **ls finishes and exits**
-   - ls process disappears from memory
-   - This wakes up the sleeping bash
+   - ls executes, reading directory info and printing list of files to *standard output* (my terminal)
+   - when ls finishes its task, it calls `exit()`
+   - child's termination signals the waiting parent shell (sleeping bash), which then collects the child's exist status with wait() or waitpid().
 
 6. **Bash wakes up** and gives you prompt again
+
 ```
 bash (parent)
     |
