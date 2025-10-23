@@ -1,10 +1,7 @@
 ## Zombie process
-When process exits, it leaves **an entry in process table**, which is its exit status and puts it in kernels's process table.
-Until parent reads its exit status with 
-```
-wait() or waitpid()
-```
-the process is called zombie. Cuz it doesnt consume CPU but occupies a PID.
+When process finishes, its resources (like memory and fd, etc) are deallocated. But its entry in the process table remains cuz the parent process needs to read the child's exit status using wait() or waitpid() system call before this entry can be removed by the OS.
+
+The process is called zombie cuz it doesnt consume CPU but occupies a PID.
 
 here S=Z means process is zombie
 ```
@@ -36,6 +33,12 @@ then we see which proces is that zombie's parent
 ps -o pid,ppid,stat,cmd -p <PPID>
 ```
 
+## can u kill zombie process
+no u cant kill. If i try to kill with kill or kill -9, ur sending a signal to process but since the process is already dead it doesnt act on any signals
+
+### 2 ways
+either force its parent process to call wait()/waitpid() or terminate the parent process entirely
+
 ## Fork
 Almost always zombie process is caused by fork where parent calls fork() that creates child process but child runs and finishes task and **dies**. Then parent doesnt call wait(), which turns child into zombie.
 
@@ -46,7 +49,7 @@ Parent: (doesn't call wait()) → Child becomes ZOMBIE
 ```
 
 clean zombie either
-ask parent to reap it or kill the parent with kill -s
+ask parent to reap it or kill the parent with kill.
 
 ## Orphan
 When a parent process dies while its child is still running. The child becomes orphan and gets adopted by init process (PID 1). The child continues running normally but under new parentage.
