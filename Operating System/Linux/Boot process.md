@@ -12,14 +12,16 @@ passes boot parameters like root filesystem, init process, etc
 
 3) kernel initialisation
 
-Kernel image is decompressed and sets up core system components like memory, interrupts, device drivers that are needed for hardware
-to interact with. It also mounts root filesystem (read-only)
+Kernel begins to execute. Since it is usally compressed, it is decompressed and sets up core system components like memory, interrupts, device drivers that are needed for hardware
+to interact with. It also mounts root filesystem on **read-only** for filesystem for safety! Just in case data is not corrupt from last shutdown (e.g. computer crashed or lost power)
 
 4) init/systemd
 
-Starts user-space processes and services and brings system to a usable state.
+Kernel exceutes the **first userspace program**, the init system (systemd) with pid =1. This process is the "father" of all other processes and is responsible for maning the rest of the boot. Systemd reads its configuration and launches system services in parallel (like networking, logging, etc). 
+
+As system boots, it aims to reach a default target (multi-user.targget or graphical.target). Target means a specific system state or goal. 
 
 5) login prompt
 
-provides login interface to user. If system is configured for CLI, it presents **tty(teletype)** login prompt. If graphical GUI,
+provides login interface to user. If system is configured for CLI (i.e. default target is multi-user.target), it presents **tty(teletype)** login prompt. If graphical GUI (target is graphical.target),
 system displays GDM(Gnome display manager) or LightDM.
