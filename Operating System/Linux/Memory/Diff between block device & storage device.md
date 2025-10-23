@@ -1,5 +1,3 @@
-That's a very insightful question that gets to the heart of how different types of storage are handled by the Linux kernel!
-
 The key distinction is between **Block Storage** and **File Storage** (or Network Filesystems).
 
 ### **No, a remote drive is NOT a block device.**
