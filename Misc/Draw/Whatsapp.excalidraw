@@ -5,8 +5,8 @@
   "elements": [
     {
       "type": "text",
-      "version": 478,
-      "versionNonce": 1689893558,
+      "version": 481,
+      "versionNonce": 2125465469,
       "isDeleted": false,
       "id": "VyJw-9UnVO85Ai-VUsjAZ",
       "fillStyle": "cross-hatch",
@@ -26,7 +26,7 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1760415762038,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "fontSize": 36,
@@ -42,8 +42,8 @@
     },
     {
       "type": "text",
-      "version": 2747,
-      "versionNonce": 685568938,
+      "version": 2750,
+      "versionNonce": 164887251,
       "isDeleted": false,
       "id": "rJNp2O8hJaAFg3kMyMk_Z",
       "fillStyle": "cross-hatch",
@@ -65,7 +65,7 @@
         "type": 2
       },
       "boundElements": [],
-      "updated": 1760415762038,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "fontSize": 33.23791410279167,
@@ -81,8 +81,8 @@
     },
     {
       "type": "text",
-      "version": 3550,
-      "versionNonce": 375190518,
+      "version": 3553,
+      "versionNonce": 698093533,
       "isDeleted": false,
       "id": "vqMVltV12q_NqgH7tTBfp",
       "fillStyle": "solid",
@@ -102,7 +102,7 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1760415762038,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "fontSize": 16,
@@ -118,8 +118,8 @@
     },
     {
       "type": "line",
-      "version": 1836,
-      "versionNonce": 1091890794,
+      "version": 1839,
+      "versionNonce": 1507010675,
       "isDeleted": false,
       "id": "2GWYHE69MwgPJSZdMMqHq",
       "fillStyle": "hachure",
@@ -141,7 +141,7 @@
         "type": 2
       },
       "boundElements": [],
-      "updated": 1760415762038,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "startBinding": null,
@@ -164,8 +164,8 @@
     },
     {
       "type": "text",
-      "version": 1953,
-      "versionNonce": 757450333,
+      "version": 1977,
+      "versionNonce": 1051200573,
       "isDeleted": false,
       "id": "iIdO4f73th-8rX4KYwiIm",
       "fillStyle": "solid",
@@ -185,7 +185,7 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1761101850839,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "fontSize": 20,
@@ -201,8 +201,8 @@
     },
     {
       "type": "rectangle",
-      "version": 2439,
-      "versionNonce": 1845465386,
+      "version": 2442,
+      "versionNonce": 1759224339,
       "isDeleted": false,
       "id": "m-EddKns-1R41v_YIRSCg",
       "fillStyle": "solid",
@@ -222,15 +222,15 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1760415762038,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "index": "a5"
     },
     {
       "type": "text",
-      "version": 6076,
-      "versionNonce": 556590419,
+      "version": 6079,
+      "versionNonce": 1572175005,
       "isDeleted": false,
       "id": "es-dVSBh_mMs5UJW248CZ",
       "fillStyle": "hachure",
@@ -250,7 +250,7 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1761098795814,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "fontSize": 20,
@@ -266,8 +266,8 @@
     },
     {
       "type": "text",
-      "version": 4485,
-      "versionNonce": 347543030,
+      "version": 4488,
+      "versionNonce": 535029683,
       "isDeleted": false,
       "id": "Cw43clLeqn0rfJoDKy3Mf",
       "fillStyle": "solid",
@@ -287,7 +287,7 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1760415898060,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "fontSize": 16,
@@ -303,8 +303,8 @@
     },
     {
       "type": "line",
-      "version": 2642,
-      "versionNonce": 652455862,
+      "version": 2645,
+      "versionNonce": 779477245,
       "isDeleted": false,
       "id": "NeA7LWd6grc004a60g4rj",
       "fillStyle": "hachure",
@@ -326,7 +326,7 @@
         "type": 2
       },
       "boundElements": [],
-      "updated": 1760415762038,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "startBinding": null,
@@ -349,8 +349,8 @@
     },
     {
       "type": "rectangle",
-      "version": 2976,
-      "versionNonce": 920830134,
+      "version": 2979,
+      "versionNonce": 85096787,
       "isDeleted": false,
       "id": "YnCrK1eaDRgJugNOfGOGz",
       "fillStyle": "solid",
@@ -370,15 +370,15 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1760416121137,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "index": "a9"
     },
     {
       "type": "text",
-      "version": 3500,
-      "versionNonce": 1233144054,
+      "version": 3503,
+      "versionNonce": 1718270301,
       "isDeleted": false,
       "id": "wvByBEpLA1ci8sYaPG6Av",
       "fillStyle": "cross-hatch",
@@ -400,7 +400,7 @@
         "type": 2
       },
       "boundElements": [],
-      "updated": 1760415762038,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "fontSize": 36.30380479462411,
@@ -416,8 +416,8 @@
     },
     {
       "type": "rectangle",
-      "version": 2998,
-      "versionNonce": 320521373,
+      "version": 3001,
+      "versionNonce": 364762867,
       "isDeleted": false,
       "id": "L_ZHTbDehz_-MJZS1M6XR",
       "fillStyle": "solid",
@@ -437,15 +437,15 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1761096596703,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "index": "aB"
     },
     {
       "type": "text",
-      "version": 3867,
-      "versionNonce": 423694454,
+      "version": 3870,
+      "versionNonce": 249923005,
       "isDeleted": false,
       "id": "Qr8kzSnfEQPAeLquWjnP3",
       "fillStyle": "solid",
@@ -465,7 +465,7 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1760416107546,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "fontSize": 16,
@@ -481,8 +481,8 @@
     },
     {
       "type": "text",
-      "version": 4026,
-      "versionNonce": 634066611,
+      "version": 4029,
+      "versionNonce": 1617723539,
       "isDeleted": false,
       "id": "lx2X8KGWP_0yUt_7O-27Z",
       "fillStyle": "solid",
@@ -502,7 +502,7 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1761102008939,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "fontSize": 20,
@@ -518,8 +518,8 @@
     },
     {
       "type": "rectangle",
-      "version": 2882,
-      "versionNonce": 1493821162,
+      "version": 2885,
+      "versionNonce": 185058845,
       "isDeleted": false,
       "id": "vTk2uaG9G4v82slfpHpPW",
       "fillStyle": "solid",
@@ -539,15 +539,15 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1760420621193,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "index": "aG"
     },
     {
       "type": "text",
-      "version": 2986,
-      "versionNonce": 1431251370,
+      "version": 2989,
+      "versionNonce": 1591014963,
       "isDeleted": false,
       "id": "MTvWU4cfCExWFl-8goZE1",
       "fillStyle": "cross-hatch",
@@ -569,7 +569,7 @@
         "type": 2
       },
       "boundElements": [],
-      "updated": 1760415762038,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "fontSize": 33.23791410279167,
@@ -585,8 +585,8 @@
     },
     {
       "type": "text",
-      "version": 3857,
-      "versionNonce": 1238441462,
+      "version": 3860,
+      "versionNonce": 1573059197,
       "isDeleted": false,
       "id": "95udZlQmO2JlHPh8diLGX",
       "fillStyle": "solid",
@@ -606,7 +606,7 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1760415762038,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "fontSize": 16,
@@ -622,8 +622,8 @@
     },
     {
       "type": "line",
-      "version": 2075,
-      "versionNonce": 1305502826,
+      "version": 2078,
+      "versionNonce": 266188755,
       "isDeleted": false,
       "id": "ej_Ga2pTXng3-XhQS4i39",
       "fillStyle": "hachure",
@@ -645,7 +645,7 @@
         "type": 2
       },
       "boundElements": [],
-      "updated": 1760415762038,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "startBinding": null,
@@ -668,8 +668,8 @@
     },
     {
       "type": "text",
-      "version": 5905,
-      "versionNonce": 690118451,
+      "version": 5908,
+      "versionNonce": 802726621,
       "isDeleted": false,
       "id": "fIfpwytlFPqBfGKoOa7wC",
       "fillStyle": "solid",
@@ -689,7 +689,7 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1761102752053,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "fontSize": 20,
@@ -705,8 +705,8 @@
     },
     {
       "type": "rectangle",
-      "version": 2722,
-      "versionNonce": 2145142570,
+      "version": 2725,
+      "versionNonce": 1369261427,
       "isDeleted": false,
       "id": "44wIU1UkgC1js8WhWZxWG",
       "fillStyle": "solid",
@@ -726,15 +726,15 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1760415762038,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "index": "aL"
     },
     {
       "type": "text",
-      "version": 3934,
-      "versionNonce": 810457206,
+      "version": 3937,
+      "versionNonce": 366624573,
       "isDeleted": false,
       "id": "6SoxsTZp_by84FMyTVjaw",
       "fillStyle": "solid",
@@ -754,7 +754,7 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1760415762038,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "fontSize": 16,
@@ -770,8 +770,8 @@
     },
     {
       "type": "text",
-      "version": 3090,
-      "versionNonce": 870175210,
+      "version": 3093,
+      "versionNonce": 2069503763,
       "isDeleted": false,
       "id": "Oum6vKNp_q3RziJ4X-I82",
       "fillStyle": "cross-hatch",
@@ -793,7 +793,7 @@
         "type": 2
       },
       "boundElements": [],
-      "updated": 1760415762038,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "fontSize": 33.23791410279167,
@@ -809,8 +809,8 @@
     },
     {
       "type": "line",
-      "version": 2214,
-      "versionNonce": 1594890678,
+      "version": 2217,
+      "versionNonce": 371806109,
       "isDeleted": false,
       "id": "LC9mZJKR0N0ipq9YUY9_u",
       "fillStyle": "hachure",
@@ -832,7 +832,7 @@
         "type": 2
       },
       "boundElements": [],
-      "updated": 1760415762038,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "startBinding": null,
@@ -855,8 +855,8 @@
     },
     {
       "type": "text",
-      "version": 1476,
-      "versionNonce": 1647483677,
+      "version": 1479,
+      "versionNonce": 931841203,
       "isDeleted": false,
       "id": "MRV16jbnCUJPBXMX5Q_93",
       "fillStyle": "solid",
@@ -876,7 +876,7 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1761100544651,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "fontSize": 20,
@@ -912,8 +912,8 @@
         "type": 3
       },
       "seed": 740933299,
-      "version": 35,
-      "versionNonce": 1115447443,
+      "version": 38,
+      "versionNonce": 1861702653,
       "isDeleted": false,
       "boundElements": [
         {
@@ -925,7 +925,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761099914907,
+      "updated": 1761199577516,
       "link": null,
       "locked": false
     },
@@ -949,11 +949,11 @@
       "index": "aS",
       "roundness": null,
       "seed": 412944179,
-      "version": 22,
-      "versionNonce": 1700767645,
+      "version": 25,
+      "versionNonce": 500545107,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761099876927,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "text": "client sends \"hello\"",
@@ -988,8 +988,8 @@
         "type": 3
       },
       "seed": 600187997,
-      "version": 95,
-      "versionNonce": 1126822323,
+      "version": 98,
+      "versionNonce": 474336349,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1005,7 +1005,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761100017482,
+      "updated": 1761199577516,
       "link": null,
       "locked": false
     },
@@ -1029,11 +1029,11 @@
       "index": "aTV",
       "roundness": null,
       "seed": 2112979581,
-      "version": 41,
-      "versionNonce": 466618845,
+      "version": 44,
+      "versionNonce": 219247603,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761099909591,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "text": "Chat Server (websocket\nconnection)",
@@ -1068,8 +1068,8 @@
         "type": 3
       },
       "seed": 784032563,
-      "version": 85,
-      "versionNonce": 1886906931,
+      "version": 88,
+      "versionNonce": 501627069,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1085,7 +1085,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761099974246,
+      "updated": 1761199577516,
       "link": null,
       "locked": false
     },
@@ -1109,11 +1109,11 @@
       "index": "aUV",
       "roundness": null,
       "seed": 1943074877,
-      "version": 65,
-      "versionNonce": 231440541,
+      "version": 68,
+      "versionNonce": 1162116499,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761099936573,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "text": "Kafka (topic:messages and\npartitioned by chatId)",
@@ -1148,11 +1148,11 @@
         "type": 2
       },
       "seed": 984807069,
-      "version": 38,
-      "versionNonce": 870897203,
+      "version": 41,
+      "versionNonce": 2105153821,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761099914908,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "points": [
@@ -1202,11 +1202,11 @@
         "type": 2
       },
       "seed": 1433890717,
-      "version": 34,
-      "versionNonce": 1746767347,
+      "version": 37,
+      "versionNonce": 1101353779,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761099923026,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "points": [
@@ -1256,8 +1256,8 @@
         "type": 3
       },
       "seed": 1880822515,
-      "version": 104,
-      "versionNonce": 1488089779,
+      "version": 107,
+      "versionNonce": 343076221,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1273,7 +1273,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761099976273,
+      "updated": 1761199577516,
       "link": null,
       "locked": false
     },
@@ -1297,11 +1297,11 @@
       "index": "aZ",
       "roundness": null,
       "seed": 1856449171,
-      "version": 87,
-      "versionNonce": 677166131,
+      "version": 90,
+      "versionNonce": 1385854163,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761099962105,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "text": "Consumer groups\n1) write to cass\n2) index in ES and anlytics is\noptional",
@@ -1336,8 +1336,8 @@
         "type": 3
       },
       "seed": 1091894493,
-      "version": 36,
-      "versionNonce": 245735923,
+      "version": 39,
+      "versionNonce": 303183325,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1349,7 +1349,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761099976273,
+      "updated": 1761199577516,
       "link": null,
       "locked": false
     },
@@ -1373,11 +1373,11 @@
       "index": "ab",
       "roundness": null,
       "seed": 1880438355,
-      "version": 9,
-      "versionNonce": 1745326323,
+      "version": 12,
+      "versionNonce": 2008703603,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761099970461,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "text": "Cass DB",
@@ -1412,11 +1412,11 @@
         "type": 2
       },
       "seed": 898130045,
-      "version": 30,
-      "versionNonce": 1493314515,
+      "version": 33,
+      "versionNonce": 1097429565,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761099974247,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "points": [
@@ -1466,11 +1466,11 @@
         "type": 2
       },
       "seed": 1890033661,
-      "version": 30,
-      "versionNonce": 1507304531,
+      "version": 33,
+      "versionNonce": 2043386899,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761099976273,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "points": [
@@ -1520,8 +1520,8 @@
         "type": 3
       },
       "seed": 29106045,
-      "version": 380,
-      "versionNonce": 462291763,
+      "version": 383,
+      "versionNonce": 257565341,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1541,7 +1541,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761106616247,
+      "updated": 1761199577516,
       "link": null,
       "locked": false
     },
@@ -1565,11 +1565,11 @@
       "index": "af",
       "roundness": null,
       "seed": 220124499,
-      "version": 486,
-      "versionNonce": 1273832659,
+      "version": 489,
+      "versionNonce": 1153737139,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761106616247,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "text": "Connection Service (not for message\npersistence but for message routing\nand asking \"where are my\nreceipients\"?)\n- returns Brian is in Chat Server A\nand others too7",
@@ -1604,8 +1604,8 @@
         "type": 3
       },
       "seed": 656237949,
-      "version": 30,
-      "versionNonce": 1792386163,
+      "version": 33,
+      "versionNonce": 1351993085,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1613,7 +1613,7 @@
           "id": "5n9ikfDGCdhTTKFyvzexq"
         }
       ],
-      "updated": 1761100128730,
+      "updated": 1761199577516,
       "link": null,
       "locked": false
     },
@@ -1637,11 +1637,11 @@
       "index": "ak",
       "roundness": null,
       "seed": 455594973,
-      "version": 25,
-      "versionNonce": 1681713469,
+      "version": 28,
+      "versionNonce": 30143315,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761100132290,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "text": "for message persistence",
@@ -1676,8 +1676,8 @@
         "type": 3
       },
       "seed": 1334127699,
-      "version": 77,
-      "versionNonce": 2037100627,
+      "version": 80,
+      "versionNonce": 1201528669,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1685,7 +1685,7 @@
           "id": "SNv4subvXXJAatKf0kUZT"
         }
       ],
-      "updated": 1761106619747,
+      "updated": 1761199577516,
       "link": null,
       "locked": false
     },
@@ -1709,11 +1709,11 @@
       "index": "am",
       "roundness": null,
       "seed": 352248659,
-      "version": 57,
-      "versionNonce": 936914419,
+      "version": 60,
+      "versionNonce": 1899499763,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761106619747,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "text": "for message routing ",
@@ -1748,8 +1748,8 @@
         "type": 3
       },
       "seed": 1118507837,
-      "version": 256,
-      "versionNonce": 134857715,
+      "version": 259,
+      "versionNonce": 1791224765,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1773,7 +1773,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761106636477,
+      "updated": 1761199577516,
       "link": null,
       "locked": false
     },
@@ -1797,11 +1797,11 @@
       "index": "ao",
       "roundness": null,
       "seed": 431989661,
-      "version": 199,
-      "versionNonce": 1356644595,
+      "version": 202,
+      "versionNonce": 76511891,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761106616247,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "text": "Chat Server (websocket\nconnection)",
@@ -1836,11 +1836,11 @@
         "type": 2
       },
       "seed": 1444457203,
-      "version": 446,
-      "versionNonce": 853103805,
+      "version": 449,
+      "versionNonce": 1781099549,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761106616389,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "points": [
@@ -1890,11 +1890,11 @@
         "type": 2
       },
       "seed": 929752307,
-      "version": 465,
-      "versionNonce": 1682901373,
+      "version": 468,
+      "versionNonce": 948482099,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761106616390,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "points": [
@@ -1944,8 +1944,8 @@
         "type": 3
       },
       "seed": 1615352093,
-      "version": 191,
-      "versionNonce": 754069171,
+      "version": 194,
+      "versionNonce": 1975509117,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1961,7 +1961,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761106616247,
+      "updated": 1761199577516,
       "link": null,
       "locked": false
     },
@@ -1985,11 +1985,11 @@
       "index": "as",
       "roundness": null,
       "seed": 1095434611,
-      "version": 147,
-      "versionNonce": 113238099,
+      "version": 150,
+      "versionNonce": 789197267,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761106616247,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "text": "Kafka",
@@ -2024,8 +2024,8 @@
         "type": 3
       },
       "seed": 1030084627,
-      "version": 193,
-      "versionNonce": 1527233843,
+      "version": 196,
+      "versionNonce": 1128843485,
       "isDeleted": false,
       "boundElements": [
         {
@@ -2041,7 +2041,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761106616247,
+      "updated": 1761199577516,
       "link": null,
       "locked": false
     },
@@ -2065,11 +2065,11 @@
       "index": "atV",
       "roundness": null,
       "seed": 15616275,
-      "version": 165,
-      "versionNonce": 673160915,
+      "version": 168,
+      "versionNonce": 153780083,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761106616247,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "text": "Receipient Chat Servers",
@@ -2104,8 +2104,8 @@
         "type": 3
       },
       "seed": 682407155,
-      "version": 152,
-      "versionNonce": 748817331,
+      "version": 157,
+      "versionNonce": 1414899005,
       "isDeleted": false,
       "boundElements": [
         {
@@ -2117,7 +2117,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761106616247,
+      "updated": 1761199577516,
       "link": null,
       "locked": false
     },
@@ -2141,11 +2141,11 @@
       "index": "aw",
       "roundness": null,
       "seed": 156249853,
-      "version": 243,
-      "versionNonce": 510401875,
+      "version": 247,
+      "versionNonce": 19929363,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761106616247,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "text": "Online or small groups? Websocket push\nto clients\nOffline or large groups: Push notif (FCM)\nand store in Cass",
@@ -2180,11 +2180,11 @@
         "type": 2
       },
       "seed": 241219581,
-      "version": 457,
-      "versionNonce": 1710132797,
+      "version": 460,
+      "versionNonce": 2085090717,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761106616390,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "points": [
@@ -2234,11 +2234,11 @@
         "type": 2
       },
       "seed": 1463482483,
-      "version": 445,
-      "versionNonce": 1938023165,
+      "version": 448,
+      "versionNonce": 1150385843,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761106616390,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "points": [
@@ -2288,11 +2288,11 @@
         "type": 2
       },
       "seed": 1398105565,
-      "version": 414,
-      "versionNonce": 1171982269,
+      "version": 417,
+      "versionNonce": 642857469,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761106616390,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "points": [
@@ -2342,8 +2342,8 @@
         "type": 3
       },
       "seed": 912216787,
-      "version": 156,
-      "versionNonce": 1395765469,
+      "version": 159,
+      "versionNonce": 234172499,
       "isDeleted": false,
       "boundElements": [
         {
@@ -2351,7 +2351,7 @@
           "type": "text"
         }
       ],
-      "updated": 1761106617964,
+      "updated": 1761199577516,
       "link": null,
       "locked": false
     },
@@ -2375,11 +2375,11 @@
       "index": "b00V",
       "roundness": null,
       "seed": 621862941,
-      "version": 185,
-      "versionNonce": 1189186877,
+      "version": 188,
+      "versionNonce": 1534259805,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761106617964,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "text": "Query Connection registry (Redis)\nthat maps userId -> chatServerId",
@@ -2414,11 +2414,11 @@
         "type": 2
       },
       "seed": 373125395,
-      "version": 376,
-      "versionNonce": 201132061,
+      "version": 379,
+      "versionNonce": 2133962227,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761106616391,
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "points": [
@@ -2464,8 +2464,8 @@
         "type": 3
       },
       "seed": 1167148797,
-      "version": 104,
-      "versionNonce": 2102571347,
+      "version": 107,
+      "versionNonce": 142515901,
       "isDeleted": false,
       "boundElements": [
         {
@@ -2481,7 +2481,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761106647714,
+      "updated": 1761199577516,
       "link": null,
       "locked": false
     },
@@ -2505,11 +2505,11 @@
       "index": "b03",
       "roundness": null,
       "seed": 335937043,
-      "version": 26,
-      "versionNonce": 417631315,
+      "version": 29,
+      "versionNonce": 994932627,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761106631807,
+      "boundElements": [],
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "text": "LB (level 4 tcp)",
@@ -2544,11 +2544,11 @@
         "type": 2
       },
       "seed": 1595265939,
-      "version": 25,
-      "versionNonce": 630720083,
+      "version": 28,
+      "versionNonce": 68534045,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761106636477,
+      "boundElements": [],
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "points": [
@@ -2598,8 +2598,8 @@
         "type": 3
       },
       "seed": 1853595005,
-      "version": 45,
-      "versionNonce": 1833556499,
+      "version": 48,
+      "versionNonce": 1082068275,
       "isDeleted": false,
       "boundElements": [
         {
@@ -2611,7 +2611,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761106647714,
+      "updated": 1761199577516,
       "link": null,
       "locked": false
     },
@@ -2635,11 +2635,11 @@
       "index": "b06",
       "roundness": null,
       "seed": 657028733,
-      "version": 14,
-      "versionNonce": 501311421,
+      "version": 17,
+      "versionNonce": 1420415869,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761106644947,
+      "boundElements": [],
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "text": "client req",
@@ -2674,11 +2674,11 @@
         "type": 2
       },
       "seed": 1230075347,
-      "version": 19,
-      "versionNonce": 1774919603,
+      "version": 22,
+      "versionNonce": 36499155,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761106647714,
+      "boundElements": [],
+      "updated": 1761199577516,
       "link": null,
       "locked": false,
       "points": [
@@ -2705,6 +2705,78 @@
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false
+    },
+    {
+      "id": "eDnW8_5Dkp8zjavL4i84E",
+      "type": "rectangle",
+      "x": 3090.6141977595926,
+      "y": 196.19020016784668,
+      "width": 1175.5600208647675,
+      "height": 721.282125054811,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b08",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1637799997,
+      "version": 67,
+      "versionNonce": 1930894781,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "w-v-kfvZ0ehWtzrnpNmQs"
+        }
+      ],
+      "updated": 1761199687340,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "w-v-kfvZ0ehWtzrnpNmQs",
+      "type": "text",
+      "x": 3100.8942081919763,
+      "y": 456.8312626952522,
+      "width": 1155,
+      "height": 200,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b09",
+      "roundness": null,
+      "seed": 258916083,
+      "version": 651,
+      "versionNonce": 740774109,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761200048995,
+      "link": null,
+      "locked": false,
+      "text": "if websocket isnt allowed: we lose real-time push capability so clients must poll.\nrest api (polling) where client polls server for any new messages for set time interval.\nthis way has high request overhead so do long polling where when client makes a request, server holds\nthat request open for up to 30s. If message arrives during that window, server responds immediately but\nif no msg, server responds after timeout.\n\ncache redis becomes v impt cuz now it needs to store user_last_active, chat_latest_message. Without this,\nbillions of empty polls hit cassandra so need huge redis cluster.",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "eDnW8_5Dkp8zjavL4i84E",
+      "originalText": "if websocket isnt allowed: we lose real-time push capability so clients must poll.\nrest api (polling) where client polls server for any new messages for set time interval.\nthis way has high request overhead so do long polling where when client makes a request, server holds that request open for up to 30s. If message arrives during that window, server responds immediately but if no msg, server responds after timeout.\n\ncache redis becomes v impt cuz now it needs to store user_last_active, chat_latest_message. Without this, billions of empty polls hit cassandra so need huge redis cluster.",
+      "autoResize": true,
+      "lineHeight": 1.25
     }
   ],
   "appState": {
