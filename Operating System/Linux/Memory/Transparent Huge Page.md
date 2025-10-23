@@ -46,7 +46,7 @@ Wasted:       2044 KB
 ```
 
 ### 3. **fork() Overhead**
-- Copy-on-write copies entire 2MB (not just 4KB). fork(), making a copy, needs much more memory now
+- Copy-on-write copies entire 2MB (not just 4KB). fork(), making a copy, needs much more memory now. RMB while fork() allows child and parent to share the same memory space for **reads**, when either child/parent writes, then kernel allocates a new physical 4kb page and copies the original contents of 4kb page into it. So both parent and child has separate copies of that page.
 - **Bad for Redis, MongoDB** (they fork for backups)
 
 ### 4. **Swap Issues**
