@@ -93,6 +93,8 @@ Nmap done: 1 IP address (1 host up) scanned in 4.67 seconds
 go to /etc/hosts file. If the error i cannot resolve hostname (db.internal) and there is no mapping inside this /etc/hosts file, we have to add manually. And the ip address that belongs to this domain can be found via
 ```
 nslookup db.internal
+## or
+dig db.internal
 
 ## but if theres NXDOMAIN error, then ask a teammate lol
 ** server can't find db.internal: NXDOMAIN
