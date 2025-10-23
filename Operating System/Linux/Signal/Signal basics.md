@@ -4,6 +4,15 @@ tbc what are signals? They are software interrupts sent to processes, asking the
 ## Diff between system call
 System call is request to kernel to do something. So signal is the "what" (what message to send) and system call is the "how" (how to send it)
 
+## How kernel handles a signal
+Kernel is responsible for managing and delivering signals to processes.
+1) signal generation: by kernel when event occurs. This event can be triggered by hardware event (SIGSEGV when process tries to access restricted memory) or user action (ctrl +c sends SIGINT to foreground process) or kill (SIGTERM)
+2) signal delivery: kernel delievers this signal to the target process. When the process transitions from kernel mode to user mode, kernel checks if theres any pending or unblocked signals
+3) signal action: once process receives this signal, it handles the signal according to one of 3 actions
+3.1) default action - kernel executes the standard action of that signal. For most signals, it is to terminate the process (SIGTERM) or create a core dump and terminate (SIGQUIT). Core dump is a file created by the OS when program terminates unexepctedly, like due to segmentation fault or unhandled exception. It is kinda like a snapshot of program's working memory when it crashed.
+3.2) ignore - process is told to ignore the signal
+3.3) catch - process executes a signal handler that is within the code. It allows program to perform a graceful shutdown like saving data, cleaning up files and then exiting. But isnt this already done by SIGTERM? With this, u have a guaranteed custom logic to ensure that ur specific cleanup logic runs. SIGTERM handling is bad for a critical application.
+
 ### SIGTERM signal 15 gracefull kill
 Process can catch and handle this signal, clean up before exiting.
 ```
