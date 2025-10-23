@@ -5,6 +5,7 @@ Interface) is the first software to run. It performs **POST (Power-on self-test)
 is working correctly. It also scans bootable devices (like Hard drive, SSD) for **bootloader**
 
 2) Bootloader
+Bootloader is small computer program that is executed by system's firmware. Firmware is software embedded directly into a piece of hardware to provide **low-level control** for the device. Its like **software for hardware** like a microchip.
 
 Bootloader's task is to load OS kernel, which controls all programs and allocates and manages memory, into memory. It
 passes boot parameters like root filesystem, init process, etc
