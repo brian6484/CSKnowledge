@@ -23,6 +23,14 @@ chmod +x script.sh    # Add execute permission
 chmod -w file.txt     # Remove write permission
 ```
 
+## change via **symbolic mode**
+In symbolic mode, you use letters like **u (not o)** for the user (owner), g for the group, and o for others. You can add permissions with a +, remove them with a -, and set them exactly with an =. For instance, chmod u+r adds the read permission for the owner, and chmod g-w removes the write permission for the group.
+
+tricky example is 
+chmod o=r-x dir/. I thought this adds read but delets executer permission for others. 
+
+The **characters immediately following the equals sign** (r-x) are treated as the list of permissions to set. So this r-x is chained and this hyphen acts as a "separator", not removing. But more common way is to not include the hyphen so like chmod o=rx dir/
+
 ## just rechecking file's content
 if u just need to see the first line of that file
 
