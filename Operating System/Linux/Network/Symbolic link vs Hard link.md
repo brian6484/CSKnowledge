@@ -5,6 +5,8 @@ the original file and hard link all share the same inode! so thats y deleting or
 ## symbolic link
 it points to the file's name/path. Original and symbolic have different, unique inodes so if original file is deleted, this symbolic link breaks and points to a **non-existent path**.
 
+So, a hard link is essentially another name for the same inode on the filesystem, which means if you modify the file through one hard link, the changes reflect in all of them. Meanwhile, a symbolic link, or symlink, is more like a shortcut that points to the original file’s path. If the original file is deleted, the symlink breaks and no longer works.
+
 Let's use a file named **`original.txt`** located in the directory `/home/user/files/`.
 
 ***
