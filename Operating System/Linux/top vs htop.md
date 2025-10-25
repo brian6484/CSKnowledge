@@ -1,0 +1,1 @@
+The top command provides a real-time view of system performance, showing CPU and memory usage, as well as a list of running processes. htop, on the other hand, is like a more user-friendly, interactive version of top. It offers a more visually appealing interface, easier navigation, and additional features like the ability to scroll through processes and sort them more easily.
