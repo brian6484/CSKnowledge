@@ -1,4 +1,8 @@
 ## MMU
+
+## diff between mmu and page table
+mmu is the **hardware** that is a physical chip in cpu whereas page table is a **data structure (software)** that is stored in ram and managed by os
+
 The Two Main Roles of the MMU
 1. Address Translation
 This is the primary role of the MMU. Programs operate in a virtual address space, which is a logical view of memory that is unique to each process. For example, a program might think it has access to memory addresses from 0 to 4GB. The MMU is the hardware component that, in collaboration with the OS, translates these virtual addresses into the real physical addresses in RAM.
