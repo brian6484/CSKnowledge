@@ -50,7 +50,20 @@ With paging:
 - Process memory is divided into fixed-size **pages** (same size)
 - Pages can be placed in *any* available frames, in any order
 
-So that 7KB process (needing 2 pages) can use the "holes" for memory
+[Process A][free 3KB][Process B][free 1KB][Process C][free 5KB]
+```
+
+**With paging from the start**, this would have been organized as:
+```
+Frame 0 (4KB): Process A - uses FULL 4KB
+Frame 1 (4KB): COMPLETELY FREE - full 4KB available
+Frame 2 (4KB): Process B - uses FULL 4KB  
+Frame 3 (4KB): COMPLETELY FREE - full 4KB available
+Frame 4 (4KB): Process C - uses FULL 4KB
+Frame 5 (4KB): COMPLETELY FREE - full 4KB available
+
+theres no concept of holes in paging cuz OS reorganises everything into fixed-size frames. Either this whole 4kb frame is used (even when program is just using 3kb) or its not. So this
+7Kb can go to frame 1 and frame 3 cuz frame 1 has the full 4kb free, not 3kb.
 
 The frames don't need to be next to each other! The page table maps it all correctly, so the process sees contiguous virtual memory even though physical frames are scattered.
 
