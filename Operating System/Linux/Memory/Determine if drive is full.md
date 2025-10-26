@@ -1,4 +1,4 @@
-For disk space, theres 2 commands
+For disk space, theres 2 commands - disk **space and inodes avaialability**
 
 ## df -h (omg its not -dh!!)
 df = disk free
