@@ -45,12 +45,7 @@ ldd /usr/bin/python3
 - **No I/O penalty**: Dropping them requires no disk writes
 - **Easily reloaded**: If needed again, just read from disk
 
----
-
 ## Dirty Pages
-
-Before explaining active pages, understand **dirty pages** (opposite of clean):
-
 **Dirty pages** = Pages modified in RAM but **not yet written to disk**
 
 ### Examples:
@@ -67,8 +62,6 @@ echo "new data" >> /tmp/myfile
 - Must be written to disk first (flushed)
 - Tracked by kernel's `pdflush`/`flush` threads
 - Higher cost to evict
-
----
 
 ## Active Pages
 
@@ -108,10 +101,12 @@ Linux maintains two LRU (Least Recently Used) lists for pages:
 | "Hot" pages | "Cold" pages |
 | Higher priority | Lower priority |
 
-## anonymous page (anon)
-## The Two Types of Memory Pages
+## Anonymous page (anon)
+## The Two Types of Memory Pages - anonymous and file-backed pages
 
-Every page (a small block) of physical RAM is categorized by the kernel into one of two groups based on where its original data comes from and where it must go if the system runs out of memory.
+An anonymous page is a memory page that isn't backed by any file on disk - it only exists in RAM and has no associated file. Examples include stack memory, heap memory (malloc), and uninitialized data - when these pages need to be swapped out, they go to the swap space (not back to a file) because they were created "anonymously" by the process rather than loaded from a file like executable code or memory-mapped files.
+
+So when anon pages are swapped out to swap space (area on disk that OS uses as overflow storage for RAM), they stay there until the process needs them then there major page fault. But if process terminates before they are swapped back in, the swap space is freed. So anon pages are just temporary data that only exist during process's lifetime.
 
 | Category | Anonymous Page (anon) | File-Backed Page (file) |
 | :--- | :--- | :--- |
@@ -120,10 +115,7 @@ Every page (a small block) of physical RAM is categorized by the kernel into one
 | **Reclamation** | If RAM is needed, this page **must be written out to swap space** (a "dirty" process). | If RAM is needed, this page is either **discarded** (if clean) or **written back to its original file** (if dirty). |
 | **Examples** | Program **stack** and **heap** (where `malloc` allocates memory). | The **executable code** of Python, shared **libraries** (`libc`), and the **disk cache**. |
 
-***
-
 ## How Anonymous Memory is Created
-
 Anonymous memory pages are created when a running program needs space to do work, not just to hold a copy of a file:
 
 1.  **Heap Allocation (The Big One):** When a program calls a function like `malloc()` (in C) or creates a large object (in Python/Java), that memory is usually allocated from the process's **heap**. This is just blank RAM given to the program, and it's anonymous.
@@ -132,12 +124,10 @@ Anonymous memory pages are created when a running program needs space to do work
 
 **In short: Anonymous pages hold the unique, state-changing data of your running applications. It's the memory that truly belongs to the process and has no original counterpart on the filesystem.**
 
----
-
 ## Viewing These in Linux
-
 ### **/proc/meminfo** - detailed, real-time snapshot of the system's memory usage and configuration
 
+proc means process.
 ```bash
 cat /proc/meminfo
 ```
@@ -205,119 +195,3 @@ sudo vmtouch -v /path/to/file
 # See cache usage per file:
 sudo pcstat /path/to/file
 ```
-
----
-
-## Practical Scenarios
-
-### **Scenario 1: Reading a large file**
-
-```bash
-# First read - loads file into page cache as INACTIVE pages
-cat large_file.txt > /dev/null
-
-# Second read - pages accessed again, promoted to ACTIVE
-cat large_file.txt > /dev/null
-
-# Check memory:
-free -h
-# You'll see buff/cache increased
-```
-
-Pages start as **inactive** and **clean**. If accessed again, become **active**.
-
-### **Scenario 2: Editing a file**
-
-```bash
-# Read file - creates clean, inactive pages
-vim myfile.txt
-
-# Modify and save - pages become DIRTY
-# Pages also likely promoted to ACTIVE (being edited)
-
-# Eventually kernel flushes to disk - pages become CLEAN again
-# But remain ACTIVE if still being accessed
-```
-
-### **Scenario 3: Memory pressure**
-
-```bash
-# System low on memory
-# Kernel's page reclaim algorithm:
-
-1. First evict: Inactive, clean pages (instant)
-2. Then evict: Inactive, dirty pages (must flush first)
-3. Last resort: Active pages (demote to inactive first)
-4. Finally: Swap out anonymous pages if needed
-```
-
----
-
-## Page States Summary
-
-```
-┌─────────────────────────────────────┐
-│           All Pages                 │
-└─────────┬───────────────────────────┘
-          │
-    ┌─────┴─────┐
-    ↓           ↓
-┌─────────┐  ┌──────────┐
-│ Active  │  │ Inactive │
-└────┬────┘  └─────┬────┘
-     │             │
-  ┌──┴──┐       ┌──┴──┐
-  ↓     ↓       ↓     ↓
-Clean Dirty   Clean Dirty
-```
-
-### All Combinations:
-
-1. **Active + Clean** = Frequently accessed, unmodified pages (e.g., often-used program code)
-2. **Active + Dirty** = Frequently accessed, modified pages (e.g., active database buffers)
-3. **Inactive + Clean** = Not recently used, unmodified (e.g., old cached files) - **First to evict**
-4. **Inactive + Dirty** = Not recently used, modified (e.g., old log file writes) - Must flush before evict
-
----
-
-## Monitoring Page Activity
-
-### **Check what's using page cache:**
-
-```bash
-# Top processes using cache:
-sudo pcstat $(find /proc/*/exe 2>/dev/null)
-
-# See cache pressure:
-grep -E 'Active|Inactive|Dirty' /proc/meminfo
-```
-
-### **Force page cache clearing (for testing):**
-
-```bash
-# Drop clean page cache:
-sudo sync; echo 1 > /proc/sys/vm/drop_caches
-
-# Drop dentries and inodes:
-sudo sync; echo 2 > /proc/sys/vm/drop_caches
-
-# Drop everything:
-sudo sync; echo 3 > /proc/sys/vm/drop_caches
-```
-
-**Warning:** Only use for testing! Linux manages cache efficiently; manual clearing usually hurts performance.
-
----
-
-## Key Takeaways
-
-| Term | Meaning | Can Evict? |
-|------|---------|------------|
-| **Clean** | Matches disk | Yes, instantly |
-| **Dirty** | Modified, not synced | Must flush first |
-| **Active** | Recently/frequently used | Last to evict |
-| **Inactive** | Not recently used | First to evict |
-
-**Best case for eviction:** Inactive + Clean (no I/O needed)
-**Worst case for eviction:** Active + Dirty (must flush and still recently used)
-
