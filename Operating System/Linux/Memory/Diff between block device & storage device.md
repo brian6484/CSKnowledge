@@ -12,7 +12,7 @@ a hardware/storage level concept (as opposed to memory maangement concept of pag
 ## page 
 its memory management concept. It is unit size that **OS divides RAM into** for virtual memory. 
 
-so look at how block and page works tgt [here]()
+so look at how block and page works tgt [here](https://github.com/brian6484/CSKnowledge/blob/main/Operating%20System/Linux/Memory/Swapping.md)
 
 
 ### 1. Block Device (What `lsblk` Shows) 🧱
