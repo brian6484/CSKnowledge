@@ -8,7 +8,7 @@ The problem manifests in two primary ways: **internal fragmentation** and **exte
 
 **Internal fragmentation** occurs when a process or file is allocated a memory block that is **larger** than the actual amount of memory it requested or needs. The unused space within the allocated block is considered wasted because it is "internal" to the block and cannot be used by any other process or file.
 
-* **Cause:** This typically happens in memory management schemes that use **fixed-size blocks or pages** (like pure paging or fixed-partition allocation). The system must allocate space in multiples of the block size.
+* **Cause:** This typically happens in memory management schemes that use **fixed-size blocks or pages** (like paging or fixed-partition allocation). The system must allocate space in multiples of the block size.
 * **Example:** If a system uses fixed 4KB pages and a process only needs 3.5KB, it is allocated the entire 4KB page. The remaining **0.5KB is internal fragmentation** and is essentially wasted space until the process releases the entire 4KB page.
 * **Impact:** Leads to wasted memory space and a reduced effective memory utilization.
 
