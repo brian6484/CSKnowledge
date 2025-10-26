@@ -8,7 +8,7 @@ its basically a cache for Memory Management Unit
 
 ### 1. The Core Problem (The Cost of Translation)
 
-Every time a program accesses memory, the CPU generates a **virtual address**. Before the memory request can go to the physical RAM, the **Memory Management Unit (MMU)** has to translate this virtual address into a physical address using the **Page Tables** stored in main memory (RAM).
+The **Memory Management Unit (MMU)** has to translate this virtual address into a physical address using the **Page Tables** stored in main memory (RAM).
 
 * Looking up the address in the Page Tables requires **several memory accesses** to RAM.
 * This means a single data access operation often requires **two or more** RAM accesses, which significantly slows down the CPU.
