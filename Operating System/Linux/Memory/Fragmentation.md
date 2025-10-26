@@ -1,4 +1,4 @@
-Fragmentation is a problem in computer memory or storage systems where the available free space is broken up into many small, non-contiguous pieces (fragments). This inefficient use of space can degrade system performance and make it difficult or impossible to satisfy requests for large blocks of memory or storage, even if the total amount of free space is sufficient.
+Fragmentation is a problem in ""physical" computer memory (not virtual memory cuz virtual moery has a clean and contiguous address space) or storage systems where the available free space is broken up into many small, non-contiguous pieces (fragments). This inefficient use of space can degrade system performance and make it difficult or impossible to satisfy requests for large blocks of memory or storage, even if the total amount of free space is sufficient.
 
 The problem manifests in two primary ways: **internal fragmentation** and **external fragmentation**.
 
