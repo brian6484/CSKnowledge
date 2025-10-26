@@ -4,9 +4,16 @@ The key distinction is between **Block Storage** and **File Storage** (or Networ
 
 While a remote drive is a file storage system, it is **not** a block device in the way Linux defines it.
 
-***
+we first need to understand block and page
 
-## The Difference Explained
+## block
+a hardware/storage level concept (as opposed to memory maangement concept of page). It is the unit size that **storage devices (hdd/ssd)** reads/writes data in. 
+
+## page 
+its memory management concept. It is unit size that **OS divides RAM into** for virtual memory. 
+
+so look at how block and page works tgt [here]()
+
 
 ### 1. Block Device (What `lsblk` Shows) 🧱
 
