@@ -25,11 +25,11 @@
         "type": 2
       },
       "seed": 1352257081,
-      "version": 135,
-      "versionNonce": 1742019386,
+      "version": 139,
+      "versionNonce": 229065739,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366109,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "points": [
@@ -79,11 +79,11 @@
         "type": 3
       },
       "seed": 793396483,
-      "version": 373,
-      "versionNonce": 1248575078,
+      "version": 377,
+      "versionNonce": 1986467365,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366021,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -107,11 +107,11 @@
       "index": "a2",
       "roundness": null,
       "seed": 176583587,
-      "version": 836,
-      "versionNonce": 410190246,
+      "version": 842,
+      "versionNonce": 1473809067,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366021,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "Distributed Logging system: \n\ncalirfying questions\n1) do logs from those MSAs have a conistent log format for querying? no\nor do we have to apply a computational layer to format into consistent \nformat? up to u\n2) No correlation between logs when requests span multiple services? why?\nservices dont share trace id so user request through services cannot be\ntracked\n3) do we need a dashboard like grafana for visualisation? or just \nquerying of logs will do? and what kind of queries? yes and date-range, \nand various types\n4) what is the average log size? for calculation purpose 1KB\n\nfunctional requirements:\n1) need to normalise logs to have a consistent log format for querying\n2) query and visualisation functionality\n3) storage policy of hot data (7 days) and warm data (90 days) and move\nto aws s3 glacier for long term stroage up to 1 year\n4) alerting system via alert manager that uses PagerDuty and Slack",
@@ -141,14 +141,14 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "index": "a3",
+      "index": "a3V",
       "roundness": null,
       "seed": 760350147,
-      "version": 1609,
-      "versionNonce": 1904284221,
+      "version": 1616,
+      "versionNonce": 1485221867,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761110398897,
+      "updated": 1761463323993,
       "link": null,
       "locked": false,
       "text": "Non-functional requirements:\ncalc:\n100K client requests/second across all MSAs with reach log being 1Kb\n\nassuming theres 5 services, each producing 5 log entries per request:\n100K * 5 * 5 * 1K = 2500Mb = 2.5Gb/s of logs produced\n\ncap theorem:\nAP eventual consistency cuz we want isolated nodes to keep logging and storing data\nand its better to have excess logs rather than lost logs\n\nLatency: Query <5s, logs visible within 10s\nhigh durability but some non critical logs loss is acceptable\n\nlog data:\ntrace_id to correlate logs for 1 user across services, timestamp, instance id, message,\nlevel, service name\n\ntrace_id is unique per request/transaction.\nlike for cases where user can request 2 times concurrently, we need to trace PER \nREQUEST\n\nrequest A: api gw -> payment service -> bla (user1, trace1)\nrequest B: api gw -> product service -> bla (user1,trace2)\nwithout trace id, logs will be mixed tgt from both requests making debugging imposs\n",
@@ -183,11 +183,11 @@
         "type": 3
       },
       "seed": 432070381,
-      "version": 498,
-      "versionNonce": 1947256221,
+      "version": 515,
+      "versionNonce": 1701313867,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761110423889,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -211,11 +211,11 @@
       "index": "a7",
       "roundness": null,
       "seed": 210695555,
-      "version": 4030,
-      "versionNonce": 110172189,
+      "version": 4034,
+      "versionNonce": 52007141,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761111181333,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "my initial design:\nmsa <- log agent that pulls from msa asynchronously with a time interval  (wat happen if msa goes down before \nlog agent pulls within that time interval?) -> kafka queue (topic: log) -> worker nodes that consume the \nmessage (can apply consistent normalising here so that we can scale this independently and once that is \nprocessed, another worker takes that processed log and store to log db (could be s3, wat about cassandra \nthe system is AP anyway) -> alert manager -> pagerduty/slack\n\nkafka message could containe timestamp, trace id, span id, service name, message and user_id\n\ngpt design:\n1) so i thought this log agent is a separate network call from the msa but its within the msa server that pulls\nlogs, which the msa writes logs into a disk/buffer (NOT NETWORK CALL). Logs stored in buffer/disk are immune\nto server crashes so its the best. MSA shouldnt directly push cuz it increases complexity to do retries or handle\nfailures and should have local log agents do that to decouple application.\n\n2) 2 separate workers to normalise and store is good. I thought normalsiing would be compute heavy \n\nkafka (topic: raw-logs) -> noramlise workers format the logs -> kafka(topic:normalised-logs) -> storage workers\nstore logs to db and alert workers consume those logs in parallel \n\nadv of  this is \n1) independent scaling based on bottleneck\n2) failure isolation - dont lose data, just backpressure. With 1 worker doing both work, if that worker fails and\ndb is down, work fails. Log has been consumed from kafka but not stored anywhere. Worker must reconsume and\nrenormalise same log again. But with 2 stage, if storage worker cannot write to db, it can leave a message in\nkafka without committing offset. Normalised log stays in kafka queue and worker retries later when storage db\nis up. No need to renormalise. The key point is normalised logs are safe in kafka and storage workers just need\nto retry writing.\n3) multiple consumers - alert manager and storage workers reads from normalised logs topic in parallel so\ndont have to duplicate this work for both types of workers\n4) replay capability - maybe theres bug in storage code that corrupted data. Maybe storage worker stored normalised\nlogs with wrong timestamps and i discovered bugs later. Without normalised-logs topic, only have raw logs so need\nto normalise and store again. But with normalised logs can just fix bug in storage worker side and restore it, \neffectively skipping unnecessary normalising process\n\n3) storage choice\ncassandra is for ap but bad for querying so\nES for hot data (7 days) 2.5Gb/s for 7 days is 1.5 Pb. Cost is high but it allows fast queries (~1s) and full text\nindexing. Actually loki is better cuz instead of full text indexing, it indexes on certain fields like timestamp, service \nname, userId , etc that can be used to search s3 quickly.\n\nMOST IMPT: index maps lables -> chunks \n\nfor e.g. \nthe chunks (compressed log data) is in s3 and the indexes can be stored in Cass/local/s3 \n**Index (stored in DynamoDB):**\n```\ntrace_id=abc123 → [chunk_001.gz, chunk_045.gz]\nservice=checkout → [chunk_001.gz, chunk_002.gz, chunk_010.gz]\ntimestamp=2025-10-22T10:00 → [chunk_001.gz]\n```\n\n**Without index:**\n- Scan all 10,000 chunks in S3 (10 TB) ❌\n\n**With index:**\n- Index says: \"Only download chunk_001.gz (100 MB)\" ✅\n- 100x faster!\n\nS3 + Athena for warm (8~90days). We can compress and archive to s3 and query via athena\n\nS3 Glacier (91d - 1 year): rarely access, just for compliance\n\n4)  querying logic\nuser -> api gateway(rest/graphql) -> query service (routes query to correct storage)\n\n",
@@ -250,11 +250,11 @@
         "type": 3
       },
       "seed": 762173684,
-      "version": 94,
-      "versionNonce": 919888806,
+      "version": 98,
+      "versionNonce": 28318699,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366021,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -278,11 +278,11 @@
       "index": "b06",
       "roundness": null,
       "seed": 925900276,
-      "version": 852,
-      "versionNonce": 1393884902,
+      "version": 856,
+      "versionNonce": 1172319301,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366021,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "Scenario: Ticket buying system for online events \nFunctional requirements:\n1) User - buy tickets, browse tickets\n2) Platform - support 3 types of tickets - conference, concert, sports\nClarifying questions:\n1) do we have to design payment service logic too or are we using an\nexternal payment service provider like Stripe\n2) do users get  to cancel the tickets\n3) what is the DAU?\n4) Is there a social functionality where users can view tickets of other\nusers  \n\nAdjusted functional requirements (based on clarifying q):\n1) User - buy tickets, browse tickets, cancel tickets (before 24 hours),\nsearch events by location, artist, user\n2) Platform - can create tickets and upon cancellation, tickets need\nto be returned to inventory \n\n\n",
@@ -317,11 +317,11 @@
         "type": 3
       },
       "seed": 623989108,
-      "version": 152,
-      "versionNonce": 723530278,
+      "version": 156,
+      "versionNonce": 683370123,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366021,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -345,11 +345,11 @@
       "index": "b09",
       "roundness": null,
       "seed": 1766949708,
-      "version": 758,
-      "versionNonce": 1283710589,
+      "version": 762,
+      "versionNonce": 1610374053,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761112150108,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "Non-functional req:\nDAU: ~10 million daily active users\nPeak traffic: When popular events go on sale (e.g., Taylor Swift concert), \nexpect 500K-1M concurrent users trying to buy tickets for the same event\nTotal events: ~50,000 active events at any time\nTicket inventory per event: Ranges from 100 to 100,000 tickets\n\nLets assume average ticket size is 1Kb\nAverage memory space at given time: 1Kb * 50k events * 100k tickets\n= 5000 x 10^9 = 5 Pb of data (wrong calc its GTP, not GPT)\n\ncorrect:\n1Kb * 50k * 100k = 5000 * 10 ^9= 5*10^12= 5Tb (terra, not peta)\n\nPeak traffic data = 1M* 1Kb = 1 Gb/popular_event\n\nCap theorem: (wron try)\nStrong consistency, Highly available, less priority on fault tolerance \n(is this right?)\n\nAPI: (not sure of restful api endpoints)\nUser: \nGET /ticket/user_id\nPOST /event_id/ticket\n\nPlatform:\nGET /event_id \n",
@@ -384,8 +384,8 @@
         "type": 3
       },
       "seed": 1861205685,
-      "version": 103,
-      "versionNonce": 346710182,
+      "version": 107,
+      "versionNonce": 1900305707,
       "isDeleted": false,
       "boundElements": [
         {
@@ -401,7 +401,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1760853366021,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -425,11 +425,11 @@
       "index": "b0AV",
       "roundness": null,
       "seed": 1867225947,
-      "version": 71,
-      "versionNonce": 1596152806,
+      "version": 75,
+      "versionNonce": 2040241925,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366021,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "client",
@@ -464,8 +464,8 @@
         "type": 3
       },
       "seed": 1746214837,
-      "version": 76,
-      "versionNonce": 488234406,
+      "version": 80,
+      "versionNonce": 917864395,
       "isDeleted": false,
       "boundElements": [
         {
@@ -485,7 +485,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1760853366021,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -509,11 +509,11 @@
       "index": "b0D",
       "roundness": null,
       "seed": 2051474677,
-      "version": 57,
-      "versionNonce": 110835942,
+      "version": 61,
+      "versionNonce": 1497069157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366021,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "API Gateway (rate\nlimiting, auth)",
@@ -548,8 +548,8 @@
         "type": 3
       },
       "seed": 190674325,
-      "version": 53,
-      "versionNonce": 146576870,
+      "version": 57,
+      "versionNonce": 53038699,
       "isDeleted": false,
       "boundElements": [
         {
@@ -561,7 +561,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1760853366021,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -585,11 +585,11 @@
       "index": "b0F",
       "roundness": null,
       "seed": 998360699,
-      "version": 57,
-      "versionNonce": 364701990,
+      "version": 61,
+      "versionNonce": 430531013,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366021,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "CDN (for retrieving\nstatic content\nfast)",
@@ -624,11 +624,11 @@
         "type": 2
       },
       "seed": 1901995637,
-      "version": 56,
-      "versionNonce": 2002441978,
+      "version": 60,
+      "versionNonce": 963266827,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366111,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "points": [
@@ -678,11 +678,11 @@
         "type": 2
       },
       "seed": 1827374107,
-      "version": 40,
-      "versionNonce": 1027137658,
+      "version": 44,
+      "versionNonce": 537059621,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366112,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "points": [
@@ -732,8 +732,8 @@
         "type": 3
       },
       "seed": 556312795,
-      "version": 94,
-      "versionNonce": 1717839398,
+      "version": 98,
+      "versionNonce": 2129850283,
       "isDeleted": false,
       "boundElements": [
         {
@@ -753,7 +753,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1760853366021,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -777,11 +777,11 @@
       "index": "b0IG",
       "roundness": null,
       "seed": 21026005,
-      "version": 42,
-      "versionNonce": 814248294,
+      "version": 46,
+      "versionNonce": 1370846341,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366021,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "Event service(read-\nheavy)",
@@ -816,11 +816,11 @@
         "type": 2
       },
       "seed": 45873045,
-      "version": 52,
-      "versionNonce": 1061325306,
+      "version": 56,
+      "versionNonce": 1710080587,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366113,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "points": [
@@ -870,8 +870,8 @@
         "type": 3
       },
       "seed": 13940283,
-      "version": 120,
-      "versionNonce": 433508774,
+      "version": 124,
+      "versionNonce": 176069605,
       "isDeleted": false,
       "boundElements": [
         {
@@ -891,7 +891,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1760853366021,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -915,11 +915,11 @@
       "index": "b0L",
       "roundness": null,
       "seed": 213385371,
-      "version": 108,
-      "versionNonce": 1201253606,
+      "version": 112,
+      "versionNonce": 1463107819,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366021,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "Booking\nservice(write-heavy)",
@@ -954,11 +954,11 @@
         "type": 2
       },
       "seed": 1361866261,
-      "version": 114,
-      "versionNonce": 1594872698,
+      "version": 118,
+      "versionNonce": 1382799173,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366114,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "points": [
@@ -1008,11 +1008,11 @@
         "type": 3
       },
       "seed": 1679430519,
-      "version": 36,
-      "versionNonce": 624090406,
+      "version": 40,
+      "versionNonce": 1012132747,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366022,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -1036,11 +1036,11 @@
       "index": "b0P",
       "roundness": null,
       "seed": 132105113,
-      "version": 827,
-      "versionNonce": 2003787709,
+      "version": 831,
+      "versionNonce": 1406838437,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761113087334,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "Corrected non-functional req:\nnot all events have 100k events so lets assume 10k tickets\n1Kb * 50k events * 10k = 0.5 Tb = 500 Gb of data for storing ticket info\n\nplus db replicas, backups and indexes its like 1Tb\n\nFor CAP, P is unavoidable so we need to prioritise C or A. In ticket system, CP is \nbetter cuz when we buy tickets, we dont wanna overbuy tickets. \n\nAPI:\nUser:\nGET /events/{event_id, user_id}\n\nPOST /bookings/\nDELETE /bookings/{booking_id}\n\nPlatform:\nPOST /events\n\n500Gb of ticket info read might be dealt ok with postgres with read replicas AND\nREDIS!! I FORGOT REDIS!. But if reads become more than a few Tb, sharding \nbecomes necessary or more aggressive use of redis.\n\n",
@@ -1075,8 +1075,8 @@
         "type": 3
       },
       "seed": 123194073,
-      "version": 139,
-      "versionNonce": 609110950,
+      "version": 143,
+      "versionNonce": 1770275371,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1092,7 +1092,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1760853366022,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -1116,11 +1116,11 @@
       "index": "b0RV",
       "roundness": null,
       "seed": 1202458423,
-      "version": 149,
-      "versionNonce": 1225909990,
+      "version": 153,
+      "versionNonce": 293112325,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366022,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "Event primary DB for write\n(with read replicas but no\nsharding)",
@@ -1155,8 +1155,8 @@
         "type": 3
       },
       "seed": 1324638679,
-      "version": 241,
-      "versionNonce": 569395366,
+      "version": 245,
+      "versionNonce": 1202767051,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1168,7 +1168,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1760853366022,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -1192,11 +1192,11 @@
       "index": "b0U",
       "roundness": null,
       "seed": 656261911,
-      "version": 324,
-      "versionNonce": 460080102,
+      "version": 328,
+      "versionNonce": 1547895141,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366022,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "Booking DB (not Cassandra\ncuz its AP, so Postgresql like\nevent DB) and possibly\nsharding on user_id",
@@ -1231,8 +1231,8 @@
         "type": 3
       },
       "seed": 204401527,
-      "version": 35,
-      "versionNonce": 1324155494,
+      "version": 39,
+      "versionNonce": 1047786347,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1244,7 +1244,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1760853366022,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -1268,11 +1268,11 @@
       "index": "b0Z",
       "roundness": null,
       "seed": 1521966295,
-      "version": 70,
-      "versionNonce": 69977510,
+      "version": 74,
+      "versionNonce": 159878341,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366022,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "External Payment\nService (e.g. Stripe\nPayments)",
@@ -1307,11 +1307,11 @@
         "type": 2
       },
       "seed": 2019217753,
-      "version": 32,
-      "versionNonce": 2016984314,
+      "version": 36,
+      "versionNonce": 1578651147,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366114,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "points": [
@@ -1361,8 +1361,8 @@
         "type": 3
       },
       "seed": 907318713,
-      "version": 160,
-      "versionNonce": 1931321190,
+      "version": 164,
+      "versionNonce": 1759751205,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1382,7 +1382,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1760853366022,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -1406,11 +1406,11 @@
       "index": "b0c",
       "roundness": null,
       "seed": 1911994935,
-      "version": 219,
-      "versionNonce": 1916846758,
+      "version": 223,
+      "versionNonce": 1234719915,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366022,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "Redis cluster with 3 ~ 5 redis\nnodes (ticket inventory) -\nfast & atomic with no race\ncondition",
@@ -1445,11 +1445,11 @@
         "type": 2
       },
       "seed": 1554077559,
-      "version": 106,
-      "versionNonce": 1616201338,
+      "version": 110,
+      "versionNonce": 2051334021,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366114,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "points": [
@@ -1499,11 +1499,11 @@
         "type": 3
       },
       "seed": 1362252089,
-      "version": 115,
-      "versionNonce": 1878285030,
+      "version": 119,
+      "versionNonce": 1621002059,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366022,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -1527,11 +1527,11 @@
       "index": "b0g",
       "roundness": null,
       "seed": 1429356473,
-      "version": 1983,
-      "versionNonce": 194400093,
+      "version": 1987,
+      "versionNonce": 1676191461,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761115163614,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "i think while explaining, good to incroporate the numbers inside the \ndiscussion like hashing event id on redis, average is 10k tickets so its good\nstrat and just need to deal with those 100k tickets event\n\nFor concurrency strategy, redis + queue \n\nredis cuz its fast (in-memory) and atomic (Redis's atomic commands ensure \nonly one transaction can successfully reserve the last ticket)\n\nclient -> redis decrements DECRBY 1 the ticket count and this is atomic\ncommand on the key that is holding that specific event \n\n[event_id, count]\n[event_id, event_info]\nSet(popular_event_id) - Sorted set of event_ids by popularity\n\nand\n# 3. Search results (popular queries)\nKey: \"search:new_york:2025-12-25:concerts\"\nthis colon is for name spacing, and Redis has SCAN command to search for\nkey easily if it follows this convertion like SCAN search:*\nValue: [event_id_1, event_id_2, ...]\nTTL: 5 minutes (search results can be slightly stale)\n\nAnd if it succeeds, redis can return a positive integer and if it fails, it can\nreturn a negative number\n\nif it succeeds, the request is directed to the payment service and if its ok\nwe get 200 success code. But if it fails the redis counter needs to be \nincremented again\n\nfor redis cluster, since we are hashing on event id, we can use consistent\nhash ring with vnodes for even load distribution (BUT it doesnt solve \nhotspot issues)\n\nevent:\nnot sharding event db with event id cuz there are search queries laid out in\nfunctional req (search via artist, location, etc) that dont use event id and \ncross shard joins are exp\n\ninstead, read replicas \n\noptimisation:\nbloom filter when querying shard, indexes on (location, date, category) for fast\nqueries\n\nfor global deployment:\nGlobal load balancer (route 53) to route user to nearest DC -> US/EU/APAC\nDC that has its own api gw, services, redis ,etc ",
@@ -1566,8 +1566,8 @@
         "type": 3
       },
       "seed": 256712889,
-      "version": 84,
-      "versionNonce": 328948070,
+      "version": 88,
+      "versionNonce": 696608235,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1579,7 +1579,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1760853366022,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -1603,11 +1603,11 @@
       "index": "b0hV",
       "roundness": null,
       "seed": 1802973273,
-      "version": 90,
-      "versionNonce": 1861696678,
+      "version": 94,
+      "versionNonce": 677151301,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366022,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "Multiple event DB read\nreplicas (for read)",
@@ -1642,11 +1642,11 @@
         "type": 2
       },
       "seed": 2020262359,
-      "version": 129,
-      "versionNonce": 1727885306,
+      "version": 133,
+      "versionNonce": 2069328011,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366115,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "points": [
@@ -1696,11 +1696,11 @@
         "type": 2
       },
       "seed": 300158135,
-      "version": 36,
-      "versionNonce": 1439250810,
+      "version": 40,
+      "versionNonce": 478015909,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366115,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "points": [
@@ -1750,8 +1750,8 @@
         "type": 3
       },
       "seed": 993340409,
-      "version": 85,
-      "versionNonce": 1338443814,
+      "version": 89,
+      "versionNonce": 1741629227,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1767,7 +1767,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1760853366022,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -1791,11 +1791,11 @@
       "index": "b0o",
       "roundness": null,
       "seed": 2123686295,
-      "version": 130,
-      "versionNonce": 1866404710,
+      "version": 134,
+      "versionNonce": 494564613,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366022,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "Kafka queue (for\ndecoupling write from\nresponse)",
@@ -1830,11 +1830,11 @@
         "type": 2
       },
       "seed": 40931449,
-      "version": 28,
-      "versionNonce": 1884332794,
+      "version": 32,
+      "versionNonce": 1700202955,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366115,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "points": [
@@ -1884,11 +1884,11 @@
         "type": 2
       },
       "seed": 2045388919,
-      "version": 28,
-      "versionNonce": 1949019258,
+      "version": 32,
+      "versionNonce": 114265189,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366116,
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "points": [
@@ -1938,11 +1938,11 @@
         "type": 3
       },
       "seed": 1050551733,
-      "version": 107,
-      "versionNonce": 1747465126,
+      "version": 111,
+      "versionNonce": 956930155,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1760853366022,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -1968,8 +1968,8 @@
         "type": 3
       },
       "seed": 29954333,
-      "version": 112,
-      "versionNonce": 970124989,
+      "version": 116,
+      "versionNonce": 1749727173,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1981,7 +1981,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761111520224,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -2005,11 +2005,11 @@
       "index": "b1L",
       "roundness": null,
       "seed": 1784834365,
-      "version": 114,
-      "versionNonce": 1769211059,
+      "version": 118,
+      "versionNonce": 548492043,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761111425864,
+      "boundElements": [],
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "MSA -> Local disk\n(/var/log/*.log) <- Log agent\n(fluentd) pulls from local disk",
@@ -2044,8 +2044,8 @@
         "type": 3
       },
       "seed": 1168815091,
-      "version": 60,
-      "versionNonce": 1969456755,
+      "version": 64,
+      "versionNonce": 2080995109,
       "isDeleted": false,
       "boundElements": [
         {
@@ -2061,7 +2061,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761111522103,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -2085,11 +2085,11 @@
       "index": "b1N",
       "roundness": null,
       "seed": 579262557,
-      "version": 33,
-      "versionNonce": 2006618301,
+      "version": 37,
+      "versionNonce": 1019787691,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761111450811,
+      "boundElements": [],
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "Kafka queue(topic:raw-logs)",
@@ -2119,13 +2119,13 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "index": "b1O",
+      "index": "b1OV",
       "roundness": {
         "type": 3
       },
       "seed": 2009963731,
-      "version": 70,
-      "versionNonce": 4806141,
+      "version": 77,
+      "versionNonce": 1550637125,
       "isDeleted": false,
       "boundElements": [
         {
@@ -2141,7 +2141,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761111523336,
+      "updated": 1761463323993,
       "link": null,
       "locked": false
     },
@@ -2165,11 +2165,11 @@
       "index": "b1P",
       "roundness": null,
       "seed": 1600068275,
-      "version": 25,
-      "versionNonce": 768148307,
+      "version": 29,
+      "versionNonce": 981093451,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761111459959,
+      "boundElements": [],
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "Normalising workers",
@@ -2204,8 +2204,8 @@
         "type": 3
       },
       "seed": 302603293,
-      "version": 85,
-      "versionNonce": 1354895251,
+      "version": 89,
+      "versionNonce": 2052567525,
       "isDeleted": false,
       "boundElements": [
         {
@@ -2225,7 +2225,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761111525544,
+      "updated": 1761463320506,
       "link": null,
       "locked": false
     },
@@ -2249,11 +2249,11 @@
       "index": "b1R",
       "roundness": null,
       "seed": 1803963933,
-      "version": 40,
-      "versionNonce": 989588765,
+      "version": 44,
+      "versionNonce": 1033931499,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761111482750,
+      "boundElements": [],
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "Kafka\nqueue(topic:normalised-\nlogs)",
@@ -2283,13 +2283,13 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "index": "b1S",
+      "index": "b1SV",
       "roundness": {
         "type": 3
       },
       "seed": 1434766963,
-      "version": 45,
-      "versionNonce": 838405331,
+      "version": 52,
+      "versionNonce": 262109835,
       "isDeleted": false,
       "boundElements": [
         {
@@ -2301,7 +2301,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761111524470,
+      "updated": 1761463323993,
       "link": null,
       "locked": false
     },
@@ -2325,11 +2325,11 @@
       "index": "b1T",
       "roundness": null,
       "seed": 2102011251,
-      "version": 30,
-      "versionNonce": 40716851,
+      "version": 34,
+      "versionNonce": 180745611,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761111496908,
+      "boundElements": [],
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "storage workers\n(loki+s3)",
@@ -2359,13 +2359,13 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "index": "b1U",
+      "index": "b1UV",
       "roundness": {
         "type": 3
       },
       "seed": 1110481267,
-      "version": 71,
-      "versionNonce": 1409254301,
+      "version": 78,
+      "versionNonce": 1477674917,
       "isDeleted": false,
       "boundElements": [
         {
@@ -2381,7 +2381,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761111526783,
+      "updated": 1761463323993,
       "link": null,
       "locked": false
     },
@@ -2405,11 +2405,11 @@
       "index": "b1V",
       "roundness": null,
       "seed": 1103527677,
-      "version": 115,
-      "versionNonce": 1377459027,
+      "version": 119,
+      "versionNonce": 1898253355,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761111627339,
+      "boundElements": [],
+      "updated": 1761463320506,
       "link": null,
       "locked": false,
       "text": "alert rule engine\n(checks logs against\nthreshold)-> alert\nmanager (notification\nrole, not checking\nlogs)",
@@ -2439,13 +2439,13 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "index": "b1W",
+      "index": "b1WV",
       "roundness": {
         "type": 3
       },
       "seed": 2125380957,
-      "version": 42,
-      "versionNonce": 1495203933,
+      "version": 49,
+      "versionNonce": 176550187,
       "isDeleted": false,
       "boundElements": [
         {
@@ -2457,7 +2457,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761111526783,
+      "updated": 1761463323993,
       "link": null,
       "locked": false
     },
@@ -2481,11 +2481,11 @@
       "index": "b1X",
       "roundness": null,
       "seed": 1017821875,
-      "version": 25,
-      "versionNonce": 1673569107,
+      "version": 29,
+      "versionNonce": 1957187275,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761111518164,
+      "boundElements": [],
+      "updated": 1761463320507,
       "link": null,
       "locked": false,
       "text": "pagerduty/slack",
@@ -2515,16 +2515,16 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "index": "b1Y",
+      "index": "b1YV",
       "roundness": {
         "type": 2
       },
       "seed": 130268189,
-      "version": 13,
-      "versionNonce": 643829533,
+      "version": 20,
+      "versionNonce": 1038961413,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761111520224,
+      "boundElements": [],
+      "updated": 1761463323993,
       "link": null,
       "locked": false,
       "points": [
@@ -2569,16 +2569,16 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "index": "b1Z",
+      "index": "b1ZV",
       "roundness": {
         "type": 2
       },
       "seed": 1569211923,
-      "version": 29,
-      "versionNonce": 783302675,
+      "version": 36,
+      "versionNonce": 1520735179,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761111522104,
+      "boundElements": [],
+      "updated": 1761463323993,
       "link": null,
       "locked": false,
       "points": [
@@ -2628,11 +2628,11 @@
         "type": 2
       },
       "seed": 641796029,
-      "version": 11,
-      "versionNonce": 2013761117,
+      "version": 15,
+      "versionNonce": 1089659589,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761111523336,
+      "boundElements": [],
+      "updated": 1761463320507,
       "link": null,
       "locked": false,
       "points": [
@@ -2682,11 +2682,11 @@
         "type": 2
       },
       "seed": 627217107,
-      "version": 27,
-      "versionNonce": 251063091,
+      "version": 31,
+      "versionNonce": 641030155,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761111524470,
+      "boundElements": [],
+      "updated": 1761463320507,
       "link": null,
       "locked": false,
       "points": [
@@ -2736,11 +2736,11 @@
         "type": 2
       },
       "seed": 976685725,
-      "version": 22,
-      "versionNonce": 1805690163,
+      "version": 26,
+      "versionNonce": 74727973,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761111525544,
+      "boundElements": [],
+      "updated": 1761463320507,
       "link": null,
       "locked": false,
       "points": [
@@ -2790,11 +2790,11 @@
         "type": 2
       },
       "seed": 1879027869,
-      "version": 15,
-      "versionNonce": 2078738429,
+      "version": 19,
+      "versionNonce": 1568939691,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761111526783,
+      "boundElements": [],
+      "updated": 1761463320507,
       "link": null,
       "locked": false,
       "points": [
@@ -2844,8 +2844,8 @@
         "type": 3
       },
       "seed": 1800071581,
-      "version": 141,
-      "versionNonce": 100070131,
+      "version": 145,
+      "versionNonce": 1129493893,
       "isDeleted": false,
       "boundElements": [
         {
@@ -2853,7 +2853,7 @@
           "id": "G-H9uUcXcU35fiEdZpe-C"
         }
       ],
-      "updated": 1761113166246,
+      "updated": 1761463320507,
       "link": null,
       "locked": false
     },
@@ -2877,11 +2877,11 @@
       "index": "b1e2",
       "roundness": null,
       "seed": 1508236637,
-      "version": 1871,
-      "versionNonce": 2116654013,
+      "version": 1875,
+      "versionNonce": 1484853579,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761115087743,
+      "boundElements": [],
+      "updated": 1761463320507,
       "link": null,
       "locked": false,
       "text": "correct flow:\ntheres mainly 2 services - event info service & booking/ticket service\nevent service:\napi gw-> event service (stateless) -> redis cluster (consistent hashing on event_id to distribute load evenly)\n-> postgresql (primary + read replicas) (no sharding yet cuz 1. only 500gb/day read 2.**VERY IMPT REASON** sharding on\nevent_ids BREAK MOST QUERIES! If user search via conditions like location, artist name, etc we have to query all\nshards! cross-shard query is exp so unless data size is huge, dont just shard)\n\nmaybe later can add postgres + es where\nevent service -> postgres -> Change Data Capture (CDC) -> kafka (topic:event-changes) -> ES sync worker that indexes\nonto ES cluster. So if I search \n\nbooking/ticket service:\napi gw -> booking service (producer) -> checks redis first (inventory counter of atomic DECR) and if inventory is\navailable-> kafka queue (topic:booking-request) -> booking worker (Consumer) -> postgresql (sharded by user_id if\nneeded) creates booking record-> kafka(topic:payment-request) -> payment worker consumes this event -> Stripe API  \n\nbtw consistent hash ring is for stateful flows\n1) redis cache 2) db sharding 3) websocket connection server\n\ncache all events:\nspecial pre-warming and multi-layer caching for popular events\nevent:{event_id}\nevent:{event_id}:avaialble for inventory counter\n\nfor booking db, although it is more write-heavy, postgres with ACID and CP is recommended. Optimisation can be done on\nconnection pooling, batch inserts and indexing.",
@@ -2891,6 +2891,73 @@
       "verticalAlign": "middle",
       "containerId": "LvVEUxwcUI-f23SDQIU25",
       "originalText": "correct flow:\ntheres mainly 2 services - event info service & booking/ticket service\nevent service:\napi gw-> event service (stateless) -> redis cluster (consistent hashing on event_id to distribute load evenly)\n-> postgresql (primary + read replicas) (no sharding yet cuz 1. only 500gb/day read 2.**VERY IMPT REASON** sharding on\nevent_ids BREAK MOST QUERIES! If user search via conditions like location, artist name, etc we have to query all shards! cross-shard query is exp so unless data size is huge, dont just shard)\n\nmaybe later can add postgres + es where\nevent service -> postgres -> Change Data Capture (CDC) -> kafka (topic:event-changes) -> ES sync worker that indexes\nonto ES cluster. So if I search \n\nbooking/ticket service:\napi gw -> booking service (producer) -> checks redis first (inventory counter of atomic DECR) and if inventory is available-> kafka queue (topic:booking-request) -> booking worker (Consumer) -> postgresql (sharded by user_id if needed) creates booking record-> kafka(topic:payment-request) -> payment worker consumes this event -> Stripe API  \n\nbtw consistent hash ring is for stateful flows\n1) redis cache 2) db sharding 3) websocket connection server\n\ncache all events:\nspecial pre-warming and multi-layer caching for popular events\nevent:{event_id}\nevent:{event_id}:avaialble for inventory counter\n\nfor booking db, although it is more write-heavy, postgres with ACID and CP is recommended. Optimisation can be done on\nconnection pooling, batch inserts and indexing.",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "mkq3OgepUOz_1ubwecXLG",
+      "type": "rectangle",
+      "x": 3267.0370682946477,
+      "y": 2502.2403952438044,
+      "width": 1386.6665649414062,
+      "height": 1058.888816833496,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b2A",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 329538827,
+      "version": 24,
+      "versionNonce": 227771531,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1761463578151,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "NlLZEKI2i4k2AHBcUgBbB",
+      "type": "text",
+      "x": 3305.9259232751165,
+      "y": 2547.7959296065974,
+      "width": 1341.7392578125,
+      "height": 575,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b2B",
+      "roundness": null,
+      "seed": 406042725,
+      "version": 1033,
+      "versionNonce": 1835896773,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761463989381,
+      "link": null,
+      "locked": false,
+      "text": "Cassandra:\nso for critical transactions like ticket sales we need CP but it its read-heavy like browse or showting ticket availability, then we can use\nCass\nlets say partition key: event_id and it has ticket_id inside as clustering key. \nProblem is when we do queries like \"how many tickets are left\" or \"wats price range\" cass needs to read all 10k tickets from parittion\nand calculate(aggregate) the answer and do this **repeatedly** for each user who queries\n\nso we can pre-compute and store aggregates separately . \ninstead of 1 giant partition with 10k tickets, we know concert halls have sections like vip, normal ,section D,etc so we can have event id\nand section id as partition key . That distributes load by section, which is faster. BUT when we calculate the total like total number of\ntickets then we can use that precomputed aggregate (by app logic or batch writes)\n\n| Table | Partition Key | Why |\n|-------|---------------|-----|\n| `tickets` | `(event_id, section_id)` | Distribute 450 tickets across nodes |\n| `event_sections` | `event_id` | Keep 100 sections together for fast \"show all sections\" query |\n\n**Load distribution happens at different levels:**\n- `tickets`: Distributed by section (handles heavy write load)\n- `event_sections`: One partition per event (handles summary queries)\n\n\n",
+      "fontSize": 20,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Cassandra:\nso for critical transactions like ticket sales we need CP but it its read-heavy like browse or showting ticket availability, then we can use\nCass\nlets say partition key: event_id and it has ticket_id inside as clustering key. \nProblem is when we do queries like \"how many tickets are left\" or \"wats price range\" cass needs to read all 10k tickets from parittion\nand calculate(aggregate) the answer and do this **repeatedly** for each user who queries\n\nso we can pre-compute and store aggregates separately . \ninstead of 1 giant partition with 10k tickets, we know concert halls have sections like vip, normal ,section D,etc so we can have event id\nand section id as partition key . That distributes load by section, which is faster. BUT when we calculate the total like total number of\ntickets then we can use that precomputed aggregate (by app logic or batch writes)\n\n| Table | Partition Key | Why |\n|-------|---------------|-----|\n| `tickets` | `(event_id, section_id)` | Distribute 450 tickets across nodes |\n| `event_sections` | `event_id` | Keep 100 sections together for fast \"show all sections\" query |\n\n**Load distribution happens at different levels:**\n- `tickets`: Distributed by section (handles heavy write load)\n- `event_sections`: One partition per event (handles summary queries)\n\n\n",
       "autoResize": true,
       "lineHeight": 1.25
     }
