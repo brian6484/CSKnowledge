@@ -1,9 +1,8 @@
-# Clean Pages vs Dirty Pages vs Active Pages in Linux Memory Management
-## Page Basics
+## What are pages?
+Pages are fixed-size blocks (typically 4kb) that OS uses to divide both virtual and physical RAM into uniform chunks. Virtual pages from a process can be mapped to physical frames (pages in RAM via page table, allowing OS to allocate memory flexibly without external fragmentation - like dividing memory into same-sized LEGO bricks that can be arranged anywhere instead of requiring one continuous block.
 
-First, understand that Linux divides memory into **pages** (typically 4KB fixed-size blocks of memory). The kernel tracks different types of pages based on their state and usage.
+The kernel tracks different types of pages based on their state and usage.
 
----
 ## Clean Pages
 
 **Clean pages** are memory pages whose contents are **identical to what's on disk**.
