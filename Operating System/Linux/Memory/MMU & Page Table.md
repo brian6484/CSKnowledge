@@ -10,7 +10,7 @@ This is the primary role of the MMU. Programs operate in a virtual address space
 This address translation is what makes virtual memory possible, allowing the OS to load parts of a program into memory and swap others out to the hard drive, giving the illusion of having more memory than is physically available.
 
 2. Memory Protection
-As part of the address translation process, the MMU checks the permissions of the memory page being accessed. Each page of memory is tagged with permissions (e.g., read-only, read/write, execute) via [Memory Protection Bit](https://github.com/brian6484/CSKnowledge/blob/main/Operating%20System/Linux/Memory/Memory%20Protection%20Bit.md) The MMU can be configured by the operating system to prevent a process from accessing pages that aren't assigned to it.
+As part of the address translation process, the MMU checks the permissions of the memory page being accessed. Each page of memory is tagged with permissions (e.g., read-only, read/write, execute) via [Memory Protection Bit](https://github.com/brian6484/CSKnowledge/blob/main/Operating%20System/Linux/Memory/Memory%20Protection%20Bit.md) Note this bit is **in the page, not the MMU**. MMU just reads it 
 
 This is how it enforces the boundary between user space and kernel space. When a user-mode program attempts to access a memory address that the MMU's page tables map to the kernel's memory space, the MMU detects this violation and generates a page fault. This triggers a hardware interrupt, allowing the operating system to take control and terminate the offending process. This mechanism is crucial for system stability and security, as it prevents a single misbehaving application from corrupting the entire system.
 
