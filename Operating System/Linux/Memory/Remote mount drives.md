@@ -1,6 +1,15 @@
+## What is mount?
+Mounting means attaching a filesystem (from disk, usb drive, network share, etc) to a specific directory in Linux so that u can access and see its contents.
+For example, 
+
+```
+mount /dev/sda1 /mnt/usb
+```
+makes the files on the USB drive (/dev/sda1) accessibile under the /mnt/usb directory. Before moutning the filesystem exists but is **not accessible**
+
 ## Would those commands show a remote mounted drive?
 
-**YES, they would!** Even remote/network filesystems show up as mounted if they're actually mounted.
+Even remote/network filesystems show up as mounted if they're actually mounted.
 
 ### `mount | grep mnt`
 Would show something like:
@@ -25,8 +34,6 @@ Filesystem                          Size  Used Avail Use% Mounted on
 Network filesystems (NFS, CIFS/SMB) aren't block devices, so they won't appear here.
 
 To see the diff, see [here](https://github.com/brian6484/CSKnowledge/tree/main/Operating%20System/Linux/Memory)
-
----
 
 ## So which commands to use for mounted filesystems?
 
