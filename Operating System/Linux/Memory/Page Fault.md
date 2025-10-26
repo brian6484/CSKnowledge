@@ -1,7 +1,7 @@
 ## Page fault
 There are 2 types of pag fault - valid and invalid. Valid page fault happens when process tries to access virtual memory page that **isnt loaded in physical RAM**. But invalid page fault is acccessing a protected kernel memory or memory that this process doesnt have permission for.
 
-Theres 2 types of valid page fault - major and minor and segmentation and this swapping is called major page fault. Theres minor page fault that doesnt require slow disk i/o and just involve cpu and ram. [copy on write or lazy allocation]() where minor page fault is handled entirely in RAM without touching disk.
+Theres 2 types of valid page fault - major and minor and segmentation and this swapping is called major page fault. Theres minor page fault that doesnt require slow disk i/o and just involve cpu and ram. [copy on write or lazy allocation](https://github.com/brian6484/CSKnowledge/blob/main/Operating%20System/Linux/Memory/Copy%20on%20write%20and%20Lazy%20loading.md) where minor page fault is handled entirely in RAM without touching disk.
 
 ## Flow
 The Page Fault Process
@@ -17,7 +17,7 @@ The Page Fault Process
 So page fault is a **hardware interrupt**, not a **software signal like SIGTERM/SIGKILL**.
 
 ## Types of Page Faults
-Minor Page Fault: Page is in memory but not in process's page table (just needs mapping). Absence in page table could be of lazy mapping, where  C runtime library allocates the virtual address space, but the OS often doesn't assign physical pages or update the page table until the program actually attempts to write data to that new memory.
+Minor Page Fault: Page is in memory but not in process's page table (just needs mapping). Absence in page table could be of lazy mapping, where C runtime library allocates the virtual address space, but the OS often doesn't assign physical pages or update the page table until the program actually attempts to write data to that new memory.
 
 Major Page Fault: Page must be loaded from disk (slow operation)
 
