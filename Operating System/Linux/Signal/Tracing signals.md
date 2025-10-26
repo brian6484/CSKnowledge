@@ -3,7 +3,7 @@ Signal tracing = monitor & debug signals the process is sending/receiving.
 
 ### strace = trace system calls AND signals
 ```
-strace -e signal ls /home
+strace -p <pid>
 ```
 
 Output shows:
@@ -20,7 +20,8 @@ so process received SIGCHLD and child 12345 exited.
 
 real life example
 ```
-strace -e signal=SIGTERM kill -15 <PID>
+# Trace the SERVER process to see how IT handles signals
+strace -p <server_PID> -e signal
 ```
 
 Output:
@@ -68,7 +69,10 @@ kill -SIGUSR1 <PID>
 ## real example
 If server isnt responding to **signals**
 ```
-strace -e signal kill -15 <server_PID>
+# Trace the SERVER process to see how IT handles signals
+strace -p <server_PID> -e signal
+
+## then in another terminal, run kill - 15 <pid> then u can see the tracing 
 ```
 
 Output of this shows if signal got delivered or did server handle it via signal handler? And why didnt the process die(maybe handler 
