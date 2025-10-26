@@ -1,5 +1,5 @@
 ## Memory Protection Bit
-Each page in memory has permission flags stored in the page table that control what can be done with that page.
+Each page in memory has permission flags and modes (user/kernel) stored in the page table that control what can be done with that page.
 
 ### permission
 Read (R): Can the page be read from?
