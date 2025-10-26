@@ -1,7 +1,7 @@
 ## What if program requests 1TB RAM but system has only 16 GB
 1) Virtual memory concept
-Linux gives each process its own large virtual address space, but its just illusion of huge memory, backed by real RAM +
-swap + kernel tricks
+Linux gives each process its own large virtual address space, but its just illusion of huge, **CONTIGUOUS** (NOT NON CONTIGUOUS cuz we have no holes) memory, backed by real RAM +
+swap + kernel tricks. The physical memory is non-contiguous cuz the pages are scattered all over in Ram.
 
 2) memory pages
 So memory is divided into small chunks called **pages** (4KB). When program asks for memory via
