@@ -10,7 +10,7 @@ its basically a cache for Memory Management Unit
 
 The **Memory Management Unit (MMU)** has to translate this virtual address into a physical address using the **Page Tables** stored in main memory (RAM).
 
-* Looking up the address in the Page Tables requires **several memory accesses** to RAM.
+* Looking up the address in the Page Tables requires **several memory accesses** to RAM. This is cuz u need to read page directory from Ram, then read page table from Ram, then read actual page table entry from ram, and only then can we read the actual data so 4 RAM accesses.
 * This means a single data access operation often requires **two or more** RAM accesses, which significantly slows down the CPU.
 
 ### 2. The TLB Solution (The Cache)
