@@ -19,6 +19,8 @@ $ du -sh /var/log
 it shows /var/log folder is 2.5gb. But it isnt that intuitive like idk which file/subfolder is biggest 
 so we do 1 more step
 shows the top 10 largest files/folders inside /var/log,
+
+-r = reverse order 
 ```
 du -h /var/log | sort -rh | head -n 10
 ```
