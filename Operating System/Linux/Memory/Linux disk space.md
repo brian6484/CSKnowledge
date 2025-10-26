@@ -8,7 +8,9 @@ Filesystem      Size  Used Avail Use% Mounted on
 /dev/sdb1       500G  100G  400G  20% /data
 ```
 
-## du -sh <directory>
+## du -sh <directory> VS du -h
+du -sh just shows the disk usage for that specific directory but -h sows size of **every file and subdirectory**
+
 du = "disk usage", shows size of files/directories
 -s = summarise, *total size of directory*, not each file
 -h = human-readable
