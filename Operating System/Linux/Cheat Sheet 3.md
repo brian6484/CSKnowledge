@@ -94,6 +94,13 @@ Total disk space used: 1 MB only!
 ```
 
 ## systemd service
+### search for the systemd service
+so after killing the problematic process, maybe u want to restart the service. If it is systemd service use `list-units` and grep to search,
+```
+$ sudo systemctl list-units | grep -i "node"
+  webapp.service                          loaded active running   Node.js Web Application
+```
+
 ### Check systemd service's log
 Rmb journalctl is the systemd logging service. **ALL systemd services log to journal** and journalctl is the tool to read those queries.
 ```
