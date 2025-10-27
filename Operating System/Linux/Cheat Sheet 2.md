@@ -16,6 +16,8 @@ r = not running processes but runnable processes (processes that are ready to ru
 
 b = blocked processes (processes in **uninterrupitble sleep, usually waiting for io to complete**)
 
+swpd = total swap sapce used 
+
 si,so = swapping memory to disk, shows system is running out of memory
 
 bi,bo = disk i/o operations per second, shows system is v busy with i/o. bo = blocks out so from memory to disk. Its out cuz from perspective of CPU, data is going OUT from memory. bi is reading from disk into memory 
