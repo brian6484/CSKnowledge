@@ -1,4 +1,12 @@
 ## Scenarios
+### running a binary file (executable)
+```
+./app.bin
+## basically ./ and ur binary file name
+```
+
+if u get permission error check file permission via ls -la and add execute permission via chmod +x ./app.bin.
+
 ### cant even ssh into server 
 u can look [here](https://github.com/brian6484/CSKnowledge/blob/main/Network/Linux/How%20to%20SSH.md)
 
