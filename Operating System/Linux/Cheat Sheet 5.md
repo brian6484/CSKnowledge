@@ -22,6 +22,8 @@ sudo crontab -l
 # m h  dom mon dow   command
 0 */2 * * * /opt/app/scripts/bulk_import.sh >> /var/log/bulk_import.log 2>&1
 ```
+so thats running every 2 hours cuz it is */2 instead of 2. U run that .sh script and append the script's output to that import.log.
+2>&1 means redirect script's error output (STDERR) to sameplace as STDOUT(log file)
 
 to edit cron jobs u can use the -e = edit tag.
 ```
