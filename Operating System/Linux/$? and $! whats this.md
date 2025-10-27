@@ -28,3 +28,5 @@ wait $JOB_PID                                 # Wait for that specific PID to fi
 ```
 
 so wait $PID means wait for that specific child process . If that wait isnt in the scehduler, then parent never reads the child's exit status via **wait()** so child becomes a zombie.
+
+**V IMPT** dont leave spaces in between like JOB_PID = $1 cuz spaces cause syntax errors 
