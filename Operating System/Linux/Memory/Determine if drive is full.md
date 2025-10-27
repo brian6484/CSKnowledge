@@ -51,3 +51,8 @@ Filesystem      Size  Used Avail Use%
 /dev/sda2       100G   45G   55G  45%
 (Shows total, used, available, and percentage—tells you if full/free)
 ```
+
+actually better to have cleaner output via sort -rh
+```
+du -sh /var/* | sort -rh | head -10
+```
