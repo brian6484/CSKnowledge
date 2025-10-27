@@ -12,7 +12,9 @@ procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
  3 12      0      0  234 1892  2345 9876 15 10 35 38  2
  4 15      0      0  678 2145  2891 11234 18 12 30 38  2
 ```
-b = blocked processes (normally to be below 5)
+r = not running processes but runnable processes (processes that are ready to run and want CPU time)
+
+b = blocked processes (processes in **uninterrupitble sleep, usually waiting for io to complete**)
 
 si,so = swapping memory to disk, shows system is running out of memory
 
