@@ -18,7 +18,7 @@ b = blocked processes (processes in **uninterrupitble sleep, usually waiting for
 
 si,so = swapping memory to disk, shows system is running out of memory
 
-bi,bo = disk i/o operations per second, shows system is v busy with i/o
+bi,bo = disk i/o operations per second, shows system is v busy with i/o. bo = blocks out so from memory to disk. Its out cuz from perspective of CPU, data is going OUT from memory. bi is reading from disk into memory 
 
 in = interrupts/s. Remember interrupt is when a device (disk, network, timer) needs CPU's attention or resource
 
