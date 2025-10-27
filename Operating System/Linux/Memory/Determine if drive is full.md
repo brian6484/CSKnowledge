@@ -30,7 +30,7 @@ tmpfs         2019200   12   2019188   1% /dev/shm
 
 ## WRONG ANSWERS!
 ### free -m
-Thats for RAM usage in Megabytes! Not disk. available = free + buff/cache
+Thats for memory (ram + swap space) usage in Megabytes! Not disk. available = free + buff/cache
 ```
 **`free -m` (memory in MB—for reference, NOT disk):**
               total  used  free  shared  buff/cache  available
