@@ -4,6 +4,32 @@
 awk 'pattern { action }' filename
 ```
 
+## getting unique ip addresses
+mjust sort first! 
+```
+cat /var/log/app.log | awk '{print $1}' | sort | uniq
+#                                          ↑ MUST sort first!
+
+# With counts
+cat /var/log/app.log | awk '{print $1}' | sort | uniq -c
+```
+
+without sort, uniq wont work
+```
+# Without sort
+echo -e "10.0.0.1\n10.0.0.2\n10.0.0.1" | uniq
+# Output:
+# 10.0.0.1
+# 10.0.0.2
+# 10.0.0.1  ← Still appears! (not consecutive)
+
+# With sort
+echo -e "10.0.0.1\n10.0.0.2\n10.0.0.1" | sort | uniq
+# Output:
+# 10.0.0.1
+# 10.0.0.2  ← Only unique IPs!
+```
+
 ## Example file
 ```
 John 25 Engineer
