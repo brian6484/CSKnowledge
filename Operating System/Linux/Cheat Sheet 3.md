@@ -1,6 +1,98 @@
 ## Start
 So this goes deeper to application-level.
 
+## Mount
+### mounting storage devices 
+All block devices in Linux are always located in the /dev/ directory. It's a standard convention.
+
+```
+lsblk
+# Output:
+NAME        SIZE  MOUNTPOINT
+sda         50G   
+└─sda1      50G   /
+sdb         500G  
+└─sdb1      500G
+```
+
+so mounting means connecting a storage device to a directory so that u can access those files IN THE STORAGE DEVICE 
+```
+sudo mount /dev/sdb1 /data
+```
+```
+Your Linux System:
+/                          ← Root partition (50GB - FULL!)
+├── /home
+├── /var
+│   └── /var/log
+├── /etc
+└── /data ══════════════╗  ← Now this is a "doorway" to the big disk!
+                        ║
+                        ║ (mount point)
+                        ║
+    /dev/sdb1 ══════════╝  ← 500GB disk, NOW accessible through /data
+    (500GB available!)
+
+## check if mounted properly via
+df -h | grep /data
+```
+
+this might be because an app is writing logs to a path like /var/log/app.log but /var is on the full partition. So instead of changing log path in the config file, we can use a **symbolic link**. Cuz now we have a very huge disk space mounted at `/data`.
+
+### symbolic link
+this -p is v impt cuz if u try to create a directory(/logs) inside this /data directory and this /data directory doesnt exist, there will be error caused. But with -p, it creates the parent directory too 
+```
+sudo mkdir -p /data/logs
+
+## format ln -s <target> <link_name>
+sudo ln -s /data/logs/app.log /var/log/app.log
+```
+
+now when the app writes to /var/log/app.log, it actually writes to /data/logs/app.log
+
+### hard link
+hard links **dont work across diff partitions/disks**. Normally used when u wanna protect against accidental deletion or save space for existing duplicate files (in same partition)
+
+
+```
+/project1/config.txt    (1 MB)
+/project2/config.txt    (1 MB)  ← Exact same content
+/project3/config.txt    (1 MB)  ← Exact same content
+
+Total disk space used: 3 MB
+
+## but 
+# Keep the original
+/project1/config.txt    (1 MB)
+
+# Replace duplicates with hard links
+rm /project2/config.txt
+ln /project1/config.txt /project2/config.txt
+
+rm /project3/config.txt
+ln /project1/config.txt /project3/config.txt
+
+Total disk space used: 1 MB only!
+```
+
+---
+
+## How It Works
+
+**Normal files:**
+```
+/project1/config.txt → [Data Block A] (1 MB)
+/project2/config.txt → [Data Block B] (1 MB)  ← Separate copy
+/project3/config.txt → [Data Block C] (1 MB)  ← Separate copy
+```
+
+**With hard links:**
+```
+/project1/config.txt ─┐
+/project2/config.txt ─┼→ [Same Data Block] (1 MB)
+/project3/config.txt ─┘
+```
+
 ## systemd service
 ### Check systemd service's log
 Rmb journalctl is the systemd logging service. **ALL systemd services log to journal** and journalctl is the tool to read those queries.
