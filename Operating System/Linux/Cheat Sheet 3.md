@@ -93,6 +93,13 @@ Total disk space used: 1 MB only!
 /project3/config.txt ─┘
 ```
 
+### remount
+if this filesystem is bugged to be read-only maybe we can remount with read AND WRITE permission
+```
+mount -o remount,rw /
+```
+-o = options, rw=read-write (opposite of `ro` which is read only). The / is the mount point (root filesystem)
+
 ## systemd service
 ### search for the systemd service
 so after killing the problematic process, maybe u want to restart the service. If it is systemd service use `list-units` and grep to search,
