@@ -95,7 +95,7 @@ sudo tail -1000 /var/log/nginx/access.log | grep 10.0.5.142 | grep "15:47:2[0-9]
 847
 ```
 
-**847 requests in one second!** That's insane for a metrics endpoint.
+**847 requests in 10 seconds!** That's insane for a metrics endpoint.
 
 **Let's check how long the /metrics endpoint takes to respond:**
 ```bash
