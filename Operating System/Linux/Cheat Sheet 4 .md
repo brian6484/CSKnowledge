@@ -1,6 +1,8 @@
 ## Common directories
 /var/log: stores both system and application logs. It stores *variable data*, files that might change. But nowadyas on modern linux, we use systemd journal. The Journal's data is typically stored in a binary format under /var/log/journal so cant just cat. We need to use journalctl commands. 
 
+v impt is /var/log/syslog to check syslog if journalctl logs are missing
+
 /etc: stores system and application **config files**.
 
 /var/lib: applications store their variable data like db files, indexes, configs, logs. It stores the application state basically
