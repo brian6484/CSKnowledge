@@ -1,5 +1,9 @@
 The key distinction is between **Block Storage** and **File Storage** (or Network Filesystems).
 
+**Storage device** is the physical hardware (SSD, HDD, USB drive) - the actual thing you can touch. **Block device** is the logical interface the OS uses to access that storage, represented as files like `/dev/sda` or `/dev/nvme0n1`. The OS reads and writes data in fixed-size blocks (typically 512 bytes or 4KB) rather than byte-by-byte.
+
+**Key point:** One physical storage device can appear as multiple block devices - for example, a single SSD (`/dev/sda`) creates separate block devices for each partition (`/dev/sda1`, `/dev/sda2`). Block devices are how the kernel abstracts storage hardware for uniform access, regardless of whether it's an SSD, HDD, or USB drive.
+
 ### **No, a remote drive is NOT a block device.**
 
 While a remote drive is a file storage system, it is **not** a block device in the way Linux defines it.
