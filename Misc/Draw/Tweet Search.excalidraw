@@ -5,8 +5,8 @@
   "elements": [
     {
       "type": "text",
-      "version": 419,
-      "versionNonce": 1057728840,
+      "version": 421,
+      "versionNonce": 640846278,
       "isDeleted": false,
       "id": "A64tQgAjHZfG2-wrCFTKP",
       "fillStyle": "cross-hatch",
@@ -26,7 +26,7 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1760490909084,
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "fontSize": 36,
@@ -42,8 +42,8 @@
     },
     {
       "type": "text",
-      "version": 2670,
-      "versionNonce": 1205104440,
+      "version": 2676,
+      "versionNonce": 106526106,
       "isDeleted": false,
       "id": "CQ8PZec5CKrebTUz-O9L0",
       "fillStyle": "cross-hatch",
@@ -65,7 +65,7 @@
         "type": 2
       },
       "boundElements": [],
-      "updated": 1760490909084,
+      "updated": 1761744475724,
       "link": null,
       "locked": false,
       "fontSize": 33.23791410279167,
@@ -76,13 +76,13 @@
       "containerId": null,
       "originalText": "✨",
       "lineHeight": 1.3538755729626375,
-      "index": "a1",
+      "index": "a1V",
       "autoResize": true
     },
     {
       "type": "text",
-      "version": 3473,
-      "versionNonce": 559366216,
+      "version": 3475,
+      "versionNonce": 470376710,
       "isDeleted": false,
       "id": "7o6BqptDM248e4pmL8h_R",
       "fillStyle": "solid",
@@ -102,7 +102,7 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1760490909084,
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "fontSize": 16,
@@ -118,8 +118,8 @@
     },
     {
       "type": "line",
-      "version": 1771,
-      "versionNonce": 854706232,
+      "version": 1773,
+      "versionNonce": 209558106,
       "isDeleted": false,
       "id": "Nl6qhfqG8Wckhn1dW9i8v",
       "fillStyle": "hachure",
@@ -141,7 +141,7 @@
         "type": 2
       },
       "boundElements": [],
-      "updated": 1760490909084,
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "startBinding": null,
@@ -164,8 +164,8 @@
     },
     {
       "type": "text",
-      "version": 2429,
-      "versionNonce": 390642131,
+      "version": 2462,
+      "versionNonce": 131515034,
       "isDeleted": false,
       "id": "sXnkM5ufatqmozgXBHQ4i",
       "fillStyle": "solid",
@@ -179,30 +179,30 @@
       "strokeColor": "#1e1e1e",
       "backgroundColor": "#fefefe",
       "width": 453.119598388672,
-      "height": 500,
+      "height": 525,
       "seed": 1149032915,
       "groupIds": [],
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1761010383936,
+      "updated": 1761746104313,
       "link": null,
       "locked": false,
       "fontSize": 20,
       "fontFamily": 1,
-      "text": "clarifying questions:\ndo i have to design the tweet system\nentirely like the storage for tweets? no,\nassume theres API like getTweetById()\nwhat search features? keyword, hashtag and\nbasic date range filters\ndo we need to rank results? yes return\nresults by  relevance \nread heavy, yes 100:1\ndo we handle deleted/edit tweets? yes\ngimme some data like how many\ntweets/searches posted per day and\naverage tweet size\n\nfunctional req:\n1. Users should be able to search for tweets\nby keyword, hashtag and date filters\n2. Users can delete/edit tweets and search\nfunction should work upon the new data\n3. get ranked results that are paginated",
+      "text": "clarifying questions:\ndo i have to design the tweet system\nentirely like the storage for tweets? no,\nassume theres API like getTweetById()\nwhat search features? keyword, hashtag and\nbasic date range filters\ndo we need to rank results? yes return\nresults by  relevance \nread heavy, yes 100:1\ndo we handle deleted/edit tweets? yes\ngimme some data like how many\ntweets/searches posted per day and\naverage tweet size\ndo we personalise results?\n\nfunctional req:\n1. Users should be able to search for tweets\nby keyword, hashtag and date filters\n2. Users can delete/edit tweets and search\nfunction should work upon the new data\n3. get ranked results that are paginated",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "clarifying questions:\ndo i have to design the tweet system entirely like the storage for tweets? no, assume theres API like getTweetById()\nwhat search features? keyword, hashtag and\nbasic date range filters\ndo we need to rank results? yes return results by  relevance \nread heavy, yes 100:1\ndo we handle deleted/edit tweets? yes\ngimme some data like how many tweets/searches posted per day and average tweet size\n\nfunctional req:\n1. Users should be able to search for tweets\nby keyword, hashtag and date filters\n2. Users can delete/edit tweets and search\nfunction should work upon the new data\n3. get ranked results that are paginated",
+      "originalText": "clarifying questions:\ndo i have to design the tweet system entirely like the storage for tweets? no, assume theres API like getTweetById()\nwhat search features? keyword, hashtag and\nbasic date range filters\ndo we need to rank results? yes return results by  relevance \nread heavy, yes 100:1\ndo we handle deleted/edit tweets? yes\ngimme some data like how many tweets/searches posted per day and average tweet size\ndo we personalise results?\n\nfunctional req:\n1. Users should be able to search for tweets\nby keyword, hashtag and date filters\n2. Users can delete/edit tweets and search\nfunction should work upon the new data\n3. get ranked results that are paginated",
       "lineHeight": 1.25,
-      "index": "a4",
+      "index": "a4V",
       "autoResize": false
     },
     {
       "type": "rectangle",
-      "version": 2410,
-      "versionNonce": 106179144,
+      "version": 2412,
+      "versionNonce": 1900887834,
       "isDeleted": false,
       "id": "SN8-VYC0NwF17Xv8-GEzL",
       "fillStyle": "solid",
@@ -222,15 +222,15 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1760491428472,
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "index": "a5"
     },
     {
       "type": "text",
-      "version": 2687,
-      "versionNonce": 1537855048,
+      "version": 2689,
+      "versionNonce": 75323270,
       "isDeleted": false,
       "id": "1eAsRSbtd0XzZJr9VKdp5",
       "fillStyle": "cross-hatch",
@@ -252,7 +252,7 @@
         "type": 2
       },
       "boundElements": [],
-      "updated": 1760490909084,
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "fontSize": 33.23791410279167,
@@ -268,8 +268,8 @@
     },
     {
       "type": "text",
-      "version": 3496,
-      "versionNonce": 1733761592,
+      "version": 3502,
+      "versionNonce": 1368109658,
       "isDeleted": false,
       "id": "k522nUTg1RVDLkFg-eXJ6",
       "fillStyle": "solid",
@@ -289,7 +289,7 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1760490909084,
+      "updated": 1761744475724,
       "link": null,
       "locked": false,
       "fontSize": 16,
@@ -300,13 +300,13 @@
       "containerId": null,
       "originalText": "Non-Functional Requirements",
       "lineHeight": 1.25,
-      "index": "a7",
+      "index": "a7V",
       "autoResize": true
     },
     {
       "type": "line",
-      "version": 1789,
-      "versionNonce": 820561224,
+      "version": 1791,
+      "versionNonce": 187987654,
       "isDeleted": false,
       "id": "J1e6JK7acWN4Bvyd-LYsZ",
       "fillStyle": "hachure",
@@ -328,7 +328,7 @@
         "type": 2
       },
       "boundElements": [],
-      "updated": 1760490909084,
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "startBinding": null,
@@ -351,8 +351,8 @@
     },
     {
       "type": "text",
-      "version": 2539,
-      "versionNonce": 504850749,
+      "version": 2594,
+      "versionNonce": 1094001862,
       "isDeleted": false,
       "id": "3w3Otn-TbgUS5rE0THlOY",
       "fillStyle": "solid",
@@ -361,35 +361,35 @@
       "roughness": 0,
       "opacity": 100,
       "angle": 0,
-      "x": 739.2822089561603,
-      "y": 241.75361501069602,
+      "x": 734.2027760599549,
+      "y": 243.02353862955766,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "#fefefe",
       "width": 559.1995849609375,
-      "height": 650,
+      "height": 675,
       "seed": 1514555731,
       "groupIds": [],
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1761010492447,
+      "updated": 1761746297346,
       "link": null,
       "locked": false,
       "fontSize": 20,
       "fontFamily": 1,
-      "text": "cap theorem:\nAP instead of CP - can forgive some stale data but\nsearch function cannot be unavailable at any given time,\nwhich will negatively affect user experience\n\ncalculation:\nstorage: 500M *300b=150000Mb = 150Gb/day \n=4.5Tb/month\naverage search/s = 800M/100ks = 8k/s = read-heavy\nlow latency for search\n\nGET /api/v1/search?\n  q=keyword\n  &hashtag=#AI\n  &user=@username\n  &start_date=2025-01-01\n  &end_date=2025-10-15\n  &sort_by=relevance | recent | likes | retweets\n  &page=1\n  &limit=20\n\nlatency for search result p99 <200ms and p50 <100ms\n\n\n\n",
+      "text": "cap theorem:\nAP instead of CP - can forgive some stale data but\nsearch function cannot be unavailable at any given time,\nwhich will negatively affect user experience\n\ncalculation:\nstorage: 500M *300b=150000Mb = 150Gb/day \n=4.5Tb/month\naverage search/s = 800M/100ks = 8k/s = read-heavy\nlow latency for search\n\nGET /api/v1/search?\n  q=keyword\n  &hashtag=#AI\n  &user=@username\n  &start_date=2025-01-01\n  &end_date=2025-10-15\n  &sort_by=relevance | recent | likes | retweets\n  &page=1\n  &limit=20\nPOST /v1/post ,/v1/post_id/like\n\nlatency for search result p99 <200ms and p50 <100ms\n\n\n\n",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "cap theorem:\nAP instead of CP - can forgive some stale data but\nsearch function cannot be unavailable at any given time,\nwhich will negatively affect user experience\n\ncalculation:\nstorage: 500M *300b=150000Mb = 150Gb/day \n=4.5Tb/month\naverage search/s = 800M/100ks = 8k/s = read-heavy\nlow latency for search\n\nGET /api/v1/search?\n  q=keyword\n  &hashtag=#AI\n  &user=@username\n  &start_date=2025-01-01\n  &end_date=2025-10-15\n  &sort_by=relevance | recent | likes | retweets\n  &page=1\n  &limit=20\n\nlatency for search result p99 <200ms and p50 <100ms\n\n\n\n",
+      "originalText": "cap theorem:\nAP instead of CP - can forgive some stale data but\nsearch function cannot be unavailable at any given time,\nwhich will negatively affect user experience\n\ncalculation:\nstorage: 500M *300b=150000Mb = 150Gb/day \n=4.5Tb/month\naverage search/s = 800M/100ks = 8k/s = read-heavy\nlow latency for search\n\nGET /api/v1/search?\n  q=keyword\n  &hashtag=#AI\n  &user=@username\n  &start_date=2025-01-01\n  &end_date=2025-10-15\n  &sort_by=relevance | recent | likes | retweets\n  &page=1\n  &limit=20\nPOST /v1/post ,/v1/post_id/like\n\nlatency for search result p99 <200ms and p50 <100ms\n\n\n\n",
       "lineHeight": 1.25,
       "index": "a9",
       "autoResize": true
     },
     {
       "type": "rectangle",
-      "version": 2542,
-      "versionNonce": 1220481971,
+      "version": 2544,
+      "versionNonce": 1145417222,
       "isDeleted": false,
       "id": "48rBZ3_1P46nZG25uUB23",
       "fillStyle": "solid",
@@ -409,15 +409,15 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1761010252859,
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "index": "aA"
     },
     {
       "type": "text",
-      "version": 5528,
-      "versionNonce": 461737800,
+      "version": 5530,
+      "versionNonce": 1320721754,
       "isDeleted": false,
       "id": "yi9e_FvYZBq9OoTZupnzc",
       "fillStyle": "hachure",
@@ -437,7 +437,7 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1760491985638,
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "fontSize": 20,
@@ -453,8 +453,8 @@
     },
     {
       "type": "rectangle",
-      "version": 2414,
-      "versionNonce": 855947576,
+      "version": 2416,
+      "versionNonce": 212729158,
       "isDeleted": false,
       "id": "wi0BTBeyGUkrtJ96-KuOP",
       "fillStyle": "solid",
@@ -474,15 +474,15 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1760491413873,
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "index": "aE"
     },
     {
       "type": "rectangle",
-      "version": 2709,
-      "versionNonce": 1724493715,
+      "version": 2711,
+      "versionNonce": 1529864730,
       "isDeleted": false,
       "id": "7k6wGxN0NTy9qoTW3wQGz",
       "fillStyle": "solid",
@@ -502,15 +502,15 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1761014334349,
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "index": "aI"
     },
     {
       "type": "text",
-      "version": 2881,
-      "versionNonce": 50073656,
+      "version": 2883,
+      "versionNonce": 432694406,
       "isDeleted": false,
       "id": "7V_8Ap4P8lrly5aGxSojs",
       "fillStyle": "cross-hatch",
@@ -532,7 +532,7 @@
         "type": 2
       },
       "boundElements": [],
-      "updated": 1760490909084,
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "fontSize": 33.23791410279167,
@@ -548,8 +548,8 @@
     },
     {
       "type": "text",
-      "version": 3740,
-      "versionNonce": 1186344776,
+      "version": 3742,
+      "versionNonce": 165711578,
       "isDeleted": false,
       "id": "wZUH9QK1PNm62n8J7aEnb",
       "fillStyle": "solid",
@@ -569,7 +569,7 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1760490909084,
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "fontSize": 16,
@@ -585,8 +585,8 @@
     },
     {
       "type": "line",
-      "version": 1982,
-      "versionNonce": 1249724728,
+      "version": 1984,
+      "versionNonce": 1834476486,
       "isDeleted": false,
       "id": "ShlFtLxjsF_F8IpW9SyMh",
       "fillStyle": "hachure",
@@ -608,7 +608,7 @@
         "type": 2
       },
       "boundElements": [],
-      "updated": 1760490909084,
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "startBinding": null,
@@ -635,7 +635,7 @@
       "x": 291.6457008137148,
       "y": 943.1289630974057,
       "width": 878.9037272135416,
-      "height": 2600,
+      "height": 3275,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -649,20 +649,20 @@
       "index": "aQ",
       "roundness": null,
       "seed": 502349384,
-      "version": 2495,
-      "versionNonce": 1876373277,
+      "version": 2779,
+      "versionNonce": 907285638,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761022452555,
+      "updated": 1761746776691,
       "link": null,
       "locked": false,
-      "text": "CDN primarily serves static assets like JavaScript, CSS, images, and media files to reduce\nlatency globally.\nHowever, search queries themselves can't be CDN-cached because they're highly dynamic\nand personalized. Instead, we use Redis within our datacenters for short-lived search\nresult caching with 5-10 minute TTLs.\nIf the system includes tweet images or videos, those would be stored in object storage\n(S3) and served via CDN for global distribution\n\nfor write,\ntweet created -> tweet service -> Kafka (topic is tweet.created ) and it fans out to \nmultiple consumer groups (like ones i wrote below like storage , index workers, etc)\n-> Ingestion workers(storage workers -> Cass, Index workers -> ES, timeline workers ->\nuser feeds, notif workers -> push notif, cache workers -> redis) that stores into db like\nCassandra, tokenise the tweet and extract hashtags/mentions -> Elasticsearch saves\nthese tokens \n\nTweet Created\n    ↓\n┌─────────────────────────────┐\n│  WRITE TO BOTH DATABASES    │\n└─────────────────────────────┘\n    ↓\n    ├──→ Cassandra (source of truth)\n    │      - Fast writes\n    │      - Primary storage\n    │\n    └──→ Elasticsearch (search index)\n           - Tokenize & index\n           - Searchable in 5 sec\n\n**How ES stores tokens:**\n- ES creates **inverted index** automatically\n- \"I love machine learning\" → tokens: [\"love\", \"machine\", \"learning\"]\n- Each token points to tweet ID + position\n- You just send the raw tweet text, ES handles the rest!\n\nfor read, (wrong to use kafka, this was my wrong original idea)\nsearch keyword/hashtag -> first search cache if similar search result is inside like redis -\n> if not, put the kwyword/hashtag in message data and publish to kafka queue \n-> worker nodes consume that message and search in elasticsearch -> return result\n\n\ncorrect(dont use kafka cuz search is synchronous, not async. For write it buffers tweet\ningestion spikes and enables parllel processing. But for reads, user expect 200ms but\nkafka introduces latency from message serialisation, network hops and queue polling. We\ninstead use ES directly for low latency search and use redis for caching hot queries.)\nuser search -> LB -> search service -> check redis cache if search is in cache \n-> query ES directly via REST API -> cache result in Redis with TTL -> return result\n\nScenario A: Search Query\n────────────────────────\nUser: \"search machine learning\"\n  ↓\nRedis (cache miss)\n  ↓\nElasticsearch → [123, 456, 789]\n  ↓\nCassandra → fetch full tweet details\n  ↓\nReturn results\n\nCassandra should still be our primary db cuz if ES is the only DB\n1) data loss risk - ES can lose data during crash (durability is bad) but Cass is more\nreliable\n2) cost - ES is more exp\n3) **not optimised for PK lookup** - getting tweet by ID is faster in Cass and ES is\noptimised for search , not point queries\n4) Update overhead - every  tweet edit requires re-indexing in ES but in Cassandra it is\nfast\n\nwat happen if tweet is edited/deleted?\ndelete:\ndelete tweet id #123 -> tweet service \n-> kafka topic: tweet.deleted -> ingestion workers mark delete in Cassandra (soft delete)\n-> ES (delete doc with that id) -> redis (invalidate cache with that id)\n\nedit:\nedit tweet id #123 from \"i love ai\" -> \"i love ml\" -> tweet service ->  \n-> kafka topic: tweet.updated -> ingestion workers (update cassandra and retokenise the\nnew text) \n-> ES updates document #123 with new tokens -> redis invalidates cache\n\nEdge Case: What if ES delete fails?\n\n**Problem:** Tweet deleted in Cassandra but still in ES\n\n**Solution:** Reconciliation job\n```\nNightly/hourly job:\n  - Scan ES for tweet IDs\n  - Check if still exists in Cassandra\n  - Remove orphaned documents\n```\n\nOr use **soft deletes in ES** with `deleted: true` flag, filter at query time\n\noptimisation for search:\nadd a reranking service (ML recommendation service on user history, engagement and\nquality) and 2 phase (1st phase - fast ES,\n2nd - a bit slower Reranking service) but total latency should be under 200ms so should\nbe fine\n\nES returns top 1000 candidates and Reranking does a complex scoring and get top 20 \npersonalised results",
+      "text": "for search service, the search conditions (keyword, hashtag) could be indexed cuz\nindexes are normally in the where clause so speeds up query. If we are sorting via likes or\ncreation time, we can index on those columns. For redis storage, \n\nKey: \"posts:keyword:apple:creation\"\nType: Redis List\nValue: [post_999, post_998, post_997, ...]\n       (newest first, always append to front)\n\nQuery: \"Give me top 10 newest posts with 'apple'\"\n→ LRANGE posts:keyword:apple:creation 0 9\n```\n\n### 2. **Likes Index** (sorted by popularity)\n```\nKey: \"posts:keyword:apple:likes\"  \nType: Redis Sorted Set\nValue: {\n  post_42: 1500,  ← 1500 likes\n  post_17: 890,   ← 890 likes\n  post_99: 450    ← 450 likes\n}\n(automatically sorted by score/likes)\n\nQuery: \"Give me top 10 most-liked posts with 'apple'\"\n→ ZREVRANGE posts:keyword:apple:likes 0 9\n\nCDN primarily serves static assets like JavaScript, CSS, images, and media files to reduce\nlatency globally.\nHowever, search queries themselves can't be CDN-cached because they're highly dynamic\nand personalized. Instead, we use Redis within our datacenters for short-lived search\nresult caching with 5-10 minute TTLs.\nIf the system includes tweet images or videos, those would be stored in object storage\n(S3) and served via CDN for global distribution\n\nfor write,\ntweet created -> tweet service -> Kafka (topic is tweet.created ) and it fans out to \nmultiple consumer groups (like ones i wrote below like storage , index workers, etc)\n-> Ingestion workers(storage workers -> Cass, Index workers -> ES, timeline workers ->\nuser feeds, notif workers -> push notif, cache workers -> redis) that stores into db like\nCassandra, tokenise the tweet and extract hashtags/mentions -> Elasticsearch saves\nthese tokens \n\nTweet Created\n    ↓\n┌─────────────────────────────┐\n│  WRITE TO BOTH DATABASES    │\n└─────────────────────────────┘\n    ↓\n    ├──→ Cassandra (source of truth)\n    │      - Fast writes\n    │      - Primary storage\n    │\n    └──→ Elasticsearch (search index)\n           - Tokenize & index\n           - Searchable in 5 sec\n\n**How ES stores tokens:**\n- ES creates **inverted index** automatically\n- \"I love machine learning\" → tokens: [\"love\", \"machine\", \"learning\"]\n- Each token points to tweet ID + position\n- You just send the raw tweet text, ES handles the rest!\n\nfor read, (wrong to use kafka, this was my wrong original idea)\nsearch keyword/hashtag -> first search cache if similar search result is inside like redis -\n> if not, put the kwyword/hashtag in message data and publish to kafka queue \n-> worker nodes consume that message and search in elasticsearch -> return result\n\n\ncorrect(dont use kafka cuz search is synchronous, not async. For write it buffers tweet\ningestion spikes and enables parllel processing. But for reads, user expect 200ms but\nkafka introduces latency from message serialisation, network hops and queue polling. We\ninstead use ES directly for low latency search and use redis for caching hot queries.)\nuser search -> LB -> search service -> check redis cache if search is in cache \n-> query ES directly via REST API -> cache result in Redis with TTL -> return result\n\nScenario A: Search Query\n────────────────────────\nUser: \"search machine learning\"\n  ↓\nRedis (cache miss)\n  ↓\nElasticsearch → [123, 456, 789]\n  ↓\nCassandra → fetch full tweet details\n  ↓\nReturn results\n\nCassandra should still be our primary db cuz if ES is the only DB\n1) data loss risk - ES can lose data during crash (durability is bad) but Cass is more\nreliable\n2) cost - ES is more exp\n3) **not optimised for PK lookup** - getting tweet by ID is faster in Cass and ES is\noptimised for search , not point queries\n4) Update overhead - every  tweet edit requires re-indexing in ES but in Cassandra it is\nfast\n\nwat happen if tweet is edited/deleted?\ndelete:\ndelete tweet id #123 -> tweet service \n-> kafka topic: tweet.deleted -> ingestion workers mark delete in Cassandra (soft delete)\n-> ES (delete doc with that id) -> redis (invalidate cache with that id)\n\nedit:\nedit tweet id #123 from \"i love ai\" -> \"i love ml\" -> tweet service ->  \n-> kafka topic: tweet.updated -> ingestion workers (update cassandra and retokenise the\nnew text) \n-> ES updates document #123 with new tokens -> redis invalidates cache\n\nEdge Case: What if ES delete fails?\n\n**Problem:** Tweet deleted in Cassandra but still in ES\n\n**Solution:** Reconciliation job\n```\nNightly/hourly job:\n  - Scan ES for tweet IDs\n  - Check if still exists in Cassandra\n  - Remove orphaned documents\n```\n\nOr use **soft deletes in ES** with `deleted: true` flag, filter at query time\n\noptimisation for search:\nadd a reranking service (ML recommendation service on user history, engagement and\nquality) and 2 phase (1st phase - fast ES,\n2nd - a bit slower Reranking service) but total latency should be under 200ms so should\nbe fine\n\nES returns top 1000 candidates and Reranking does a complex scoring and get top 20 \npersonalised results",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "CDN primarily serves static assets like JavaScript, CSS, images, and media files to reduce latency globally.\nHowever, search queries themselves can't be CDN-cached because they're highly dynamic and personalized. Instead, we use Redis within our datacenters for short-lived search result caching with 5-10 minute TTLs.\nIf the system includes tweet images or videos, those would be stored in object storage (S3) and served via CDN for global distribution\n\nfor write,\ntweet created -> tweet service -> Kafka (topic is tweet.created ) and it fans out to \nmultiple consumer groups (like ones i wrote below like storage , index workers, etc)\n-> Ingestion workers(storage workers -> Cass, Index workers -> ES, timeline workers -> user feeds, notif workers -> push notif, cache workers -> redis) that stores into db like Cassandra, tokenise the tweet and extract hashtags/mentions -> Elasticsearch saves these tokens \n\nTweet Created\n    ↓\n┌─────────────────────────────┐\n│  WRITE TO BOTH DATABASES    │\n└─────────────────────────────┘\n    ↓\n    ├──→ Cassandra (source of truth)\n    │      - Fast writes\n    │      - Primary storage\n    │\n    └──→ Elasticsearch (search index)\n           - Tokenize & index\n           - Searchable in 5 sec\n\n**How ES stores tokens:**\n- ES creates **inverted index** automatically\n- \"I love machine learning\" → tokens: [\"love\", \"machine\", \"learning\"]\n- Each token points to tweet ID + position\n- You just send the raw tweet text, ES handles the rest!\n\nfor read, (wrong to use kafka, this was my wrong original idea)\nsearch keyword/hashtag -> first search cache if similar search result is inside like redis -\n> if not, put the kwyword/hashtag in message data and publish to kafka queue \n-> worker nodes consume that message and search in elasticsearch -> return result\n\n\ncorrect(dont use kafka cuz search is synchronous, not async. For write it buffers tweet ingestion spikes and enables parllel processing. But for reads, user expect 200ms but kafka introduces latency from message serialisation, network hops and queue polling. We instead use ES directly for low latency search and use redis for caching hot queries.)\nuser search -> LB -> search service -> check redis cache if search is in cache \n-> query ES directly via REST API -> cache result in Redis with TTL -> return result\n\nScenario A: Search Query\n────────────────────────\nUser: \"search machine learning\"\n  ↓\nRedis (cache miss)\n  ↓\nElasticsearch → [123, 456, 789]\n  ↓\nCassandra → fetch full tweet details\n  ↓\nReturn results\n\nCassandra should still be our primary db cuz if ES is the only DB\n1) data loss risk - ES can lose data during crash (durability is bad) but Cass is more reliable\n2) cost - ES is more exp\n3) **not optimised for PK lookup** - getting tweet by ID is faster in Cass and ES is optimised for search , not point queries\n4) Update overhead - every  tweet edit requires re-indexing in ES but in Cassandra it is fast\n\nwat happen if tweet is edited/deleted?\ndelete:\ndelete tweet id #123 -> tweet service \n-> kafka topic: tweet.deleted -> ingestion workers mark delete in Cassandra (soft delete) -> ES (delete doc with that id) -> redis (invalidate cache with that id)\n\nedit:\nedit tweet id #123 from \"i love ai\" -> \"i love ml\" -> tweet service ->  \n-> kafka topic: tweet.updated -> ingestion workers (update cassandra and retokenise the new text) \n-> ES updates document #123 with new tokens -> redis invalidates cache\n\nEdge Case: What if ES delete fails?\n\n**Problem:** Tweet deleted in Cassandra but still in ES\n\n**Solution:** Reconciliation job\n```\nNightly/hourly job:\n  - Scan ES for tweet IDs\n  - Check if still exists in Cassandra\n  - Remove orphaned documents\n```\n\nOr use **soft deletes in ES** with `deleted: true` flag, filter at query time\n\noptimisation for search:\nadd a reranking service (ML recommendation service on user history, engagement and quality) and 2 phase (1st phase - fast ES,\n2nd - a bit slower Reranking service) but total latency should be under 200ms so should\nbe fine\n\nES returns top 1000 candidates and Reranking does a complex scoring and get top 20 \npersonalised results",
+      "originalText": "for search service, the search conditions (keyword, hashtag) could be indexed cuz indexes are normally in the where clause so speeds up query. If we are sorting via likes or creation time, we can index on those columns. For redis storage, \n\nKey: \"posts:keyword:apple:creation\"\nType: Redis List\nValue: [post_999, post_998, post_997, ...]\n       (newest first, always append to front)\n\nQuery: \"Give me top 10 newest posts with 'apple'\"\n→ LRANGE posts:keyword:apple:creation 0 9\n```\n\n### 2. **Likes Index** (sorted by popularity)\n```\nKey: \"posts:keyword:apple:likes\"  \nType: Redis Sorted Set\nValue: {\n  post_42: 1500,  ← 1500 likes\n  post_17: 890,   ← 890 likes\n  post_99: 450    ← 450 likes\n}\n(automatically sorted by score/likes)\n\nQuery: \"Give me top 10 most-liked posts with 'apple'\"\n→ ZREVRANGE posts:keyword:apple:likes 0 9\n\nCDN primarily serves static assets like JavaScript, CSS, images, and media files to reduce latency globally.\nHowever, search queries themselves can't be CDN-cached because they're highly dynamic and personalized. Instead, we use Redis within our datacenters for short-lived search result caching with 5-10 minute TTLs.\nIf the system includes tweet images or videos, those would be stored in object storage (S3) and served via CDN for global distribution\n\nfor write,\ntweet created -> tweet service -> Kafka (topic is tweet.created ) and it fans out to \nmultiple consumer groups (like ones i wrote below like storage , index workers, etc)\n-> Ingestion workers(storage workers -> Cass, Index workers -> ES, timeline workers -> user feeds, notif workers -> push notif, cache workers -> redis) that stores into db like Cassandra, tokenise the tweet and extract hashtags/mentions -> Elasticsearch saves these tokens \n\nTweet Created\n    ↓\n┌─────────────────────────────┐\n│  WRITE TO BOTH DATABASES    │\n└─────────────────────────────┘\n    ↓\n    ├──→ Cassandra (source of truth)\n    │      - Fast writes\n    │      - Primary storage\n    │\n    └──→ Elasticsearch (search index)\n           - Tokenize & index\n           - Searchable in 5 sec\n\n**How ES stores tokens:**\n- ES creates **inverted index** automatically\n- \"I love machine learning\" → tokens: [\"love\", \"machine\", \"learning\"]\n- Each token points to tweet ID + position\n- You just send the raw tweet text, ES handles the rest!\n\nfor read, (wrong to use kafka, this was my wrong original idea)\nsearch keyword/hashtag -> first search cache if similar search result is inside like redis -\n> if not, put the kwyword/hashtag in message data and publish to kafka queue \n-> worker nodes consume that message and search in elasticsearch -> return result\n\n\ncorrect(dont use kafka cuz search is synchronous, not async. For write it buffers tweet ingestion spikes and enables parllel processing. But for reads, user expect 200ms but kafka introduces latency from message serialisation, network hops and queue polling. We instead use ES directly for low latency search and use redis for caching hot queries.)\nuser search -> LB -> search service -> check redis cache if search is in cache \n-> query ES directly via REST API -> cache result in Redis with TTL -> return result\n\nScenario A: Search Query\n────────────────────────\nUser: \"search machine learning\"\n  ↓\nRedis (cache miss)\n  ↓\nElasticsearch → [123, 456, 789]\n  ↓\nCassandra → fetch full tweet details\n  ↓\nReturn results\n\nCassandra should still be our primary db cuz if ES is the only DB\n1) data loss risk - ES can lose data during crash (durability is bad) but Cass is more reliable\n2) cost - ES is more exp\n3) **not optimised for PK lookup** - getting tweet by ID is faster in Cass and ES is optimised for search , not point queries\n4) Update overhead - every  tweet edit requires re-indexing in ES but in Cassandra it is fast\n\nwat happen if tweet is edited/deleted?\ndelete:\ndelete tweet id #123 -> tweet service \n-> kafka topic: tweet.deleted -> ingestion workers mark delete in Cassandra (soft delete) -> ES (delete doc with that id) -> redis (invalidate cache with that id)\n\nedit:\nedit tweet id #123 from \"i love ai\" -> \"i love ml\" -> tweet service ->  \n-> kafka topic: tweet.updated -> ingestion workers (update cassandra and retokenise the new text) \n-> ES updates document #123 with new tokens -> redis invalidates cache\n\nEdge Case: What if ES delete fails?\n\n**Problem:** Tweet deleted in Cassandra but still in ES\n\n**Solution:** Reconciliation job\n```\nNightly/hourly job:\n  - Scan ES for tweet IDs\n  - Check if still exists in Cassandra\n  - Remove orphaned documents\n```\n\nOr use **soft deletes in ES** with `deleted: true` flag, filter at query time\n\noptimisation for search:\nadd a reranking service (ML recommendation service on user history, engagement and quality) and 2 phase (1st phase - fast ES,\n2nd - a bit slower Reranking service) but total latency should be under 200ms so should\nbe fine\n\nES returns top 1000 candidates and Reranking does a complex scoring and get top 20 \npersonalised results",
       "autoResize": false,
       "lineHeight": 1.25
     },
@@ -688,21 +688,21 @@
         "type": 3
       },
       "seed": 857153608,
-      "version": 211,
-      "versionNonce": 541618973,
+      "version": 213,
+      "versionNonce": 1232304902,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761012770624,
+      "updated": 1761744457832,
       "link": null,
       "locked": false
     },
     {
       "id": "p2zM0iSOGwPDy0A1B3mAK",
       "type": "text",
-      "x": 1236.757089973871,
-      "y": 896.4623727246856,
+      "x": 1236.1221499627104,
+      "y": 895.7216093783316,
       "width": 930.3594970703125,
-      "height": 1350,
+      "height": 1450,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -716,20 +716,20 @@
       "index": "aS",
       "roundness": null,
       "seed": 1581015624,
-      "version": 2645,
-      "versionNonce": 1437215901,
+      "version": 2893,
+      "versionNonce": 654215686,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761013993406,
+      "updated": 1761748101029,
       "link": null,
       "locked": false,
-      "text": "Without ES:\nWithout es we need to build dist inverted index system. \nA) inverted index to map tokens to a posting list of tweet Ids and store to write-heavy LSM-\ntree based Cassandra db for persistence \nB) Sharding to distribute the 180 TB indexes\nC) Query coordinator - receives search query and scatter it to all shards in parallel and\nrelevant shards that has that result returns its top K results and merges to get global\ntop-k results\nD) optimisation like posting list compression, tiered storage (hot data in memory ,cold in\ndisk), bloom filter\n\nA) inverted index storage (in memory or disk)\n1) in memory like Redis but while fast, gna be exp for like 1TB so just use for hot\ndata\n2) LSM-tree based DB like Cassandra\n- fast writes, extremely good writes\n- so this is better\nuse redis for hot data or recent tweets (7 days) and Cassandra (hybird strat)\n\n\nB) sharding strat:\n1 machine cant possibly hold all the tweets so need shard\nwe can shard via hashing on tweet id but when searching, query must hit all shard\nmaybe we can term-based by token where \"machine\" can be on shard 3 and \"learning\"\ncan be on shard 7. While query hits relevant shard, there can be hotspot prob.\n\nMaybe hybird of popular terms we use dedicated shard with replication and \nnormal terms we use hash based.\n\nC) \n\nExtra) indexing pipeline:\ncan use Kafka for this cuz its async\n\nD) optimisation:\nindex list for \"machine\" could be [123,456,789,780] maybe we can use delta encoding\nto do [123,+333+333,-9] which are smaller numbers than do bit packing. \n\nfor very long posting lists where there can be millions of tweet ids that have this \n\"machine\" and \"learning\" word, its n*m to check every intersection if tweet id matches.\nbut we can have a skip rule where\nTimeline of tweet IDs:\n0 ─────── 1000 ─────── 2000 ─────── 3000 ─────── 4000\n\nmachine blocks:  [1-999] [1000-1999] [2000-2999] ...\nlearning blocks:             [1500-2499] [2500-3499] ...\nwhen we do block comparison between machine [1-999] and learning[1500-2499] there\nis no overlap with 999 and 1500 so we can skip machine block 1 and check machine block\n2 cuz now there is overlap.\n\ncan also do bloom filter where before querying a shard, can check bloom filter so\ninstead of querying the whole shard if it contains token \"machine\", with bloom filter\nwe def know whether it maybe or def not exist in that shard. So save unnecessary\nnetwork calls",
+      "text": "Without ES:\nWithout es we need to build dist inverted index system. \nA) inverted index to map tokens to a posting list of tweet Ids and store to write-heavy LSM-\ntree based Cassandra db for persistence \nB) Sharding to distribute the 180 TB indexes\nC) Query coordinator - receives search query and scatter it to all shards in parallel and\nrelevant shards that has that result returns its top K results and merges to get global\ntop-k results\nD) optimisation like posting list compression, tiered storage (hot data in memory ,cold in\ndisk), bloom filter\n\nA) inverted index storage (in memory or disk)\n1) in memory like Redis but while fast, gna be exp for like 1TB so just use for hot\ndata\n2) LSM-tree based DB like Cassandra\n- fast writes, extremely good writes\n- so this is better\nuse redis for hot data or recent tweets (7 days) and Cassandra (hybird strat)\n\n\nB) sharding strat:\n1 machine cant possibly hold all the tweets so need shard\nwe can shard via hashing on tweet id but when searching, query must hit all shard\nmaybe we can term-based by token where \"machine\" can be on shard 3 and \"learning\"\ncan be on shard 7. While query hits relevant shard, there can be hotspot prob.\n\nMaybe hybird of popular terms we use dedicated shard with replication and \nnormal terms we use hash based.\n\nC) \n\nExtra) indexing pipeline:\ncan use Kafka for this cuz its async\n\nD) optimisation:\nindex list for \"machine\" could be [123,456,789,780] maybe we can use delta encoding\nto do [123,+333+333,-9] which are smaller numbers than do bit packing. \n\nfor very long posting lists where there can be millions of tweet ids that have this \n\"machine\" and \"learning\" word, its n*m to check every intersection if tweet id matches.\nbut we can have a skip rule where\nTimeline of tweet IDs:\n0 ─────── 1000 ─────── 2000 ─────── 3000 ─────── 4000\n\nmachine blocks:  [1-999] [1000-1999] [2000-2999] ...\nlearning blocks:             [1500-2499] [2500-3499] ...\nwhen we do block comparison between machine [1-999] and learning[1500-2499] there\nis no overlap with 999 and 1500 so we can skip machine block 1 and check machine block\n2 cuz now there is overlap.\n\ncan also do bloom filter where before querying a shard, can check bloom filter so\ninstead of querying the whole shard if it contains token \"machine\", with bloom filter\nwe def know whether it maybe or def not exist in that shard. So save unnecessary\nnetwork calls\n\nlastly we dont need to store ALL tweet ids for a given keyword so maybe can truncate\ntop 100 or something. Also not all keywords are popular keywords so maybe can move\ndata to s3/s3 glacier via batch check",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Without ES:\nWithout es we need to build dist inverted index system. \nA) inverted index to map tokens to a posting list of tweet Ids and store to write-heavy LSM-\ntree based Cassandra db for persistence \nB) Sharding to distribute the 180 TB indexes\nC) Query coordinator - receives search query and scatter it to all shards in parallel and\nrelevant shards that has that result returns its top K results and merges to get global\ntop-k results\nD) optimisation like posting list compression, tiered storage (hot data in memory ,cold in\ndisk), bloom filter\n\nA) inverted index storage (in memory or disk)\n1) in memory like Redis but while fast, gna be exp for like 1TB so just use for hot\ndata\n2) LSM-tree based DB like Cassandra\n- fast writes, extremely good writes\n- so this is better\nuse redis for hot data or recent tweets (7 days) and Cassandra (hybird strat)\n\n\nB) sharding strat:\n1 machine cant possibly hold all the tweets so need shard\nwe can shard via hashing on tweet id but when searching, query must hit all shard\nmaybe we can term-based by token where \"machine\" can be on shard 3 and \"learning\"\ncan be on shard 7. While query hits relevant shard, there can be hotspot prob.\n\nMaybe hybird of popular terms we use dedicated shard with replication and \nnormal terms we use hash based.\n\nC) \n\nExtra) indexing pipeline:\ncan use Kafka for this cuz its async\n\nD) optimisation:\nindex list for \"machine\" could be [123,456,789,780] maybe we can use delta encoding\nto do [123,+333+333,-9] which are smaller numbers than do bit packing. \n\nfor very long posting lists where there can be millions of tweet ids that have this \n\"machine\" and \"learning\" word, its n*m to check every intersection if tweet id matches.\nbut we can have a skip rule where\nTimeline of tweet IDs:\n0 ─────── 1000 ─────── 2000 ─────── 3000 ─────── 4000\n\nmachine blocks:  [1-999] [1000-1999] [2000-2999] ...\nlearning blocks:             [1500-2499] [2500-3499] ...\nwhen we do block comparison between machine [1-999] and learning[1500-2499] there\nis no overlap with 999 and 1500 so we can skip machine block 1 and check machine block\n2 cuz now there is overlap.\n\ncan also do bloom filter where before querying a shard, can check bloom filter so\ninstead of querying the whole shard if it contains token \"machine\", with bloom filter\nwe def know whether it maybe or def not exist in that shard. So save unnecessary\nnetwork calls",
+      "originalText": "Without ES:\nWithout es we need to build dist inverted index system. \nA) inverted index to map tokens to a posting list of tweet Ids and store to write-heavy LSM-\ntree based Cassandra db for persistence \nB) Sharding to distribute the 180 TB indexes\nC) Query coordinator - receives search query and scatter it to all shards in parallel and\nrelevant shards that has that result returns its top K results and merges to get global\ntop-k results\nD) optimisation like posting list compression, tiered storage (hot data in memory ,cold in\ndisk), bloom filter\n\nA) inverted index storage (in memory or disk)\n1) in memory like Redis but while fast, gna be exp for like 1TB so just use for hot\ndata\n2) LSM-tree based DB like Cassandra\n- fast writes, extremely good writes\n- so this is better\nuse redis for hot data or recent tweets (7 days) and Cassandra (hybird strat)\n\n\nB) sharding strat:\n1 machine cant possibly hold all the tweets so need shard\nwe can shard via hashing on tweet id but when searching, query must hit all shard\nmaybe we can term-based by token where \"machine\" can be on shard 3 and \"learning\"\ncan be on shard 7. While query hits relevant shard, there can be hotspot prob.\n\nMaybe hybird of popular terms we use dedicated shard with replication and \nnormal terms we use hash based.\n\nC) \n\nExtra) indexing pipeline:\ncan use Kafka for this cuz its async\n\nD) optimisation:\nindex list for \"machine\" could be [123,456,789,780] maybe we can use delta encoding\nto do [123,+333+333,-9] which are smaller numbers than do bit packing. \n\nfor very long posting lists where there can be millions of tweet ids that have this \n\"machine\" and \"learning\" word, its n*m to check every intersection if tweet id matches.\nbut we can have a skip rule where\nTimeline of tweet IDs:\n0 ─────── 1000 ─────── 2000 ─────── 3000 ─────── 4000\n\nmachine blocks:  [1-999] [1000-1999] [2000-2999] ...\nlearning blocks:             [1500-2499] [2500-3499] ...\nwhen we do block comparison between machine [1-999] and learning[1500-2499] there\nis no overlap with 999 and 1500 so we can skip machine block 1 and check machine block\n2 cuz now there is overlap.\n\ncan also do bloom filter where before querying a shard, can check bloom filter so\ninstead of querying the whole shard if it contains token \"machine\", with bloom filter\nwe def know whether it maybe or def not exist in that shard. So save unnecessary\nnetwork calls\n\nlastly we dont need to store ALL tweet ids for a given keyword so maybe can truncate\ntop 100 or something. Also not all keywords are popular keywords so maybe can move\ndata to s3/s3 glacier via batch check",
       "autoResize": true,
       "lineHeight": 1.25
     },
@@ -755,8 +755,8 @@
         "type": 3
       },
       "seed": 1389874717,
-      "version": 43,
-      "versionNonce": 1515288883,
+      "version": 45,
+      "versionNonce": 614083142,
       "isDeleted": false,
       "boundElements": [
         {
@@ -768,7 +768,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761022714105,
+      "updated": 1761744457832,
       "link": null,
       "locked": false
     },
@@ -792,11 +792,11 @@
       "index": "aV",
       "roundness": null,
       "seed": 1293395645,
-      "version": 33,
-      "versionNonce": 1586777789,
+      "version": 35,
+      "versionNonce": 690554138,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761022816980,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "text": "new write tweet",
@@ -831,8 +831,8 @@
         "type": 3
       },
       "seed": 901597597,
-      "version": 55,
-      "versionNonce": 1087135837,
+      "version": 58,
+      "versionNonce": 758584474,
       "isDeleted": false,
       "boundElements": [
         {
@@ -850,9 +850,13 @@
         {
           "id": "tU_zq8qW-QeTw3buP2w2m",
           "type": "arrow"
+        },
+        {
+          "id": "c1kAG_5KmoxmLRdTZuDd1",
+          "type": "arrow"
         }
       ],
-      "updated": 1761022830465,
+      "updated": 1761747300913,
       "link": null,
       "locked": false
     },
@@ -876,11 +880,11 @@
       "index": "aX",
       "roundness": null,
       "seed": 633068029,
-      "version": 4,
-      "versionNonce": 2042917757,
+      "version": 6,
+      "versionNonce": 582832602,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761022540093,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "text": "LB",
@@ -915,8 +919,8 @@
         "type": 3
       },
       "seed": 949057597,
-      "version": 59,
-      "versionNonce": 141038035,
+      "version": 63,
+      "versionNonce": 1713279558,
       "isDeleted": false,
       "boundElements": [
         {
@@ -930,9 +934,17 @@
         {
           "id": "iYYSNEOuZtTwFJEHnfM8Y",
           "type": "arrow"
+        },
+        {
+          "id": "B0pWndut5ymR_ArgxpB26",
+          "type": "arrow"
+        },
+        {
+          "id": "5KLGqDlLLdBARablcPTXR",
+          "type": "arrow"
         }
       ],
-      "updated": 1761022716937,
+      "updated": 1761747985215,
       "link": null,
       "locked": false
     },
@@ -956,11 +968,11 @@
       "index": "aZ",
       "roundness": null,
       "seed": 1200964307,
-      "version": 8,
-      "versionNonce": 30867411,
+      "version": 10,
+      "versionNonce": 631899802,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761022548533,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "text": "API GW",
@@ -995,8 +1007,8 @@
         "type": 3
       },
       "seed": 631334675,
-      "version": 76,
-      "versionNonce": 1380139005,
+      "version": 78,
+      "versionNonce": 1725089798,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1012,7 +1024,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761022718503,
+      "updated": 1761744457832,
       "link": null,
       "locked": false
     },
@@ -1036,11 +1048,11 @@
       "index": "ab",
       "roundness": null,
       "seed": 1546535709,
-      "version": 29,
-      "versionNonce": 1756665085,
+      "version": 31,
+      "versionNonce": 983704410,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761022780959,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "text": "Tweet Write Service",
@@ -1075,8 +1087,8 @@
         "type": 3
       },
       "seed": 1974579325,
-      "version": 331,
-      "versionNonce": 920260509,
+      "version": 334,
+      "versionNonce": 1523834054,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1086,9 +1098,13 @@
         {
           "id": "w2mrSKqboD0qUA9zSgroy",
           "type": "arrow"
+        },
+        {
+          "id": "_WgKUFzK0jsVmTYoUmb2G",
+          "type": "arrow"
         }
       ],
-      "updated": 1761023080708,
+      "updated": 1761747812148,
       "link": null,
       "locked": false
     },
@@ -1112,11 +1128,11 @@
       "index": "acV",
       "roundness": null,
       "seed": 1063997939,
-      "version": 311,
-      "versionNonce": 1272121843,
+      "version": 313,
+      "versionNonce": 1543022618,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761023002153,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "text": "Cassandra (source of truth, primary\nstorage)",
@@ -1151,8 +1167,8 @@
         "type": 3
       },
       "seed": 843372275,
-      "version": 196,
-      "versionNonce": 391165843,
+      "version": 199,
+      "versionNonce": 1353182214,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1162,9 +1178,13 @@
         {
           "id": "lK3a8r98dGHSyp-0-NT08",
           "type": "arrow"
+        },
+        {
+          "id": "Iux50zP-Keb7dsXdJ8_Ph",
+          "type": "arrow"
         }
       ],
-      "updated": 1761023082336,
+      "updated": 1761747808352,
       "link": null,
       "locked": false
     },
@@ -1188,11 +1208,11 @@
       "index": "af",
       "roundness": null,
       "seed": 1111887155,
-      "version": 174,
-      "versionNonce": 906033267,
+      "version": 176,
+      "versionNonce": 1101042906,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761023002154,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "text": "ElasticSearch(search index)",
@@ -1227,8 +1247,8 @@
         "type": 3
       },
       "seed": 25242771,
-      "version": 79,
-      "versionNonce": 2092094589,
+      "version": 82,
+      "versionNonce": 51219866,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1254,9 +1274,13 @@
         {
           "id": "z4uyybSQwJGgQ2U0KOM1B",
           "type": "arrow"
+        },
+        {
+          "id": "rsXvLShlovC1ZFkUPrW8G",
+          "type": "arrow"
         }
       ],
-      "updated": 1761023079068,
+      "updated": 1761747991380,
       "link": null,
       "locked": false
     },
@@ -1280,11 +1304,11 @@
       "index": "ah",
       "roundness": null,
       "seed": 1658429245,
-      "version": 46,
-      "versionNonce": 612502547,
+      "version": 48,
+      "versionNonce": 757918106,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761022670222,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "text": "Kafka queue\n(topic: tweet-created)",
@@ -1319,8 +1343,8 @@
         "type": 3
       },
       "seed": 1253275005,
-      "version": 125,
-      "versionNonce": 988420733,
+      "version": 128,
+      "versionNonce": 1925282246,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1330,9 +1354,13 @@
         {
           "id": "dfPwL0q0QDC1VFFDtoR2Y",
           "type": "arrow"
+        },
+        {
+          "id": "vLshOQsMic1409MqUMBWd",
+          "type": "arrow"
         }
       ],
-      "updated": 1761023153737,
+      "updated": 1761747803822,
       "link": null,
       "locked": false
     },
@@ -1356,11 +1384,11 @@
       "index": "aj",
       "roundness": null,
       "seed": 869252915,
-      "version": 66,
-      "versionNonce": 1149478643,
+      "version": 68,
+      "versionNonce": 902866522,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761023002154,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "text": "Redis",
@@ -1395,11 +1423,11 @@
         "type": 2
       },
       "seed": 207298003,
-      "version": 13,
-      "versionNonce": 248634067,
+      "version": 15,
+      "versionNonce": 1236730950,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761022714105,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "points": [
@@ -1449,11 +1477,11 @@
         "type": 2
       },
       "seed": 1564082429,
-      "version": 11,
-      "versionNonce": 1892773789,
+      "version": 13,
+      "versionNonce": 341756698,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761022715477,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "points": [
@@ -1503,11 +1531,11 @@
         "type": 2
       },
       "seed": 1316642195,
-      "version": 19,
-      "versionNonce": 1003249523,
+      "version": 21,
+      "versionNonce": 2115668870,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761022716938,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "points": [
@@ -1557,11 +1585,11 @@
         "type": 2
       },
       "seed": 777196125,
-      "version": 29,
-      "versionNonce": 120862813,
+      "version": 31,
+      "versionNonce": 1867143130,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761022718503,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "points": [
@@ -1611,8 +1639,8 @@
         "type": 3
       },
       "seed": 1494174003,
-      "version": 117,
-      "versionNonce": 1647518813,
+      "version": 119,
+      "versionNonce": 1124805318,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1624,7 +1652,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761023085625,
+      "updated": 1761744457832,
       "link": null,
       "locked": false
     },
@@ -1648,11 +1676,11 @@
       "index": "as",
       "roundness": null,
       "seed": 1544307293,
-      "version": 86,
-      "versionNonce": 1190860147,
+      "version": 88,
+      "versionNonce": 648432794,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761023002154,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "text": "Notification service555",
@@ -1687,16 +1715,24 @@
         "type": 3
       },
       "seed": 1547887347,
-      "version": 49,
-      "versionNonce": 1292621363,
+      "version": 53,
+      "versionNonce": 565646726,
       "isDeleted": false,
       "boundElements": [
         {
           "type": "text",
           "id": "CwPKbFQq4Kol0eWUC9hrH"
+        },
+        {
+          "id": "B0pWndut5ymR_ArgxpB26",
+          "type": "arrow"
+        },
+        {
+          "id": "Iux50zP-Keb7dsXdJ8_Ph",
+          "type": "arrow"
         }
       ],
-      "updated": 1761023153736,
+      "updated": 1761747808352,
       "link": null,
       "locked": false
     },
@@ -1720,11 +1756,11 @@
       "index": "av",
       "roundness": null,
       "seed": 699657725,
-      "version": 151,
-      "versionNonce": 1977440595,
+      "version": 153,
+      "versionNonce": 539339098,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761023128233,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "text": "Tweet Search Service\n1) check redis first and if miss,\n2) query ES for [tweet IDs)\n3) fetch from Cassandra\n4) Cache in Redis\n5) return results",
@@ -1759,8 +1795,8 @@
         "type": 3
       },
       "seed": 196238643,
-      "version": 56,
-      "versionNonce": 361030557,
+      "version": 58,
+      "versionNonce": 493334854,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1772,7 +1808,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761022830465,
+      "updated": 1761744457832,
       "link": null,
       "locked": false
     },
@@ -1796,11 +1832,11 @@
       "index": "b00",
       "roundness": null,
       "seed": 1817762323,
-      "version": 18,
-      "versionNonce": 535505747,
+      "version": 20,
+      "versionNonce": 320564762,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761022828167,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "text": "new read tweet",
@@ -1812,60 +1848,6 @@
       "originalText": "new read tweet",
       "autoResize": true,
       "lineHeight": 1.25
-    },
-    {
-      "id": "tU_zq8qW-QeTw3buP2w2m",
-      "type": "arrow",
-      "x": 2626.3176727316886,
-      "y": 1609.1783230008168,
-      "width": 78.66663614908884,
-      "height": 233.33333333333326,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "b01",
-      "roundness": {
-        "type": 2
-      },
-      "seed": 1766306845,
-      "version": 39,
-      "versionNonce": 633366525,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761022830465,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          78.66663614908884,
-          -233.33333333333326
-        ]
-      ],
-      "lastCommittedPoint": null,
-      "startBinding": {
-        "elementId": "xqh00mSoBhLyUvL11JTBM",
-        "focus": 0.8426448548492925,
-        "gap": 1.33336385091161
-      },
-      "endBinding": {
-        "elementId": "1_Ix5tkPilWkFU0NrNqX1",
-        "focus": 0.7424618080790182,
-        "gap": 7.398105413120714
-      },
-      "startArrowhead": null,
-      "endArrowhead": "arrow",
-      "elbowed": false
     },
     {
       "id": "i-R-eZrGnjhr1v80hyb77",
@@ -1884,13 +1866,13 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "index": "b02",
+      "index": "b02V",
       "roundness": {
         "type": 3
       },
       "seed": 205882963,
-      "version": 45,
-      "versionNonce": 1102668509,
+      "version": 51,
+      "versionNonce": 604158022,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1906,7 +1888,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761023080708,
+      "updated": 1761744475724,
       "link": null,
       "locked": false
     },
@@ -1930,11 +1912,11 @@
       "index": "b03",
       "roundness": null,
       "seed": 405101405,
-      "version": 18,
-      "versionNonce": 966757917,
+      "version": 20,
+      "versionNonce": 976525254,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761023028088,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "text": "Storage worker",
@@ -1969,8 +1951,8 @@
         "type": 3
       },
       "seed": 376962419,
-      "version": 43,
-      "versionNonce": 1439199315,
+      "version": 45,
+      "versionNonce": 584462234,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1986,7 +1968,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761023082336,
+      "updated": 1761744457832,
       "link": null,
       "locked": false
     },
@@ -2010,11 +1992,11 @@
       "index": "b05",
       "roundness": null,
       "seed": 1272284957,
-      "version": 14,
-      "versionNonce": 60153949,
+      "version": 16,
+      "versionNonce": 1083813638,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761023035060,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "text": "Index worker",
@@ -2044,13 +2026,13 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "index": "b06",
+      "index": "b06V",
       "roundness": {
         "type": 3
       },
       "seed": 1848999731,
-      "version": 65,
-      "versionNonce": 1586329981,
+      "version": 71,
+      "versionNonce": 483940122,
       "isDeleted": false,
       "boundElements": [
         {
@@ -2066,7 +2048,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761023083888,
+      "updated": 1761744475724,
       "link": null,
       "locked": false
     },
@@ -2090,11 +2072,11 @@
       "index": "b07",
       "roundness": null,
       "seed": 1356680573,
-      "version": 15,
-      "versionNonce": 764157725,
+      "version": 17,
+      "versionNonce": 1088020038,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761023043969,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "text": "Cache workers",
@@ -2124,13 +2106,13 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "index": "b09",
+      "index": "b098",
       "roundness": {
         "type": 3
       },
       "seed": 1055620659,
-      "version": 63,
-      "versionNonce": 1795991453,
+      "version": 69,
+      "versionNonce": 2093989766,
       "isDeleted": false,
       "boundElements": [
         {
@@ -2146,7 +2128,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761023085625,
+      "updated": 1761744475724,
       "link": null,
       "locked": false
     },
@@ -2170,11 +2152,11 @@
       "index": "b09G",
       "roundness": null,
       "seed": 321591315,
-      "version": 19,
-      "versionNonce": 231163635,
+      "version": 21,
+      "versionNonce": 2144478598,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761023060922,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "text": "Notif workers",
@@ -2209,11 +2191,11 @@
         "type": 2
       },
       "seed": 1092913789,
-      "version": 33,
-      "versionNonce": 1668494653,
+      "version": 36,
+      "versionNonce": 972119514,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761023066693,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "points": [
@@ -2258,16 +2240,16 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "index": "b0C",
+      "index": "b0CV",
       "roundness": {
         "type": 2
       },
       "seed": 703274483,
-      "version": 53,
-      "versionNonce": 425354099,
+      "version": 59,
+      "versionNonce": 1219650522,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761023068955,
+      "boundElements": [],
+      "updated": 1761744475724,
       "link": null,
       "locked": false,
       "points": [
@@ -2312,16 +2294,16 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "index": "b0D",
+      "index": "b0DV",
       "roundness": {
         "type": 2
       },
       "seed": 565694803,
-      "version": 54,
-      "versionNonce": 1848411101,
+      "version": 61,
+      "versionNonce": 486137542,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761023076773,
+      "boundElements": [],
+      "updated": 1761744475724,
       "link": null,
       "locked": false,
       "points": [
@@ -2366,16 +2348,16 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "index": "b0E",
+      "index": "b0EV",
       "roundness": {
         "type": 2
       },
       "seed": 1486275923,
-      "version": 38,
-      "versionNonce": 1472019677,
+      "version": 45,
+      "versionNonce": 791468186,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761023079068,
+      "boundElements": [],
+      "updated": 1761744475724,
       "link": null,
       "locked": false,
       "points": [
@@ -2420,16 +2402,16 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "index": "b0F",
+      "index": "b0FV",
       "roundness": {
         "type": 2
       },
       "seed": 2136308819,
-      "version": 24,
-      "versionNonce": 765656893,
+      "version": 31,
+      "versionNonce": 1226708486,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761023080708,
+      "boundElements": [],
+      "updated": 1761744475724,
       "link": null,
       "locked": false,
       "points": [
@@ -2474,16 +2456,16 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "index": "b0G",
+      "index": "b0GV",
       "roundness": {
         "type": 2
       },
       "seed": 1459401715,
-      "version": 29,
-      "versionNonce": 1788669427,
+      "version": 35,
+      "versionNonce": 1878701402,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761023082336,
+      "boundElements": [],
+      "updated": 1761744475724,
       "link": null,
       "locked": false,
       "points": [
@@ -2528,16 +2510,16 @@
       "opacity": 100,
       "groupIds": [],
       "frameId": null,
-      "index": "b0H",
+      "index": "b0HV",
       "roundness": {
         "type": 2
       },
       "seed": 303897565,
-      "version": 29,
-      "versionNonce": 1358643677,
+      "version": 36,
+      "versionNonce": 708404550,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761023083889,
+      "boundElements": [],
+      "updated": 1761744475724,
       "link": null,
       "locked": false,
       "points": [
@@ -2587,11 +2569,11 @@
         "type": 2
       },
       "seed": 1739990867,
-      "version": 44,
-      "versionNonce": 2108664829,
+      "version": 47,
+      "versionNonce": 1967665798,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761023085625,
+      "boundElements": [],
+      "updated": 1761744457832,
       "link": null,
       "locked": false,
       "points": [
@@ -2614,6 +2596,586 @@
         "elementId": "fEktCws_fC2QZ0MMTX04I",
         "focus": -0.31758703038013697,
         "gap": 17.361635117303194
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "2AP4a6x4UyPZKAStEUZyB",
+      "type": "ellipse",
+      "x": 2757.4223650466774,
+      "y": 1527.4471186854462,
+      "width": 345.5555725097656,
+      "height": 332,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b2C",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 798663046,
+      "version": 32,
+      "versionNonce": 1410099418,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "BdPI6-4Tqvy3FP2CChf_y"
+        },
+        {
+          "id": "t8ZGNALHI826uH4h8TgZI",
+          "type": "arrow"
+        },
+        {
+          "id": "c1kAG_5KmoxmLRdTZuDd1",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761747564017,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "BdPI6-4Tqvy3FP2CChf_y",
+      "type": "text",
+      "x": 2818.457883601454,
+      "y": 1581.0673930084793,
+      "width": 223.1398468017578,
+      "height": 225,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b2CV",
+      "roundness": null,
+      "seed": 1157870554,
+      "version": 97,
+      "versionNonce": 721304986,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1761747564018,
+      "link": null,
+      "locked": false,
+      "text": "CDN (assuming no\npersonalised results,\nthen can be cached, on\nthe response to our\n/search endpoint, we\ncan add cache-control\nheaders which tell our\nCDN when and for how\nlong to cache a result ",
+      "fontSize": 20,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "2AP4a6x4UyPZKAStEUZyB",
+      "originalText": "CDN (assuming no personalised results, then can be cached, on the response to our /search endpoint, we can add cache-control headers which tell our CDN when and for how long to cache a result ",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "t8ZGNALHI826uH4h8TgZI",
+      "type": "arrow",
+      "x": 2614.0889299880837,
+      "y": 1598.5583399989227,
+      "width": 137.7777862548828,
+      "height": 43.33335876464844,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b2F",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 836503514,
+      "version": 24,
+      "versionNonce": 1140347098,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1761747296218,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          137.7777862548828,
+          43.33335876464844
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": null,
+      "endBinding": {
+        "elementId": "2AP4a6x4UyPZKAStEUZyB",
+        "focus": -0.08282196379025326,
+        "gap": 10.779277839111863
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "c1kAG_5KmoxmLRdTZuDd1",
+      "type": "arrow",
+      "x": 3098.5334337722634,
+      "y": 1601.8916224696259,
+      "width": 151.11114501953125,
+      "height": 183.33328247070312,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b2G",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1320882054,
+      "version": 30,
+      "versionNonce": 1783898074,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1761747300913,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -151.11114501953125,
+          -183.33328247070312
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "2AP4a6x4UyPZKAStEUZyB",
+        "focus": 0,
+        "gap": 17.09839112275319
+      },
+      "endBinding": {
+        "elementId": "1_Ix5tkPilWkFU0NrNqX1",
+        "focus": 0.03481544539604218,
+        "gap": 26.703604506535385
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "B0pWndut5ymR_ArgxpB26",
+      "type": "arrow",
+      "x": 3500.7555712234353,
+      "y": 1379.6694087245087,
+      "width": 153.33328247070312,
+      "height": 280,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b2H",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 388866202,
+      "version": 30,
+      "versionNonce": 51249670,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1761747790314,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          153.33328247070312,
+          280
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "hfQDlGXz5jPXuzgbT59cE",
+        "focus": -0.7120933085335701,
+        "gap": 20.733175524136893
+      },
+      "endBinding": {
+        "elementId": "M3CJQAclbScXKfhrU_Cf1",
+        "focus": -0.6088542154362914,
+        "gap": 14.594284790177303
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "vLshOQsMic1409MqUMBWd",
+      "type": "arrow",
+      "x": 4022.9778612624978,
+      "y": 1741.8916224696259,
+      "width": 1452.2222900390625,
+      "height": 98.88893127441406,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b2I",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1724649370,
+      "version": 72,
+      "versionNonce": 1110358662,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1761747803822,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          1452.2222900390625,
+          98.88893127441406
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "M3CJQAclbScXKfhrU_Cf1",
+        "focus": -0.1631260093932972,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "wyQyWOtLGgVVln6fH1uVn",
+        "focus": 0.7693241954617678,
+        "gap": 11.772900521944702
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "Iux50zP-Keb7dsXdJ8_Ph",
+      "type": "arrow",
+      "x": 4032.9778612624978,
+      "y": 1703.0026911952118,
+      "width": 1410,
+      "height": 138.88885498046875,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b2J",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1923174170,
+      "version": 48,
+      "versionNonce": 377910470,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1761747808352,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          1410,
+          -138.88885498046875
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "M3CJQAclbScXKfhrU_Cf1",
+        "focus": -0.22532045252705074,
+        "gap": 10.660178358283702
+      },
+      "endBinding": {
+        "elementId": "kzcM7h7Ne-4-GHs2lQkPB",
+        "focus": 0.5180813095497266,
+        "gap": 15.396788150854263
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "_WgKUFzK0jsVmTYoUmb2G",
+      "type": "arrow",
+      "x": 4035.1999987136696,
+      "y": 1678.5583399989227,
+      "width": 1383.3332824707031,
+      "height": 322.2222900390625,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b2K",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 772321498,
+      "version": 55,
+      "versionNonce": 2106686854,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1761747812148,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          1383.3332824707031,
+          -322.2222900390625
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": null,
+      "endBinding": {
+        "elementId": "2pWbfKfn3cQs3iUndnFBN",
+        "focus": -0.18865337601872992,
+        "gap": 11.227629865578896
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "MaHBnwCXqCwMfMJamWDXZ",
+      "type": "rectangle",
+      "x": 3632.977708674607,
+      "y": 888.5583018519501,
+      "width": 380,
+      "height": 196.66664123535156,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b2L",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1716509274,
+      "version": 29,
+      "versionNonce": 426195142,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "zZenj95aKb5GC13YxtkjK"
+        },
+        {
+          "id": "5KLGqDlLLdBARablcPTXR",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761747985215,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "zZenj95aKb5GC13YxtkjK",
+      "type": "text",
+      "x": 3647.4378221999978,
+      "y": 911.8916224696259,
+      "width": 351.07977294921875,
+      "height": 150,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b2M",
+      "roundness": null,
+      "seed": 1930715994,
+      "version": 253,
+      "versionNonce": 1830757766,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1761747969940,
+      "link": null,
+      "locked": false,
+      "text": "Tweet Like Service (cuz there are\n10x more likes than reads, maybe do\nbatch like inserts where during 30s\nwe aggregate number of likes for\nthat tweet and do 1 batch insert\ninstead of inserting for every like)",
+      "fontSize": 20,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "MaHBnwCXqCwMfMJamWDXZ",
+      "originalText": "Tweet Like Service (cuz there are 10x more likes than reads, maybe do batch like inserts where during 30s we aggregate number of likes for that tweet and do 1 batch insert instead of inserting for every like)",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "5KLGqDlLLdBARablcPTXR",
+      "type": "arrow",
+      "x": 3489.644426203904,
+      "y": 1227.4471949793915,
+      "width": 131.11114501953125,
+      "height": 181.11114501953125,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b2N",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 2075822918,
+      "version": 23,
+      "versionNonce": 39868806,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1761747985215,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          131.11114501953125,
+          -181.11114501953125
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "hfQDlGXz5jPXuzgbT59cE",
+        "focus": 0.5332207181432825,
+        "gap": 14.732218541513536
+      },
+      "endBinding": {
+        "elementId": "MaHBnwCXqCwMfMJamWDXZ",
+        "focus": 0.6094840088340722,
+        "gap": 12.222137451171875
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "rsXvLShlovC1ZFkUPrW8G",
+      "type": "arrow",
+      "x": 4019.644426203904,
+      "y": 1008.5583399989227,
+      "width": 123.33343505859375,
+      "height": 198.88885498046875,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b2O",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 696434714,
+      "version": 29,
+      "versionNonce": 1338357978,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1761747991380,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          123.33343505859375,
+          198.88885498046875
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "MaHBnwCXqCwMfMJamWDXZ",
+        "focus": -0.7300685030074228,
+        "gap": 6.666717529296875
+      },
+      "endBinding": {
+        "elementId": "ode96k0GpF59Fb1fHqQAg",
+        "focus": -0.45673782412996033,
+        "gap": 7.966118567436052
       },
       "startArrowhead": null,
       "endArrowhead": "arrow",
