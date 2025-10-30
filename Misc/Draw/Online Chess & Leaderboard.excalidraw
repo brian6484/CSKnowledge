@@ -172,8 +172,8 @@
       "type": "text",
       "x": 410.88389632385105,
       "y": 1464.7227706963088,
-      "width": 972.2993774414062,
-      "height": 1875,
+      "width": 990.5394287109375,
+      "height": 2375,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -187,20 +187,20 @@
       "index": "aZ",
       "roundness": null,
       "seed": 1596157496,
-      "version": 3550,
-      "versionNonce": 96157443,
+      "version": 4510,
+      "versionNonce": 211596515,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761701547779,
+      "updated": 1761791040756,
       "link": null,
       "locked": false,
-      "text": "high-level design:\ngeneral flow:\nclient -> lb -> user service (authentication, user profile, etc) and game service(match players\nin 1v1 in ranked/casual modes) -> user db(not bottleneck here, can just use postgres) , \ngameplay db(not sure postgres can store PGN but its just 90Gb/month so i think postgres\nshould be fine), leaderboard(gonna be read-heavy and with AP system needed, maybe \nCassandra with Redis cache? Not sure of the logic of leaderboard tho\n\nmaybe parition key is user_id and cluster key is user's ELO? but need cross-replica query and\nfrequent updates which is ex. maybe can just use redis only cuz i think leaderboard data is\nsmall <- this is true. Even if we partition by elo range and cluster by key with Cassandra, there\nis still uneven distribution and hot partition and still need cross partition query for top 100 \nSo use redis (explained more)\n\ngpt:\nits better to be SOLID (S) and separate each service's responsibility. My original design originally\nhad game service handle both matchmaking queue and the actual game connection. But separate \nit out.\n\nmatchmaking \npair 2 players by elo rating with Redis sorted set (member=user_id, score = ELO)\nZADD matchmaking_queue 1850 user_123\nZADD matchmaking_queue 1900 user_456\nZRANGEBYSCORE machmaking_queue 1800(min) 1900(max)\nZREM matchmaking_queue user_123 user_456\n\nleaderboard:\nonce match is done, update the elo\nZADD board 2000 user_123\nZADD board 1800 user_456\nZREVRANGE board 0 9 \n\ngame service:\nwebsocket connection for real-time moves and validates moves server side\n\nif websocket isnt allowed, then use Server sent events (SSE) for one-way real-time update from\nserver to client. SSE unlike webscoket which is bidrectional, is when server talks and client listens.\nIts diff from polling where instead of continously asking every time interval, sse notifies when\ntheres an update.\n\nThen i thought isnt this websocket? But websocket is for SERVER-TO-SERVER, not SERVER-\nTO-CLIENT so doesnt work. \n\nThen client sends moves via POST like\n1. Client sends move → POST /game/{id}/move\n2. Server validates:\n   - Is it this player's turn?\n   - Is the move legal (chess rules)?\n   - Is game still active?\n3. If valid:\n   - Update game state in database\n   - Broadcast to opponent (SSE/polling)\n   - Update leaderboard if game ended\n4. If invalid:\n   - Return 400 error with reason\n\ngame service storage: (redis for in-memory active games & postgres for gameplay history db)\nparition by game_id so that reads and writes for games are evenly distributed across nodes\nits bad to partition by user_id cuz might have hot users and uneven distribution\n\nparition is different from sharding. parititon is within 1 db that splits data into multiple\nsub-tables (parititons) on same machine. but sharding is across multiple dbs/servers\n\ngameplay history db:\nindex = fast lookup data structure (like book's index)\nindex by (user_id + timestamp) cuz most common query is show my recent games and this composite\nindex covers this for fast game look ups\n\nuser rating db in user service:\nso we not only use cache for ELO but we need single cold path - source of truth like db so we\nuse postgresql db\n\nindex: (elo_rating DESC, user_id) for leaderboard query\nwhen game ends, game service updates this user rating db and also update redis sorted set (async\nworker or trigger can do this)",
+      "text": "high-level design:\ngeneral flow:\nclient -> lb -> user service (authentication, user profile, etc) and game service(match players\nin 1v1 in ranked/casual modes) -> user db(not bottleneck here, can just use postgres) , \ngameplay db(not sure postgres can store PGN but its just 90Gb/month so i think postgres\nshould be fine), leaderboard(gonna be read-heavy and with AP system needed, maybe \nCassandra with Redis cache? Not sure of the logic of leaderboard tho\n\nmaybe parition key is user_id and cluster key is user's ELO? but need cross-replica query and\nfrequent updates which is ex. maybe can just use redis only cuz i think leaderboard data is\nsmall <- this is true. Even if we partition by elo range and cluster by key with Cassandra, there\nis still uneven distribution and hot partition and still need cross partition query for top 100 \nSo use redis (explained more)\n\ngpt:\nits better to be SOLID (S) and separate each service's responsibility. My original design originally\nhad game service handle both matchmaking queue and the actual game connection. But separate \nit out.\n\nLB → API Gateway → Matchmaking Service\n                 → Gameplay Service\n\nflow: \n1) player connects via websocket -> matchmaking -> finds opponents\n2) matchmaking returns \"connect to gameplay server 3\"\n3) player opens new websocket -> gameplay service (server 3) -> play game\n4) game ends, saved in db\n5) later player uses HTTP GET -> replay service -> watch replay\n\nand api gw can handle both WS and http (diff protocols) and route to appropriate service based on\npath (\"/api/match\" , \"/api/replay\")\n\nmatchmaking service maintains persistent connection for real-time matching but **DOESNT CONNECT\nPLAYERS TO GAME SERVER**. It just finds compatible users via checking elo rating with Redis\nsorted set and once match is found, it tells players which game server to connect to.\n\nGameplay service: this handles real-time game state and also uses websocket for bidirectional\ncommunication. Each game server instance hosts active matches.\n\nmatchmaking \npair 2 players by elo rating with Redis sorted set (member=user_id, score = ELO)\nZADD matchmaking_queue 1850 user_123\nZADD matchmaking_queue 1900 user_456\nZRANGEBYSCORE machmaking_queue 1800(min) 1900(max)\nZREM matchmaking_queue user_123 user_456\n\nleaderboard:\nonce match is done, update the elo\nZADD board 2000 user_123\nZADD board 1800 user_456\nZREVRANGE board 0 9 \n\ngame service:\nwebsocket connection for real-time moves and validates moves server side\n\nif websocket isnt allowed, then use Server sent events (SSE) for one-way real-time update from\nserver to client. SSE unlike webscoket which is bidrectional, is when server talks and client listens.\nIts diff from polling where instead of continously asking every time interval, sse notifies when\ntheres an update.\n\nThen i thought isnt this websocket? But websocket is for SERVER-TO-SERVER, not SERVER-\nTO-CLIENT so doesnt work. \n\nThen client sends moves via POST like\n1. Client sends move → POST /game/{id}/move\n2. Server validates:\n   - Is it this player's turn?\n   - Is the move legal (chess rules)?\n   - Is game still active?\n3. If valid:\n   - Update game state in database\n   - Broadcast to opponent (SSE/polling)\n   - Update leaderboard if game ended\n4. If invalid:\n   - Return 400 error with reason\n\ngame service storage: (redis for in-memory active games & postgres for gameplay history db)\nparition by game_id so that reads and writes for games are evenly distributed across nodes\nits bad to partition by user_id cuz might have hot users and uneven distribution\n\nparition is different from sharding. parititon is within 1 db that splits data into multiple\nsub-tables (parititons) on same machine. but sharding is across multiple dbs/servers\n\ngameplay history db:\nindex = fast lookup data structure (like book's index)\nindex by (user_id + timestamp) cuz most common query is show my recent games and this composite\nindex covers this for fast game look ups\n\nuser rating db in user service:\nso we not only use cache for ELO but we need single cold path - source of truth like db so we\nuse postgresql db\n\nindex: (elo_rating DESC, user_id) for leaderboard query\nwhen game ends, game service updates this user rating db and also update redis sorted set (async\nworker or trigger can do this)",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "high-level design:\ngeneral flow:\nclient -> lb -> user service (authentication, user profile, etc) and game service(match players\nin 1v1 in ranked/casual modes) -> user db(not bottleneck here, can just use postgres) , \ngameplay db(not sure postgres can store PGN but its just 90Gb/month so i think postgres\nshould be fine), leaderboard(gonna be read-heavy and with AP system needed, maybe \nCassandra with Redis cache? Not sure of the logic of leaderboard tho\n\nmaybe parition key is user_id and cluster key is user's ELO? but need cross-replica query and\nfrequent updates which is ex. maybe can just use redis only cuz i think leaderboard data is\nsmall <- this is true. Even if we partition by elo range and cluster by key with Cassandra, there\nis still uneven distribution and hot partition and still need cross partition query for top 100 \nSo use redis (explained more)\n\ngpt:\nits better to be SOLID (S) and separate each service's responsibility. My original design originally\nhad game service handle both matchmaking queue and the actual game connection. But separate \nit out.\n\nmatchmaking \npair 2 players by elo rating with Redis sorted set (member=user_id, score = ELO)\nZADD matchmaking_queue 1850 user_123\nZADD matchmaking_queue 1900 user_456\nZRANGEBYSCORE machmaking_queue 1800(min) 1900(max)\nZREM matchmaking_queue user_123 user_456\n\nleaderboard:\nonce match is done, update the elo\nZADD board 2000 user_123\nZADD board 1800 user_456\nZREVRANGE board 0 9 \n\ngame service:\nwebsocket connection for real-time moves and validates moves server side\n\nif websocket isnt allowed, then use Server sent events (SSE) for one-way real-time update from\nserver to client. SSE unlike webscoket which is bidrectional, is when server talks and client listens.\nIts diff from polling where instead of continously asking every time interval, sse notifies when\ntheres an update.\n\nThen i thought isnt this websocket? But websocket is for SERVER-TO-SERVER, not SERVER-\nTO-CLIENT so doesnt work. \n\nThen client sends moves via POST like\n1. Client sends move → POST /game/{id}/move\n2. Server validates:\n   - Is it this player's turn?\n   - Is the move legal (chess rules)?\n   - Is game still active?\n3. If valid:\n   - Update game state in database\n   - Broadcast to opponent (SSE/polling)\n   - Update leaderboard if game ended\n4. If invalid:\n   - Return 400 error with reason\n\ngame service storage: (redis for in-memory active games & postgres for gameplay history db)\nparition by game_id so that reads and writes for games are evenly distributed across nodes\nits bad to partition by user_id cuz might have hot users and uneven distribution\n\nparition is different from sharding. parititon is within 1 db that splits data into multiple\nsub-tables (parititons) on same machine. but sharding is across multiple dbs/servers\n\ngameplay history db:\nindex = fast lookup data structure (like book's index)\nindex by (user_id + timestamp) cuz most common query is show my recent games and this composite\nindex covers this for fast game look ups\n\nuser rating db in user service:\nso we not only use cache for ELO but we need single cold path - source of truth like db so we\nuse postgresql db\n\nindex: (elo_rating DESC, user_id) for leaderboard query\nwhen game ends, game service updates this user rating db and also update redis sorted set (async\nworker or trigger can do this)",
+      "originalText": "high-level design:\ngeneral flow:\nclient -> lb -> user service (authentication, user profile, etc) and game service(match players\nin 1v1 in ranked/casual modes) -> user db(not bottleneck here, can just use postgres) , \ngameplay db(not sure postgres can store PGN but its just 90Gb/month so i think postgres\nshould be fine), leaderboard(gonna be read-heavy and with AP system needed, maybe \nCassandra with Redis cache? Not sure of the logic of leaderboard tho\n\nmaybe parition key is user_id and cluster key is user's ELO? but need cross-replica query and\nfrequent updates which is ex. maybe can just use redis only cuz i think leaderboard data is\nsmall <- this is true. Even if we partition by elo range and cluster by key with Cassandra, there\nis still uneven distribution and hot partition and still need cross partition query for top 100 \nSo use redis (explained more)\n\ngpt:\nits better to be SOLID (S) and separate each service's responsibility. My original design originally\nhad game service handle both matchmaking queue and the actual game connection. But separate \nit out.\n\nLB → API Gateway → Matchmaking Service\n                 → Gameplay Service\n\nflow: \n1) player connects via websocket -> matchmaking -> finds opponents\n2) matchmaking returns \"connect to gameplay server 3\"\n3) player opens new websocket -> gameplay service (server 3) -> play game\n4) game ends, saved in db\n5) later player uses HTTP GET -> replay service -> watch replay\n\nand api gw can handle both WS and http (diff protocols) and route to appropriate service based on\npath (\"/api/match\" , \"/api/replay\")\n\nmatchmaking service maintains persistent connection for real-time matching but **DOESNT CONNECT\nPLAYERS TO GAME SERVER**. It just finds compatible users via checking elo rating with Redis\nsorted set and once match is found, it tells players which game server to connect to.\n\nGameplay service: this handles real-time game state and also uses websocket for bidirectional\ncommunication. Each game server instance hosts active matches.\n\nmatchmaking \npair 2 players by elo rating with Redis sorted set (member=user_id, score = ELO)\nZADD matchmaking_queue 1850 user_123\nZADD matchmaking_queue 1900 user_456\nZRANGEBYSCORE machmaking_queue 1800(min) 1900(max)\nZREM matchmaking_queue user_123 user_456\n\nleaderboard:\nonce match is done, update the elo\nZADD board 2000 user_123\nZADD board 1800 user_456\nZREVRANGE board 0 9 \n\ngame service:\nwebsocket connection for real-time moves and validates moves server side\n\nif websocket isnt allowed, then use Server sent events (SSE) for one-way real-time update from\nserver to client. SSE unlike webscoket which is bidrectional, is when server talks and client listens.\nIts diff from polling where instead of continously asking every time interval, sse notifies when\ntheres an update.\n\nThen i thought isnt this websocket? But websocket is for SERVER-TO-SERVER, not SERVER-\nTO-CLIENT so doesnt work. \n\nThen client sends moves via POST like\n1. Client sends move → POST /game/{id}/move\n2. Server validates:\n   - Is it this player's turn?\n   - Is the move legal (chess rules)?\n   - Is game still active?\n3. If valid:\n   - Update game state in database\n   - Broadcast to opponent (SSE/polling)\n   - Update leaderboard if game ended\n4. If invalid:\n   - Return 400 error with reason\n\ngame service storage: (redis for in-memory active games & postgres for gameplay history db)\nparition by game_id so that reads and writes for games are evenly distributed across nodes\nits bad to partition by user_id cuz might have hot users and uneven distribution\n\nparition is different from sharding. parititon is within 1 db that splits data into multiple\nsub-tables (parititons) on same machine. but sharding is across multiple dbs/servers\n\ngameplay history db:\nindex = fast lookup data structure (like book's index)\nindex by (user_id + timestamp) cuz most common query is show my recent games and this composite\nindex covers this for fast game look ups\n\nuser rating db in user service:\nso we not only use cache for ELO but we need single cold path - source of truth like db so we\nuse postgresql db\n\nindex: (elo_rating DESC, user_id) for leaderboard query\nwhen game ends, game service updates this user rating db and also update redis sorted set (async\nworker or trigger can do this)",
       "autoResize": true,
       "lineHeight": 1.25
     },
@@ -239,8 +239,8 @@
       "type": "text",
       "x": 1479.2056366105421,
       "y": 1476.6156452777814,
-      "width": 987.439453125,
-      "height": 575,
+      "width": 1008.6591796875,
+      "height": 975,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -254,95 +254,28 @@
       "index": "ac",
       "roundness": null,
       "seed": 1203768120,
-      "version": 1068,
-      "versionNonce": 335704573,
+      "version": 1207,
+      "versionNonce": 1117859085,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1761198946967,
+      "updated": 1761792002522,
       "link": null,
       "locked": false,
-      "text": "IMPT! for scaling and bottle neck:\n1) game service (websocket connection) \n- horizontal scaling with LB(sticky session by game_id cuz both players in same game need to \nconnect to same server)\n2) db writes\nwe need to insert 1 record to game history table, update 2 records in user rating \nthis can be decoupled as it is async operation\n\ngame ends -> kafka queue -> async workers(batch writes to postgres and update redis leaderboard)\n\nso db doesnt have to wait for db and it decouples **WRITE SPIKES**\n\n3)leaderboard redis\nthere can be too much reads so we use Redis + CDN!\n\nbut i thought cdn is for static content! actually leaderboard is semi static content cuz top rankings\nchange slowly and stale data is acceptable\n\nclient -> CDN (with short ttl like 10s) -> Redis -> postgres (rebuild redis on restart only) \n\n4) hotspot problem for Magnus Carlsen \nstore its list of recent games in redis like user:123:games\n",
+      "text": "IMPT! for scaling and bottle neck:\n1) game service (websocket connection) \n**Problem:**\n- Each game = 2 WebSocket connections\n- 50K games = **100K concurrent WebSocket connections**\n- Single server limit: ~10-20K connections\n\n**Solution: Horizontal Scaling**\n- horizontal scaling with LB(sticky session by game_id cuz both players in same game need to \nconnect to same server)\n2) db writes\n**Problem:**\n- 24 games/sec completion = 24 writes/sec to Postgres\n- Each write updates:\n  - Game history table (insert)\n  - User ratings (2 updates per game)\n\n**Write amplification:** 24 games/sec × 3 DB operations = **~75 writes/sec**\nwe need to insert 1 record to game history table, update 2 records in user rating \nthis can be decoupled as it is async operation\n\ngame ends -> kafka queue -> async workers(batch writes to postgres and update redis leaderboard)\n\nso db doesnt have to wait for db and it decouples **WRITE SPIKES**\n\n3)leaderboard redis\nthere can be too much reads so we use Redis + CDN!\n\nbut i thought cdn is for static content! actually leaderboard is semi static content cuz top rankings\nchange slowly and stale data is acceptable\n\nclient -> CDN (with short ttl like 10s) -> Redis -> postgres (rebuild redis on restart only) \n\n4) hotspot problem for Magnus Carlsen \nstore its list of recent games in redis like user:123:games and only wheren theres cache miss, we search\nDB\nuser:123:games -> ttl 1h\nuser:123:profile -> ttl 1h etc\n",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "IMPT! for scaling and bottle neck:\n1) game service (websocket connection) \n- horizontal scaling with LB(sticky session by game_id cuz both players in same game need to \nconnect to same server)\n2) db writes\nwe need to insert 1 record to game history table, update 2 records in user rating \nthis can be decoupled as it is async operation\n\ngame ends -> kafka queue -> async workers(batch writes to postgres and update redis leaderboard)\n\nso db doesnt have to wait for db and it decouples **WRITE SPIKES**\n\n3)leaderboard redis\nthere can be too much reads so we use Redis + CDN!\n\nbut i thought cdn is for static content! actually leaderboard is semi static content cuz top rankings\nchange slowly and stale data is acceptable\n\nclient -> CDN (with short ttl like 10s) -> Redis -> postgres (rebuild redis on restart only) \n\n4) hotspot problem for Magnus Carlsen \nstore its list of recent games in redis like user:123:games\n",
-      "autoResize": true,
-      "lineHeight": 1.25
-    },
-    {
-      "id": "6eB0hnrLUZPYvs7MftnCh",
-      "type": "rectangle",
-      "x": 2539.4556137223585,
-      "y": 1460.8656853321027,
-      "width": 917.0000457763672,
-      "height": 744.0000247955322,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "ad",
-      "roundness": {
-        "type": 3
-      },
-      "seed": 571980856,
-      "version": 90,
-      "versionNonce": 1549893944,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1760590333948,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "b3_5VlaNMBKPIIp4SU7h2",
-      "type": "text",
-      "x": 2582.2056289811476,
-      "y": 1487.8656643512677,
-      "width": 974.5802001953125,
-      "height": 6325,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "ae",
-      "roundness": null,
-      "seed": 4414536,
-      "version": 22,
-      "versionNonce": 303705747,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1761198702975,
-      "link": null,
-      "locked": false,
-      "text": "## 1. Index Explanation: (elo_rating DESC, user_id)\n\n### How This Index Works:\n\n```sql\nCREATE INDEX idx_leaderboard ON user_ratings(elo_rating DESC, user_id);\n```\n\n**Index structure (simplified):**\n```\nELO (descending) | user_id     | → Row pointer\n-----------------|-------------|---------------\n2700             | user_789    | → Row in table\n2500             | user_123    | → Row in table\n2300             | user_456    | → Row in table\n2100             | user_999    | → Row in table\n...\n```\n\n### Why This Design?\n\n**Common query:**\n```sql\n-- Get top 100 players\nSELECT user_id, elo_rating, username \nFROM user_ratings \nORDER BY elo_rating DESC \nLIMIT 100;\n```\n\n**With this index:**\n1. Already sorted by ELO descending ✓\n2. Just read first 100 entries ✓\n3. No sorting needed ✓\n4. **O(100)** - constant time!\n\n**`user_id` as second column:**\n- Breaks ties (if two users have same ELO)\n- Makes index unique → better performance\n\n---\n\n## 2. Scaling & Bottlenecks\n\n### Current Load Recap:\n- 50K concurrent games\n- 3,300 moves/sec peak\n- 500K DAU\n- 1M games/day\n\n---\n\n### 🔴 Bottleneck #1: Game Service (WebSocket Connections)\n\n**Problem:**\n- Each game = 2 WebSocket connections\n- 50K games = **100K concurrent WebSocket connections**\n- Single server limit: ~10-20K connections\n\n**Solution: Horizontal Scaling**\n```\n                    ┌──────────────┐\nClient ────────────→│ Load Balancer│\n                    │ (sticky by   │\n                    │  game_id)    │\n                    └──────┬───────┘\n                           │\n        ┌──────────────────┼──────────────────┐\n        ▼                  ▼                  ▼\n   ┌─────────┐        ┌─────────┐       ┌─────────┐\n   │ Game    │        │ Game    │       │ Game    │\n   │ Server 1│        │ Server 2│       │ Server 3│\n   │ (20K    │        │ (20K    │       │ (20K    │\n   │  games) │        │  games) │       │  games) │\n   └─────────┘        └─────────┘       └─────────┘\n```\n\n**Key points:**\n- **Sticky sessions** - both players in same game connect to same server\n- 5-10 game servers for 50K concurrent games\n- Stateful servers (each holds active games in memory)\n\n---\n\n### 🔴 Bottleneck #2: Database Writes (Game Completion)\n\n**Problem:**\n- 24 games/sec completion = 24 writes/sec to Postgres\n- Each write updates:\n  - Game history table (insert)\n  - User ratings (2 updates per game)\n  - Stats tables (wins/losses)\n\n**Write amplification:** 24 games/sec × 4 DB operations = **~100 writes/sec**\n\n**Solution: Write-Behind Pattern**\n```\nGame ends ──→ Message Queue (Kafka/RabbitMQ)\n              │\n              ▼\n         ┌──────────────┐\n         │ Async Workers│ ──→ Batch writes to Postgres\n         │ (consumers)  │ ──→ Update Redis leaderboard\n         └──────────────┘\n```\n\n**Benefits:**\n- Game Service doesn't wait for DB\n- Batch multiple writes together\n- Retry on failure\n- Decouple write spikes\n\n---\n\n### 🔴 Bottleneck #3: Leaderboard Reads\n\n**Problem:**\n- Popular feature - users check rankings frequently\n- Potential: 500K DAU × 5 checks/day = **2.5M reads/day** = 30 reads/sec average\n\n**Solution: Redis + CDN**\n```\nClient ──→ CDN (cache top 1000 for 10 sec)\n           │ Cache miss\n           ▼\n         Redis (global leaderboard)\n           │ Cache miss (rare)\n           ▼\n         Postgres (source of truth)\n```\n\n**Caching strategy:**\n- **CDN/Edge cache:** Top 1000 players, TTL 10 seconds\n- **Redis:** Full leaderboard (10M users), always fresh\n- **Postgres:** Rebuild Redis on restart only\n\n---\n\n### 🔴 Bottleneck #4: Matchmaking at Scale\n\n**Problem:**\n- Peak: 50K concurrent games means ~50K new matchmaking requests/hour\n- Redis sorted set handles this, but queue management tricky\n\n**Challenges:**\n- Players wait too long if no close ELO match\n- Need to widen search range over time\n- Handle abandoned searches (player closes app)\n\n**Solution: Tiered Matchmaking**\n```python\n# Pseudocode\ndef find_match(user_id, elo):\n    ranges = [\n        (elo-50, elo+50),    # Try ±50 first (wait 5 sec)\n        (elo-100, elo+100),  # Widen to ±100 (wait 10 sec)\n        (elo-200, elo+200),  # Widen to ±200 (wait 15 sec)\n    ]\n    \n    for min_elo, max_elo in ranges:\n        opponent = redis.ZRANGEBYSCORE(queue, min_elo, max_elo, limit=1)\n        if opponent:\n            return opponent\n        sleep(5)  # Wait before widening\n    \n    return None  # No match found\n```\n\n**Plus:**\n- Background cleanup job removes stale entries (users who disconnected)\n- Separate queues per time control (blitz, rapid, etc.)\n\n---\n\n### 🔴 Bottleneck #5: Hot User Problem\n\n**Problem:**\n- Streamers/popular players: 100+ games/day\n- Their game history queries slow down\n- Their profile page gets hammered\n\n**Solution: User-level Caching**\n```\nGET /api/users/popular_streamer/games\n  ↓\nRedis cache (key: user:123:games, TTL: 60 sec)\n  ↓ Cache miss\nPostgres (indexed by user_id + time)\n```\n\n**For hot users:**\n- Cache their recent games\n- Cache their profile stats\n- Rate limit profile API (100 req/min per user)\n\n---\n\n### 🟢 What Scales Well (No Bottleneck):\n\n1. **User Service** - reads are cacheable, writes are rare (login/signup)\n2. **Game History Storage** - 90GB/month trivial for Postgres\n3. **Active Game State** - 500MB in-memory manageable\n\n---\n\n## Scaling Summary:\n\n| Component | Bottleneck | Solution |\n|-----------|-----------|----------|\n| **Game Service** | 100K WebSocket connections | Horizontal scaling (5-10 servers) |\n| **Database Writes** | 100 writes/sec | Message queue + async workers |\n| **Leaderboard Reads** | 30 reads/sec | Redis + CDN caching |\n| **Matchmaking** | Queue management | Tiered search + cleanup jobs |\n| **Hot Users** | Popular profiles | User-level caching |\n\n---\n\n## Architecture with Scaling:\n\n```\n         ┌─────┐\n         │ CDN │ (cache leaderboard)\n         └──┬──┘\n            │\n    ┌───────┴────────┐\n    │  Load Balancer │\n    └───────┬────────┘\n            │\n    ┌───────┼────────────────────┐\n    ▼       ▼                    ▼\n[Game    [Game      ...    [Game\n Srv 1]   Srv 2]            Srv N]\n    │       │                    │\n    └───────┴────────────────────┘\n            │\n            ▼\n    ┌──────────────┐\n    │ Message Queue│ (Kafka)\n    └──────┬───────┘\n           │\n    ┌──────┴───────┐\n    │ Async Workers│\n    └──────┬───────┘\n           │\n    ┌──────┼──────────────┐\n    ▼      ▼              ▼\n[Postgres] [Redis]    [Redis\n (Write)   (Match)     Leaderboard]\n```\n\n---\n\n**Good system design interview so far!** Any specific bottleneck you want to dive deeper into? 🚀",
-      "fontSize": 20,
-      "fontFamily": 5,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "containerId": null,
-      "originalText": "## 1. Index Explanation: (elo_rating DESC, user_id)\n\n### How This Index Works:\n\n```sql\nCREATE INDEX idx_leaderboard ON user_ratings(elo_rating DESC, user_id);\n```\n\n**Index structure (simplified):**\n```\nELO (descending) | user_id     | → Row pointer\n-----------------|-------------|---------------\n2700             | user_789    | → Row in table\n2500             | user_123    | → Row in table\n2300             | user_456    | → Row in table\n2100             | user_999    | → Row in table\n...\n```\n\n### Why This Design?\n\n**Common query:**\n```sql\n-- Get top 100 players\nSELECT user_id, elo_rating, username \nFROM user_ratings \nORDER BY elo_rating DESC \nLIMIT 100;\n```\n\n**With this index:**\n1. Already sorted by ELO descending ✓\n2. Just read first 100 entries ✓\n3. No sorting needed ✓\n4. **O(100)** - constant time!\n\n**`user_id` as second column:**\n- Breaks ties (if two users have same ELO)\n- Makes index unique → better performance\n\n---\n\n## 2. Scaling & Bottlenecks\n\n### Current Load Recap:\n- 50K concurrent games\n- 3,300 moves/sec peak\n- 500K DAU\n- 1M games/day\n\n---\n\n### 🔴 Bottleneck #1: Game Service (WebSocket Connections)\n\n**Problem:**\n- Each game = 2 WebSocket connections\n- 50K games = **100K concurrent WebSocket connections**\n- Single server limit: ~10-20K connections\n\n**Solution: Horizontal Scaling**\n```\n                    ┌──────────────┐\nClient ────────────→│ Load Balancer│\n                    │ (sticky by   │\n                    │  game_id)    │\n                    └──────┬───────┘\n                           │\n        ┌──────────────────┼──────────────────┐\n        ▼                  ▼                  ▼\n   ┌─────────┐        ┌─────────┐       ┌─────────┐\n   │ Game    │        │ Game    │       │ Game    │\n   │ Server 1│        │ Server 2│       │ Server 3│\n   │ (20K    │        │ (20K    │       │ (20K    │\n   │  games) │        │  games) │       │  games) │\n   └─────────┘        └─────────┘       └─────────┘\n```\n\n**Key points:**\n- **Sticky sessions** - both players in same game connect to same server\n- 5-10 game servers for 50K concurrent games\n- Stateful servers (each holds active games in memory)\n\n---\n\n### 🔴 Bottleneck #2: Database Writes (Game Completion)\n\n**Problem:**\n- 24 games/sec completion = 24 writes/sec to Postgres\n- Each write updates:\n  - Game history table (insert)\n  - User ratings (2 updates per game)\n  - Stats tables (wins/losses)\n\n**Write amplification:** 24 games/sec × 4 DB operations = **~100 writes/sec**\n\n**Solution: Write-Behind Pattern**\n```\nGame ends ──→ Message Queue (Kafka/RabbitMQ)\n              │\n              ▼\n         ┌──────────────┐\n         │ Async Workers│ ──→ Batch writes to Postgres\n         │ (consumers)  │ ──→ Update Redis leaderboard\n         └──────────────┘\n```\n\n**Benefits:**\n- Game Service doesn't wait for DB\n- Batch multiple writes together\n- Retry on failure\n- Decouple write spikes\n\n---\n\n### 🔴 Bottleneck #3: Leaderboard Reads\n\n**Problem:**\n- Popular feature - users check rankings frequently\n- Potential: 500K DAU × 5 checks/day = **2.5M reads/day** = 30 reads/sec average\n\n**Solution: Redis + CDN**\n```\nClient ──→ CDN (cache top 1000 for 10 sec)\n           │ Cache miss\n           ▼\n         Redis (global leaderboard)\n           │ Cache miss (rare)\n           ▼\n         Postgres (source of truth)\n```\n\n**Caching strategy:**\n- **CDN/Edge cache:** Top 1000 players, TTL 10 seconds\n- **Redis:** Full leaderboard (10M users), always fresh\n- **Postgres:** Rebuild Redis on restart only\n\n---\n\n### 🔴 Bottleneck #4: Matchmaking at Scale\n\n**Problem:**\n- Peak: 50K concurrent games means ~50K new matchmaking requests/hour\n- Redis sorted set handles this, but queue management tricky\n\n**Challenges:**\n- Players wait too long if no close ELO match\n- Need to widen search range over time\n- Handle abandoned searches (player closes app)\n\n**Solution: Tiered Matchmaking**\n```python\n# Pseudocode\ndef find_match(user_id, elo):\n    ranges = [\n        (elo-50, elo+50),    # Try ±50 first (wait 5 sec)\n        (elo-100, elo+100),  # Widen to ±100 (wait 10 sec)\n        (elo-200, elo+200),  # Widen to ±200 (wait 15 sec)\n    ]\n    \n    for min_elo, max_elo in ranges:\n        opponent = redis.ZRANGEBYSCORE(queue, min_elo, max_elo, limit=1)\n        if opponent:\n            return opponent\n        sleep(5)  # Wait before widening\n    \n    return None  # No match found\n```\n\n**Plus:**\n- Background cleanup job removes stale entries (users who disconnected)\n- Separate queues per time control (blitz, rapid, etc.)\n\n---\n\n### 🔴 Bottleneck #5: Hot User Problem\n\n**Problem:**\n- Streamers/popular players: 100+ games/day\n- Their game history queries slow down\n- Their profile page gets hammered\n\n**Solution: User-level Caching**\n```\nGET /api/users/popular_streamer/games\n  ↓\nRedis cache (key: user:123:games, TTL: 60 sec)\n  ↓ Cache miss\nPostgres (indexed by user_id + time)\n```\n\n**For hot users:**\n- Cache their recent games\n- Cache their profile stats\n- Rate limit profile API (100 req/min per user)\n\n---\n\n### 🟢 What Scales Well (No Bottleneck):\n\n1. **User Service** - reads are cacheable, writes are rare (login/signup)\n2. **Game History Storage** - 90GB/month trivial for Postgres\n3. **Active Game State** - 500MB in-memory manageable\n\n---\n\n## Scaling Summary:\n\n| Component | Bottleneck | Solution |\n|-----------|-----------|----------|\n| **Game Service** | 100K WebSocket connections | Horizontal scaling (5-10 servers) |\n| **Database Writes** | 100 writes/sec | Message queue + async workers |\n| **Leaderboard Reads** | 30 reads/sec | Redis + CDN caching |\n| **Matchmaking** | Queue management | Tiered search + cleanup jobs |\n| **Hot Users** | Popular profiles | User-level caching |\n\n---\n\n## Architecture with Scaling:\n\n```\n         ┌─────┐\n         │ CDN │ (cache leaderboard)\n         └──┬──┘\n            │\n    ┌───────┴────────┐\n    │  Load Balancer │\n    └───────┬────────┘\n            │\n    ┌───────┼────────────────────┐\n    ▼       ▼                    ▼\n[Game    [Game      ...    [Game\n Srv 1]   Srv 2]            Srv N]\n    │       │                    │\n    └───────┴────────────────────┘\n            │\n            ▼\n    ┌──────────────┐\n    │ Message Queue│ (Kafka)\n    └──────┬───────┘\n           │\n    ┌──────┴───────┐\n    │ Async Workers│\n    └──────┬───────┘\n           │\n    ┌──────┼──────────────┐\n    ▼      ▼              ▼\n[Postgres] [Redis]    [Redis\n (Write)   (Match)     Leaderboard]\n```\n\n---\n\n**Good system design interview so far!** Any specific bottleneck you want to dive deeper into? 🚀",
+      "originalText": "IMPT! for scaling and bottle neck:\n1) game service (websocket connection) \n**Problem:**\n- Each game = 2 WebSocket connections\n- 50K games = **100K concurrent WebSocket connections**\n- Single server limit: ~10-20K connections\n\n**Solution: Horizontal Scaling**\n- horizontal scaling with LB(sticky session by game_id cuz both players in same game need to \nconnect to same server)\n2) db writes\n**Problem:**\n- 24 games/sec completion = 24 writes/sec to Postgres\n- Each write updates:\n  - Game history table (insert)\n  - User ratings (2 updates per game)\n\n**Write amplification:** 24 games/sec × 3 DB operations = **~75 writes/sec**\nwe need to insert 1 record to game history table, update 2 records in user rating \nthis can be decoupled as it is async operation\n\ngame ends -> kafka queue -> async workers(batch writes to postgres and update redis leaderboard)\n\nso db doesnt have to wait for db and it decouples **WRITE SPIKES**\n\n3)leaderboard redis\nthere can be too much reads so we use Redis + CDN!\n\nbut i thought cdn is for static content! actually leaderboard is semi static content cuz top rankings\nchange slowly and stale data is acceptable\n\nclient -> CDN (with short ttl like 10s) -> Redis -> postgres (rebuild redis on restart only) \n\n4) hotspot problem for Magnus Carlsen \nstore its list of recent games in redis like user:123:games and only wheren theres cache miss, we search\nDB\nuser:123:games -> ttl 1h\nuser:123:profile -> ttl 1h etc\n",
       "autoResize": true,
       "lineHeight": 1.25
     },
     {
       "id": "UxouD5Mfm9bxZQs6OEucQ",
       "type": "ellipse",
-      "x": 639.0717901547015,
-      "y": 3675.074027389999,
+      "x": 2073.7384568213683,
+      "y": 2401.7406940566657,
       "width": 215.00003814697266,
       "height": 332,
       "angle": 0,
@@ -360,8 +293,8 @@
         "type": 2
       },
       "seed": 1669569091,
-      "version": 241,
-      "versionNonce": 1716655821,
+      "version": 560,
+      "versionNonce": 87164707,
       "isDeleted": false,
       "boundElements": [
         {
@@ -369,23 +302,23 @@
           "id": "F35rnE32bImDH8R1JXbCi"
         },
         {
-          "id": "jBcHFnAK0tcbXfJDdEDZO",
+          "id": "eRTdGK7xVaqmJjvuLT3Rk",
           "type": "arrow"
         },
         {
-          "id": "eRTdGK7xVaqmJjvuLT3Rk",
+          "id": "jBcHFnAK0tcbXfJDdEDZO",
           "type": "arrow"
         }
       ],
-      "updated": 1761703195259,
+      "updated": 1761791939699,
       "link": null,
       "locked": false
     },
     {
       "id": "F35rnE32bImDH8R1JXbCi",
       "type": "text",
-      "x": 680.5578167636424,
-      "y": 3728.6943017130325,
+      "x": 2115.224483430309,
+      "y": 2455.360968379699,
       "width": 132,
       "height": 225,
       "angle": 0,
@@ -401,11 +334,11 @@
       "index": "ag",
       "roundness": null,
       "seed": 226889187,
-      "version": 302,
-      "versionNonce": 1994372397,
+      "version": 622,
+      "versionNonce": 1011559107,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1761703195259,
+      "updated": 1761791939699,
       "link": null,
       "locked": false,
       "text": "CDN (first\nlayer cache\nto store\nleaderboard\nresults\n**with short\nTTL**, if\nmiss then go\nto redis",
@@ -421,10 +354,10 @@
     {
       "id": "yfjstreCZRYMrcNdci3wu",
       "type": "rectangle",
-      "x": 710.0718003272278,
-      "y": 4318.073968897975,
+      "x": 1829.738466993895,
+      "y": 3008.0739688979747,
       "width": 241.0000228881836,
-      "height": 146.0000228881836,
+      "height": 335,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "#ffffff",
@@ -440,8 +373,8 @@
         "type": 3
       },
       "seed": 285194979,
-      "version": 250,
-      "versionNonce": 1916091555,
+      "version": 665,
+      "versionNonce": 824171939,
       "isDeleted": false,
       "boundElements": [
         {
@@ -453,25 +386,21 @@
           "type": "arrow"
         },
         {
-          "id": "kguT1l3mZbL0LQK3ukXzb",
-          "type": "arrow"
-        },
-        {
-          "id": "LqFJl3iRb9853fCOUtYhA",
+          "id": "pu3pA9SzlhUr-mOcwK9Pu",
           "type": "arrow"
         }
       ],
-      "updated": 1761702886961,
+      "updated": 1761791939699,
       "link": null,
       "locked": false
     },
     {
       "id": "3O8kpi_kItUe1ivs79zT5",
       "type": "text",
-      "x": 715.0718117713196,
-      "y": 4366.0739803420665,
+      "x": 1834.7384784379867,
+      "y": 3013.0739688979747,
       "width": 231,
-      "height": 50,
+      "height": 325,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "#ffffff",
@@ -485,28 +414,28 @@
       "index": "ai",
       "roundness": null,
       "seed": 1916114317,
-      "version": 236,
-      "versionNonce": 1582018627,
+      "version": 665,
+      "versionNonce": 154808643,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1761702886961,
+      "updated": 1761791939699,
       "link": null,
       "locked": false,
-      "text": "Load Balancer (evenly\ndistribute traffic)",
+      "text": "Load Balancer (evenly\ndistribute traffic)\nLoad balancers are\nlayer 4 (TCP/UDP) or\nsimple layer 7\n(HTTP):\n\nThey distribute\nconnections but don't\nunderstand \"player\n123 is in\ngame_server_5\" so\nneed api gw",
       "fontSize": 20,
       "fontFamily": 8,
       "textAlign": "center",
       "verticalAlign": "middle",
       "containerId": "yfjstreCZRYMrcNdci3wu",
-      "originalText": "Load Balancer (evenly distribute traffic)",
+      "originalText": "Load Balancer (evenly distribute traffic)\nLoad balancers are layer 4 (TCP/UDP) or simple layer 7 (HTTP):\n\nThey distribute connections but don't understand \"player 123 is in game_server_5\" so need api gw",
       "autoResize": true,
       "lineHeight": 1.25
     },
     {
       "id": "O_mPNbTzQB9a_tw_xIHNp",
       "type": "rectangle",
-      "x": 390.4051540056133,
-      "y": 4345.07407825263,
+      "x": 1418.4051540056137,
+      "y": 3038.407411585963,
       "width": 173.9999771118164,
       "height": 133.00003051757812,
       "angle": 0,
@@ -524,8 +453,8 @@
         "type": 3
       },
       "seed": 1515050797,
-      "version": 151,
-      "versionNonce": 1376515779,
+      "version": 511,
+      "versionNonce": 1311667235,
       "isDeleted": false,
       "boundElements": [
         {
@@ -541,15 +470,15 @@
           "type": "arrow"
         }
       ],
-      "updated": 1761702886961,
+      "updated": 1761791939699,
       "link": null,
       "locked": false
     },
     {
       "id": "9gcHNBUIdgX7zPiHIc5dQ",
       "type": "text",
-      "x": 455.40514256152153,
-      "y": 4399.074093511419,
+      "x": 1483.4051425615219,
+      "y": 3092.407426844752,
       "width": 44,
       "height": 25,
       "angle": 0,
@@ -565,11 +494,11 @@
       "index": "ak",
       "roundness": null,
       "seed": 33107853,
-      "version": 123,
-      "versionNonce": 595994211,
+      "version": 483,
+      "versionNonce": 1697773507,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1761702886961,
+      "updated": 1761791939699,
       "link": null,
       "locked": false,
       "text": "User",
@@ -585,8 +514,8 @@
     {
       "id": "BkGbI5yyATWIWR00NKdl4",
       "type": "rectangle",
-      "x": 1145.0718384742006,
-      "y": 4651.740706772323,
+      "x": 2588.071838474201,
+      "y": 3031.7407067723225,
       "width": 335.99998474121105,
       "height": 163.00003051757812,
       "angle": 0,
@@ -604,8 +533,8 @@
         "type": 3
       },
       "seed": 1279453379,
-      "version": 410,
-      "versionNonce": 403777443,
+      "version": 784,
+      "versionNonce": 1711131299,
       "isDeleted": false,
       "boundElements": [
         {
@@ -613,27 +542,23 @@
           "id": "t7HKuiAR5iLddUTiYcvYA"
         },
         {
-          "id": "LqFJl3iRb9853fCOUtYhA",
-          "type": "arrow"
-        },
-        {
-          "id": "s69YZQ7JXSaCVy_YuOrSK",
-          "type": "arrow"
-        },
-        {
           "id": "yso96Tq7S6PFTUrRr-KAe",
+          "type": "arrow"
+        },
+        {
+          "id": "6v92clTLzLvREJPS03Cfl",
           "type": "arrow"
         }
       ],
-      "updated": 1761702911997,
+      "updated": 1761791939699,
       "link": null,
       "locked": false
     },
     {
       "id": "t7HKuiAR5iLddUTiYcvYA",
       "type": "text",
-      "x": 1208.571830844806,
-      "y": 4720.740722031112,
+      "x": 2651.5718308448063,
+      "y": 3100.7407220311115,
       "width": 209,
       "height": 25,
       "angle": 0,
@@ -649,11 +574,11 @@
       "index": "am",
       "roundness": null,
       "seed": 1132596493,
-      "version": 373,
-      "versionNonce": 1707760867,
+      "version": 744,
+      "versionNonce": 634551875,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1761702886961,
+      "updated": 1761791939699,
       "link": null,
       "locked": false,
       "text": "Matchmaking service",
@@ -669,8 +594,8 @@
     {
       "id": "v4qlF3js7jtJHbb7-KLjI",
       "type": "rectangle",
-      "x": 1118.071919854409,
-      "y": 4306.740643194036,
+      "x": 2572.7385865210763,
+      "y": 3311.740643194037,
       "width": 358.0000305175781,
       "height": 184.9999618530278,
       "angle": 0,
@@ -688,8 +613,8 @@
         "type": 3
       },
       "seed": 976706797,
-      "version": 353,
-      "versionNonce": 1416020931,
+      "version": 728,
+      "versionNonce": 841867555,
       "isDeleted": false,
       "boundElements": [
         {
@@ -697,23 +622,23 @@
           "id": "WLVL3py7AVQbkxfCXFnkN"
         },
         {
-          "id": "kguT1l3mZbL0LQK3ukXzb",
+          "id": "6n1NXy7MXcocSrqM6nGtE",
           "type": "arrow"
         },
         {
-          "id": "6WWE5fvTyR5ZAmn3XRb9l",
+          "id": "o_OVZLhd21rIEvmD78zkD",
           "type": "arrow"
         }
       ],
-      "updated": 1761702886961,
+      "updated": 1761791939699,
       "link": null,
       "locked": false
     },
     {
       "id": "WLVL3py7AVQbkxfCXFnkN",
       "type": "text",
-      "x": 1209.0719351131982,
-      "y": 4386.74062412055,
+      "x": 2663.7386017798653,
+      "y": 3391.740624120551,
       "width": 176,
       "height": 25,
       "angle": 0,
@@ -729,11 +654,11 @@
       "index": "ao",
       "roundness": null,
       "seed": 1708091629,
-      "version": 336,
-      "versionNonce": 184505187,
+      "version": 707,
+      "versionNonce": 1354482883,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1761702886961,
+      "updated": 1761791939699,
       "link": null,
       "locked": false,
       "text": "Gameplay service",
@@ -749,8 +674,8 @@
     {
       "id": "mPzBXEfIUS4rqk6p3hcBO",
       "type": "ellipse",
-      "x": 1118.7385763485497,
-      "y": 3403.7406762547457,
+      "x": 2553.405243015217,
+      "y": 2130.407342921412,
       "width": 383.99993896484375,
       "height": 827,
       "angle": 0,
@@ -768,8 +693,8 @@
         "type": 2
       },
       "seed": 1394336547,
-      "version": 631,
-      "versionNonce": 1745850765,
+      "version": 936,
+      "versionNonce": 475969443,
       "isDeleted": false,
       "boundElements": [
         {
@@ -785,23 +710,19 @@
           "type": "arrow"
         },
         {
-          "id": "s69YZQ7JXSaCVy_YuOrSK",
-          "type": "arrow"
-        },
-        {
           "id": "yso96Tq7S6PFTUrRr-KAe",
           "type": "arrow"
         }
       ],
-      "updated": 1761703192810,
+      "updated": 1761791939699,
       "link": null,
       "locked": false
     },
     {
       "id": "VPt4IxuazhoCZqGUl6GI7",
       "type": "text",
-      "x": 1184.4740654223408,
-      "y": 3529.8520222341085,
+      "x": 2619.1407320890075,
+      "y": 2256.518688900775,
       "width": 253,
       "height": 575,
       "angle": 0,
@@ -817,11 +738,11 @@
       "index": "aq",
       "roundness": null,
       "seed": 2087121891,
-      "version": 897,
-      "versionNonce": 1084217325,
+      "version": 1200,
+      "versionNonce": 462277443,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1761703192810,
+      "updated": 1761791939699,
       "link": null,
       "locked": false,
       "text": "Redis instance for both\nLeaderboard and\nmatchmaking\n\nLeaderboard: \nZADD leaderboard:global\n2400 user123\nHSET (dictionary)\nuser:123:stats elo 2400\nwins 150 loss 45 \n\nMatchmaking Redis\nZADD queue user123 2400\nZADD queue user 69 2450\nZREVRANGE queue 0 -1\nWITHSCORES\n\nwithscores returns\nmember AND score,\ninstead of just\nmemebers\nand ZREM remove users\nwith similar elo ",
@@ -837,8 +758,8 @@
     {
       "id": "LFk6E0n-PVWEcctuOd5Uj",
       "type": "ellipse",
-      "x": 1682.738464450763,
-      "y": 4184.407281886256,
+      "x": 3841.4051311174303,
+      "y": 3231.073948552922,
       "width": 323.0000305175781,
       "height": 297,
       "angle": 0,
@@ -856,8 +777,8 @@
         "type": 2
       },
       "seed": 1383474723,
-      "version": 243,
-      "versionNonce": 1701089475,
+      "version": 720,
+      "versionNonce": 1810403779,
       "isDeleted": false,
       "boundElements": [
         {
@@ -865,23 +786,23 @@
           "id": "gcFVQnLj4yQOtwMsAmR4C"
         },
         {
-          "id": "6WWE5fvTyR5ZAmn3XRb9l",
+          "id": "QaGuJh6Li_WEyApYbd70E",
           "type": "arrow"
         },
         {
-          "id": "QaGuJh6Li_WEyApYbd70E",
+          "id": "iy2wbsUeECq8Z3BjDXWWW",
           "type": "arrow"
         }
       ],
-      "updated": 1761702886961,
+      "updated": 1761791939699,
       "link": null,
       "locked": false
     },
     {
       "id": "gcFVQnLj4yQOtwMsAmR4C",
       "type": "text",
-      "x": 1739.5407237583315,
-      "y": 4232.901924880053,
+      "x": 3898.2073904249987,
+      "y": 3279.5685915467193,
       "width": 209,
       "height": 200,
       "angle": 0,
@@ -897,11 +818,11 @@
       "index": "at",
       "roundness": null,
       "seed": 725383981,
-      "version": 331,
-      "versionNonce": 1983275651,
+      "version": 806,
+      "versionNonce": 756506979,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1761703208674,
+      "updated": 1761791939699,
       "link": null,
       "locked": false,
       "text": "potstgres Gameplay\nDB (partition by\ngame_id, not\nuser_id to evenly\ndistribute. Also\nupdates leaderboard\nafter db\ntransaction commits",
@@ -917,10 +838,10 @@
     {
       "id": "KcIMjpmc65fv8f7YjE3Kf",
       "type": "arrow",
-      "x": 574.0241809163044,
-      "y": 4402.375542420254,
-      "width": 119.99994913736964,
-      "height": 12.245412270632187,
+      "x": 1602.0241809163047,
+      "y": 3112.314769300491,
+      "width": 211.66661580403627,
+      "height": 13.726889660913002,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "#ffffff",
@@ -934,11 +855,11 @@
       "index": "aw",
       "roundness": null,
       "seed": 291528099,
-      "version": 512,
-      "versionNonce": 72462477,
+      "version": 1611,
+      "versionNonce": 676222125,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1761702887258,
+      "updated": 1761791939965,
       "link": null,
       "locked": false,
       "points": [
@@ -947,126 +868,20 @@
           0
         ],
         [
-          119.99994913736964,
-          -12.245412270632187
+          211.66661580403627,
+          13.726889660913002
         ]
       ],
       "lastCommittedPoint": null,
       "startBinding": {
         "elementId": "O_mPNbTzQB9a_tw_xIHNp",
-        "focus": 0.008768516640425291,
-        "gap": 9.619049798874698
+        "focus": 0.015822336944916145,
+        "gap": 9.619049798874585
       },
       "endBinding": {
         "elementId": "yfjstreCZRYMrcNdci3wu",
-        "focus": 0.17442552158497687,
-        "gap": 16.047670273553763
-      },
-      "startArrowhead": null,
-      "endArrowhead": "arrow",
-      "elbowed": false
-    },
-    {
-      "id": "kguT1l3mZbL0LQK3ukXzb",
-      "type": "arrow",
-      "x": 957.4528598830083,
-      "y": 4387.617781925842,
-      "width": 153.9046950567341,
-      "height": 7.360933437668336,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "#ffffff",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "ax",
-      "roundness": null,
-      "seed": 1964566733,
-      "version": 595,
-      "versionNonce": 1537126733,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761702887258,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          153.9046950567341,
-          -7.360933437668336
-        ]
-      ],
-      "lastCommittedPoint": null,
-      "startBinding": {
-        "elementId": "yfjstreCZRYMrcNdci3wu",
-        "focus": 0.03316586017904106,
-        "gap": 6.381036667596845
-      },
-      "endBinding": {
-        "elementId": "v4qlF3js7jtJHbb7-KLjI",
-        "focus": 0.2757349680729027,
-        "gap": 6.714364914666703
-      },
-      "startArrowhead": null,
-      "endArrowhead": "arrow",
-      "elbowed": false
-    },
-    {
-      "id": "6WWE5fvTyR5ZAmn3XRb9l",
-      "type": "arrow",
-      "x": 1487.3575142496377,
-      "y": 4366.304321703269,
-      "width": 192.98389315419604,
-      "height": 23.32599593597797,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "#ffffff",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "ay",
-      "roundness": {
-        "type": 2
-      },
-      "seed": 1170871587,
-      "version": 573,
-      "versionNonce": 380797453,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761702887258,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          192.98389315419604,
-          -23.32599593597797
-        ]
-      ],
-      "lastCommittedPoint": null,
-      "startBinding": {
-        "elementId": "v4qlF3js7jtJHbb7-KLjI",
-        "focus": -0.0870581982395924,
-        "gap": 11.285563877650475
-      },
-      "endBinding": {
-        "elementId": "LFk6E0n-PVWEcctuOd5Uj",
-        "focus": 0.0579644810807141,
-        "gap": 2.7614965692728006
+        "focus": 0.23202284675031667,
+        "gap": 16.047670273553877
       },
       "startArrowhead": null,
       "endArrowhead": "arrow",
@@ -1075,10 +890,10 @@
     {
       "id": "QaGuJh6Li_WEyApYbd70E",
       "type": "arrow",
-      "x": 1814.024282641565,
-      "y": 4181.955826643893,
-      "width": 309.56564332126277,
-      "height": 442.45510235513757,
+      "x": 3972.690949308232,
+      "y": 3228.6224933105595,
+      "width": 1033.565643321263,
+      "height": 762.4551023551376,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "#ffffff",
@@ -1092,11 +907,11 @@
       "index": "az",
       "roundness": null,
       "seed": 936129005,
-      "version": 600,
-      "versionNonce": 1593933,
+      "version": 1683,
+      "versionNonce": 459675619,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1761703192810,
+      "updated": 1761791939699,
       "link": null,
       "locked": false,
       "points": [
@@ -1106,11 +921,11 @@
         ],
         [
           0,
-          -442.45510235513757
+          -762.4551023551376
         ],
         [
-          -309.56564332126277,
-          -442.45510235513757
+          -1033.565643321263,
+          -762.4551023551376
         ]
       ],
       "lastCommittedPoint": null,
@@ -1142,10 +957,10 @@
     {
       "id": "eRTdGK7xVaqmJjvuLT3Rk",
       "type": "arrow",
-      "x": 1113.7386204196387,
-      "y": 3816.9545171003047,
-      "width": 255.6936651413232,
-      "height": 0.8878916032954294,
+      "x": 2548.4052870863056,
+      "y": 2543.6211837669703,
+      "width": 255.69366514132344,
+      "height": 0.8878916032963389,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "#ffffff",
@@ -1159,11 +974,11 @@
       "index": "b00",
       "roundness": null,
       "seed": 1506819565,
-      "version": 654,
-      "versionNonce": 1655442925,
+      "version": 1581,
+      "versionNonce": 993993603,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1761703195260,
+      "updated": 1761791939699,
       "link": null,
       "locked": false,
       "points": [
@@ -1172,8 +987,8 @@
           0
         ],
         [
-          -255.6936651413232,
-          0.8878916032954294
+          -255.69366514132344,
+          0.8878916032963389
         ]
       ],
       "lastCommittedPoint": null,
@@ -1205,10 +1020,10 @@
     {
       "id": "jBcHFnAK0tcbXfJDdEDZO",
       "type": "arrow",
-      "x": 470.13325284457466,
-      "y": 4333.074046100182,
-      "width": 179.01474574644823,
-      "height": 393.84398051194466,
+      "x": 1539.028558373908,
+      "y": 3026.4073794335136,
+      "width": 525.8223434494479,
+      "height": 435.70649763041456,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "#ffffff",
@@ -1222,11 +1037,11 @@
       "index": "b01",
       "roundness": null,
       "seed": 1543397709,
-      "version": 469,
-      "versionNonce": 887785357,
+      "version": 1477,
+      "versionNonce": 161009005,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1761703195260,
+      "updated": 1761791939965,
       "link": null,
       "locked": false,
       "points": [
@@ -1235,74 +1050,20 @@
           0
         ],
         [
-          179.01474574644823,
-          -393.84398051194466
+          525.8223434494479,
+          -435.70649763041456
         ]
       ],
       "lastCommittedPoint": null,
       "startBinding": {
         "elementId": "O_mPNbTzQB9a_tw_xIHNp",
-        "focus": -0.36587313104107044,
-        "gap": 12.000032152447602
+        "focus": -0.36538771730081193,
+        "gap": 12.000032152449421
       },
       "endBinding": {
         "elementId": "UxouD5Mfm9bxZQs6OEucQ",
-        "focus": 0.28889303663456234,
-        "gap": 9.902027291637648
-      },
-      "startArrowhead": null,
-      "endArrowhead": "arrow",
-      "elbowed": false
-    },
-    {
-      "id": "LqFJl3iRb9853fCOUtYhA",
-      "type": "arrow",
-      "x": 967.2609865004135,
-      "y": 4446.837040425957,
-      "width": 164.0964667140679,
-      "height": 260.37154377955994,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "#ffffff",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "b02",
-      "roundness": {
-        "type": 2
-      },
-      "seed": 1899589229,
-      "version": 606,
-      "versionNonce": 1734251405,
-      "isDeleted": false,
-      "boundElements": null,
-      "updated": 1761702887259,
-      "link": null,
-      "locked": false,
-      "points": [
-        [
-          0,
-          0
-        ],
-        [
-          164.0964667140679,
-          260.37154377955994
-        ]
-      ],
-      "lastCommittedPoint": null,
-      "startBinding": {
-        "elementId": "yfjstreCZRYMrcNdci3wu",
-        "focus": -0.609852870115607,
-        "gap": 17.74513947576545
-      },
-      "endBinding": {
-        "elementId": "BkGbI5yyATWIWR00NKdl4",
-        "focus": -0.7535762089780284,
-        "gap": 13.714385259719165
+        "focus": 0.28807345674825063,
+        "gap": 9.88200231497635
       },
       "startArrowhead": null,
       "endArrowhead": "arrow",
@@ -1311,10 +1072,10 @@
     {
       "id": "yso96Tq7S6PFTUrRr-KAe",
       "type": "arrow",
-      "x": 1486.0718232154115,
-      "y": 4698.407298053306,
-      "width": 56.66669209798192,
-      "height": 749.036829726057,
+      "x": 2929.0718232154118,
+      "y": 3078.4072980533047,
+      "width": 48.333358764648665,
+      "height": 402.3701630593896,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "#ffffff",
@@ -1328,11 +1089,11 @@
       "index": "b08",
       "roundness": null,
       "seed": 893209613,
-      "version": 127,
-      "versionNonce": 1341645581,
+      "version": 1106,
+      "versionNonce": 599285443,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1761703192810,
+      "updated": 1761791939699,
       "link": null,
       "locked": false,
       "points": [
@@ -1341,16 +1102,16 @@
           0
         ],
         [
-          56.66669209798192,
+          48.333358764648665,
           0
         ],
         [
-          56.66669209798192,
-          -749.036829726057
+          48.333358764648665,
+          -402.3701630593896
         ],
         [
-          11.69493571246312,
-          -749.036829726057
+          3.361602379129863,
+          -402.3701630593896
         ]
       ],
       "lastCommittedPoint": null,
@@ -1370,6 +1131,757 @@
         "fixedPoint": [
           0.9870527156881294,
           0.6597700025060492
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": true,
+      "fixedSegments": null,
+      "startIsSpecial": null,
+      "endIsSpecial": null
+    },
+    {
+      "id": "DFNEIN3JRfy7s6Evn_rou",
+      "type": "rectangle",
+      "x": 2213.2811127661903,
+      "y": 3015.221638553915,
+      "width": 226.66666666666674,
+      "height": 180,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b09",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1747298861,
+      "version": 424,
+      "versionNonce": 1399164515,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "QbBH_o3elypV1dpzgvzUz"
+        },
+        {
+          "id": "pu3pA9SzlhUr-mOcwK9Pu",
+          "type": "arrow"
+        },
+        {
+          "id": "6v92clTLzLvREJPS03Cfl",
+          "type": "arrow"
+        },
+        {
+          "id": "6n1NXy7MXcocSrqM6nGtE",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761791939699,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "QbBH_o3elypV1dpzgvzUz",
+      "type": "text",
+      "x": 2227.614446099524,
+      "y": 3042.721638553915,
+      "width": 198,
+      "height": 125,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0A",
+      "roundness": null,
+      "seed": 324524259,
+      "version": 436,
+      "versionNonce": 1628162563,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761791939699,
+      "link": null,
+      "locked": false,
+      "text": "API GW(sticky\nsessions for\nmatchmaking which\nrequires Websocket\nconnections)",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "DFNEIN3JRfy7s6Evn_rou",
+      "originalText": "API GW(sticky sessions for matchmaking which requires Websocket connections)",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "pu3pA9SzlhUr-mOcwK9Pu",
+      "type": "arrow",
+      "x": 2075.7384898820783,
+      "y": 3175.3445168791504,
+      "width": 132.54262288411178,
+      "height": 70.2228783252358,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0B",
+      "roundness": null,
+      "seed": 1214208237,
+      "version": 978,
+      "versionNonce": 1779511427,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761791939700,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          66.271311442056,
+          0
+        ],
+        [
+          66.271311442056,
+          -70.2228783252358
+        ],
+        [
+          132.54262288411178,
+          -70.2228783252358
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "yfjstreCZRYMrcNdci3wu",
+        "focus": -0.0013698627989543217,
+        "gap": 5,
+        "fixedPoint": [
+          1.0207468859964377,
+          0.49931506860052377
+        ]
+      },
+      "endBinding": {
+        "elementId": "DFNEIN3JRfy7s6Evn_rou",
+        "focus": 0.0011111111111162923,
+        "gap": 5.000000000000114,
+        "fixedPoint": [
+          -0.02205882352941226,
+          0.4994444444444424
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": true,
+      "fixedSegments": null,
+      "startIsSpecial": null,
+      "endIsSpecial": null
+    },
+    {
+      "id": "6v92clTLzLvREJPS03Cfl",
+      "type": "arrow",
+      "x": 2440.947779432857,
+      "y": 3126.9002099824875,
+      "width": 139,
+      "height": 1.6547619047605622,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0C",
+      "roundness": null,
+      "seed": 1907501219,
+      "version": 997,
+      "versionNonce": 397153837,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761791939965,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          139,
+          1.6547619047605622
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "DFNEIN3JRfy7s6Evn_rou",
+        "focus": 0.22241529105128582,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "BkGbI5yyATWIWR00NKdl4",
+        "focus": -0.2085145100737251,
+        "gap": 8.124059041344026
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "6n1NXy7MXcocSrqM6nGtE",
+      "type": "arrow",
+      "x": 2459.947658340407,
+      "y": 3166.8910063823887,
+      "width": 93.33345442578297,
+      "height": 186.6651275643262,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0D",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 827267363,
+      "version": 982,
+      "versionNonce": 848572141,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761791939965,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          93.33345442578297,
+          186.6651275643262
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "DFNEIN3JRfy7s6Evn_rou",
+        "focus": -0.6473555121650489,
+        "gap": 20.08271668330606
+      },
+      "endBinding": {
+        "elementId": "v4qlF3js7jtJHbb7-KLjI",
+        "focus": -0.7685445438374051,
+        "gap": 19.45747375488645
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "SKbsAqRFRu5DY8VnEZAeh",
+      "type": "ellipse",
+      "x": 3821.146192131266,
+      "y": 3652.6105274428073,
+      "width": 339.9999999999998,
+      "height": 304,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0E",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 339232877,
+      "version": 276,
+      "versionNonce": 1459010403,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "jc77w0KBH-kDbq8pmMOPr"
+        },
+        {
+          "id": "xI5My_mNJ1nVDy_45WZoB",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761791939700,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "jc77w0KBH-kDbq8pmMOPr",
+      "type": "text",
+      "x": 3880.9380393295532,
+      "y": 3767.130296702452,
+      "width": 220,
+      "height": 75,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0F",
+      "roundness": null,
+      "seed": 536451107,
+      "version": 285,
+      "versionNonce": 334452483,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761791939700,
+      "link": null,
+      "locked": false,
+      "text": "User db (2 rows need\nto be updated for\neach competed game)",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "SKbsAqRFRu5DY8VnEZAeh",
+      "originalText": "User db (2 rows need to be updated for each competed game)",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "6tBmAYnslkNuq8Nl4m0uQ",
+      "type": "rectangle",
+      "x": 3099.1461921312666,
+      "y": 3448.6105274428073,
+      "width": 298,
+      "height": 198,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0G",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 2036423181,
+      "version": 252,
+      "versionNonce": 1435611715,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "IeJ__5kS5jCcUYRI5K4TF"
+        },
+        {
+          "id": "o_OVZLhd21rIEvmD78zkD",
+          "type": "arrow"
+        },
+        {
+          "id": "ZnQA_JUQByPiApBzTu6bf",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761791939700,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "IeJ__5kS5jCcUYRI5K4TF",
+      "type": "text",
+      "x": 3132.6461921312666,
+      "y": 3522.6105274428073,
+      "width": 231,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0H",
+      "roundness": null,
+      "seed": 1224017603,
+      "version": 235,
+      "versionNonce": 902328803,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761791939700,
+      "link": null,
+      "locked": false,
+      "text": "kafka (topic:\ngame.match.completed)",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "6tBmAYnslkNuq8Nl4m0uQ",
+      "originalText": "kafka (topic: game.match.completed)",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "dpD4fTbQzIm3l_PGc1-Vu",
+      "type": "rectangle",
+      "x": 3491.1461921312666,
+      "y": 3438.6105274428073,
+      "width": 277.9999999999998,
+      "height": 212,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0I",
+      "roundness": {
+        "type": 3
+      },
+      "seed": 29355437,
+      "version": 217,
+      "versionNonce": 490797251,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "AHrgTTA7rwEqm_SBp6ubA"
+        },
+        {
+          "id": "ZnQA_JUQByPiApBzTu6bf",
+          "type": "arrow"
+        },
+        {
+          "id": "iy2wbsUeECq8Z3BjDXWWW",
+          "type": "arrow"
+        },
+        {
+          "id": "xI5My_mNJ1nVDy_45WZoB",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1761791939700,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "AHrgTTA7rwEqm_SBp6ubA",
+      "type": "text",
+      "x": 3547.646192131266,
+      "y": 3532.1105274428073,
+      "width": 165,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0J",
+      "roundness": null,
+      "seed": 567904141,
+      "version": 193,
+      "versionNonce": 80406627,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761791939700,
+      "link": null,
+      "locked": false,
+      "text": "storage workers",
+      "fontSize": 20,
+      "fontFamily": 8,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "dpD4fTbQzIm3l_PGc1-Vu",
+      "originalText": "storage workers",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "o_OVZLhd21rIEvmD78zkD",
+      "type": "arrow",
+      "x": 2945.1461921312666,
+      "y": 3438.6105274428073,
+      "width": 134,
+      "height": 96,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0K",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 193321123,
+      "version": 487,
+      "versionNonce": 660412333,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761791939966,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          134,
+          96
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "v4qlF3js7jtJHbb7-KLjI",
+        "focus": -0.4720092681806655,
+        "gap": 14.407575092612205
+      },
+      "endBinding": {
+        "elementId": "6tBmAYnslkNuq8Nl4m0uQ",
+        "focus": -0.5252811026478024,
+        "gap": 20
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "ZnQA_JUQByPiApBzTu6bf",
+      "type": "arrow",
+      "x": 3402.146192131266,
+      "y": 3547.510527442807,
+      "width": 84.00000000000023,
+      "height": 2.9999999999990905,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0L",
+      "roundness": null,
+      "seed": 985279373,
+      "version": 475,
+      "versionNonce": 249449091,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761791939700,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          42.00000000000023,
+          0
+        ],
+        [
+          42.00000000000023,
+          -2.9999999999990905
+        ],
+        [
+          84.00000000000023,
+          -2.9999999999990905
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "6tBmAYnslkNuq8Nl4m0uQ",
+        "focus": -0.0010101010101110166,
+        "gap": 4.999999999999773,
+        "fixedPoint": [
+          1.016778523489932,
+          0.49949494949494305
+        ]
+      },
+      "endBinding": {
+        "elementId": "dpD4fTbQzIm3l_PGc1-Vu",
+        "focus": 0.0009433962264204134,
+        "gap": 5,
+        "fixedPoint": [
+          -0.01798561151079138,
+          0.49952830188679076
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": true,
+      "fixedSegments": null,
+      "startIsSpecial": null,
+      "endIsSpecial": null
+    },
+    {
+      "id": "iy2wbsUeECq8Z3BjDXWWW",
+      "type": "arrow",
+      "x": 3775.146192131266,
+      "y": 3574.6105274428073,
+      "width": 68,
+      "height": 120,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0M",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1968485613,
+      "version": 497,
+      "versionNonce": 1880281197,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761791939966,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          68,
+          -120
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "dpD4fTbQzIm3l_PGc1-Vu",
+        "focus": 0.813797722705961,
+        "gap": 5.999999999999545
+      },
+      "endBinding": {
+        "elementId": "LFk6E0n-PVWEcctuOd5Uj",
+        "focus": 0.4772571501118883,
+        "gap": 17.569818424206368
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "xI5My_mNJ1nVDy_45WZoB",
+      "type": "arrow",
+      "x": 3774.1164015845056,
+      "y": 3620.610515081692,
+      "width": 66.45303616616047,
+      "height": 104.0000123611162,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b0N",
+      "roundness": null,
+      "seed": 398569987,
+      "version": 511,
+      "versionNonce": 955893187,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1761791939700,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          21.029790546760523,
+          0
+        ],
+        [
+          21.029790546760523,
+          104.0000123611162
+        ],
+        [
+          66.45303616616047,
+          104.0000123611162
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "dpD4fTbQzIm3l_PGc1-Vu",
+        "focus": 0.7169810154611702,
+        "gap": 5.0000561171097795,
+        "fixedPoint": [
+          1.0178784512706456,
+          0.8584905077305839
+        ]
+      },
+      "endBinding": {
+        "elementId": "SKbsAqRFRu5DY8VnEZAeh",
+        "focus": -0.8857456140035328,
+        "gap": 4.993873707468004,
+        "fixedPoint": [
+          0.05712719299823518,
+          0.23684210526315788
         ]
       },
       "startArrowhead": null,
