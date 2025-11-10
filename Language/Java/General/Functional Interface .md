@@ -1,5 +1,19 @@
 ## Functional Interface
-It is an interface that is like a function, that is why it is called functional interface. It is an interface that has only **one abstract method**.
-
-Tbc but there are several of such. Function<>, BiFunction<>, Runnable<>, etc.
+An interface with exactly one abstract method (SAM - Single Abstract Method). Can have multiple default/static methods.
+```java
+@FunctionalInterface  // Optional but recommended
+public interface MyFunction {
+    void execute();  // Only ONE abstract method
+    
+    // Can have default methods
+    default void log() {
+        System.out.println("Logging...");
+    }
+    
+    // Can have static methods
+    static void info() {
+        System.out.println("Info");
+    }
+}
+```
 
