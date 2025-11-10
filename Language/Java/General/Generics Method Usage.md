@@ -61,33 +61,27 @@ Since static methods are not associated with any specific instance, they don't i
 
 The error occurs because static methods in Java do not have access to the type parameters (E) of their enclosing class (ClassName<E>). They operate independently of any object instance and therefore cannot rely on instance-specific type parameters. To use generics in static methods, you either define a new type parameter for the method or explicitly specify the type when invoking the method. This ensures that the static method operates within the bounds of Java's static context while still leveraging the benefits of generics.
 
+Key Point: Type Parameter Goes BEFORE Return Type
+
 declaring new type parameter for the method
 ```java
-class MyClass<T> {
-    T instanceVariable;
-
-    public MyClass(T value) {
-        this.instanceVariable = value;
+public class Utility {
+    // Static generic method
+    public static <T> void print(T item) {
+        System.out.println(item);
     }
-
-    // A static method that uses its own type parameter 'U'
-    public static <U> void printValue(U value) {
-        System.out.println(value);
-    }
-
-    public T getInstanceVariable() {
-        return instanceVariable;
+    
+    // <T> before return type declares the type parameter
+    public static <T> T getFirst(T[] array) {
+        return array.length > 0 ? array[0] : null;
     }
 }
 
-public class StaticGenericMethodExample {
-    public static void main(String[] args) {
-        MyClass<String> stringObject = new MyClass<>("Hello");
-        System.out.println(stringObject.getInstanceVariable()); // 'T' is String here
+// Usage
+Utility.print("Hello");        // T = String
+Utility.print(123);            // T = Integer
+Utility.print(45.5);           // T = Double
 
-        MyClass.printValue(123);     // 'U' is Integer here
-        MyClass.printValue("World"); // 'U' is String here
-        MyClass.printValue(true);    // 'U' is Boolean here
-    }
-}
+String[] names = {"Alice", "Bob"};
+String first = Utility.getFirst(names);  // T = String
 ```
