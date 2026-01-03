@@ -8,7 +8,7 @@ In short, HTTP is an application layer (OSI layer 7 still remember OSI?) protoco
 
 ### characteristics of http
 1) connectionless
-HTTP uses TCP/IP (not HTTP3, which uses UDP) to first establish a connection between client and server. Once the server is done responding back the
+HTTP uses [TCP/IP](https://github.com/brian6484/CSKnowledge/blob/main/Network/Connection/TCPIP%20UDP.md) (not HTTP3, which uses UDP) to first establish a connection between client and server. Once the server is done responding back the
 response to client's request, this connection is closed. It closes cuz if a server connects with multiple clients, a lot of resources like memory are used up.
 
 Problem with this is that since server doesnt remember the client, every time a client sends a request to the server, the connection/disconnection needs to be 
