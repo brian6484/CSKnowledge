@@ -19,6 +19,16 @@ so if question askes in ipv6, what is the A record equivalent? Answer is AAAA re
 ### CNAME
 domain -> another domain (alias)
 
+How it works:
+blog.example.com  →  CNAME  →  hosting-provider.com
+
+When someone visits blog.example.com, DNS says "actually, go look up hosting-provider.com instead."
+
+Example:
+```
+blog.example.com    CNAME    myblog.github.io
+www.example.com     CNAME    example.com
+```
 ### NS
 specifies the *authoriatative name servers* for the domain
 
