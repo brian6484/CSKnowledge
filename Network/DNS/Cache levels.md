@@ -3,6 +3,12 @@
 ## DNS Caching at Multiple Levels
 DNS results are cached at multiple points to make lookups faster and reduce load on DNS servers.
 
+### Even before browser cache - etc/hosts file (OS-level host file)
+it bypasses all the dns if u have Hard-coded IP-to-hostname mappings in this file
+```
+127.0.0.1  example.com
+```
+
 ### **1. Browser Cache**
 - **First place checked** when you type a URL
 - Each browser maintains its own DNS cache
