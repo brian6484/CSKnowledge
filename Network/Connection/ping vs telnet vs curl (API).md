@@ -7,7 +7,7 @@ ping google.com          # Test connectivity
 ```
 
 ## telnet
-its diff from ping and it uses TCP protocol with specific port. While ping checks for host reachability, telnet checks for port reachability
+its diff from ping and it uses TCP protocol with specific port. While ping checks for host reachability, telnet checks for port reachability. For example, if I'm troubleshooting a database connection, ping might succeed because the server is online, but telnet to port 3306 might fail if the database service isn't running or a firewall is blocking that port. So ping tests 'is the server there?' while telnet tests 'is this specific service accessible?
 ```
 telnet hostname 8080     # Test port connectivity
 ```
