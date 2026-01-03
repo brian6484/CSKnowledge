@@ -74,6 +74,8 @@ If this still cant find the result, then we go the entire process from root to t
 
 ```
 You type "www.example.com"
+
+         /etc/hosts (if there is a mapping)
          ↓
 ┌─────────────────────┐
 │ Browser Cache       │ ← Check here first
