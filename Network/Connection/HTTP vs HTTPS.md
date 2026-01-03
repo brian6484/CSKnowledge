@@ -46,7 +46,7 @@ For headers, there are 4 types
 ```
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.4567.89 Safari/537.36
 ```
-3) response header - only for response like Content-Type, which tells client about the mediat type like text/html
+3) response header - only for response like Content-Type, which tells client about the mediat type like text/html (btw content-type is both req and response header cuz content type is needed for post reqs)
 4) entity header - used by both requests and responses that provides info about the resource being sent like Content-Length, which tells the size of the message body in octets (8 bits or a byte) Strictly and historically, byte represents number of bits to represent encode a character in certain character encoding and this size varied. But octet is strictly 8 bits or 2^8 possible values.
 
     
