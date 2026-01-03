@@ -29,6 +29,9 @@ server: gws
 ```
 ## -u = authentiucation where u give username and password in xx:yy format after
 curl -u user:pass https://jira.com/rest/api/2/issue/PROJ-123
+
+## if using jwt token and not basic auth, need to add authorization header
+-H "Authorization: Bearer YOUR_JWT_TOKEN" 
 ```
 
 ### post
