@@ -1,6 +1,7 @@
 ## ping & telnet
 they both test basic connectivity but just send ICMP pockets to server and not make http/https connection. If this fails, it means their server is down or there is network routing problem between
 us or theres firewall blocking ICMP pockets on their side for security or DNS issue where their hostname cant be resolved.
+**it doesnt mean their server is 100% down cuz they might have blocked ping for security issues**
 ```
 ping google.com          # Test connectivity
 telnet hostname 8080     # Test port connectivity
