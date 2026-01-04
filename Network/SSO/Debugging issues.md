@@ -1,3 +1,12 @@
+## cookie issue (v impt)
+Step 3: Confluence receives SAML response ← THIS is where JSESSIONID matters
+
+Confluence validates the SAML response
+Confluence tries to SET the JSESSIONID cookie (this is the session cookie)
+But SameSite=Strict BLOCKS Confluence from setting this cookie (cross-site context from Okta redirect)
+Without JSESSIONID, Confluence can't create a session
+User appears logged out → redirects to login page
+
 ## samesite = strict policy
 Controls when cookies can be sent with requests.
 
