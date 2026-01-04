@@ -8,6 +8,14 @@ btw theres 2 types of api - xhr/fetch VS preflight.
 - fetch = newer way
 - preflight = special **OPTIONS** REQUEST sent before the actual API call to check for cross-origin resource sharing (cors)
 
+the type can also have (blocked:other) or (blocked:client) in the Status column, this is NOT an HTTP status code - it's Chrome telling you the request was blocked BEFORE it even reached the server.
+
+(blocked:other) = Browser extension blocked it (ad blocker, privacy tool)
+(blocked:client) = Same thing, extension interference
+(blocked:csp) = Content Security Policy blocked it
+(blocked:mixed-content) = HTTPS page trying to load HTTP resource
+(blocked:devtools) = You manually blocked it in DevTools
+
 ### wats cors?
 its browser security that controls if a website can make a request to another domain 
 
