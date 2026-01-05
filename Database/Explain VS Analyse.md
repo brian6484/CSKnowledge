@@ -11,7 +11,7 @@ id | select_type | table       | type | possible_keys | key     | rows | Extra
 1  | SIMPLE      | permissions | ref  | idx_user_id   | idx_user_id | 5 | Using where
 ```
 
-we need to look at **type** as ref (ALL = bad, ref = good) which means its using index that is mentioned in **key column**. So this is to observe the query whether it uses index and whether
+we need to look at **type** as ref (ALL = bad, ref or index = good) which means its using index that is mentioned in **key column**. So this is to observe the query whether it uses index and whether
 it is optimal
 
 ## analyse
