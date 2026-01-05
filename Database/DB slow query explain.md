@@ -46,6 +46,22 @@ EXPLAIN SELECT * FROM permissions WHERE user_id = 12345;
 -- Want to see "type: ref" or "type: index" (good - using index)
 ```
 
+5) observe the query. If its a join query and **theres no ON clause**, we are doing caretesian product that is so much ineff. than using ON clause which still does cartesian product but only for that specific condition
+
+"Cartesian product means the query is joining tables without proper conditions, causing every row in one table to match every row in another.
+For example, if a user has 50 groups and the query doesn't properly join user_groups.group_id = group_permissions.group_id, it creates:
+```
+50 user_group rows × 100,000 total permission rows = 5 million rows
+```
+This explains why users with MORE groups are slower - 5 groups creates 500K rows, but 50 groups creates 5M rows.
+I'd check:
+
+- EXPLAIN output for huge 'rows' count
+- Slow query log for excessive 'Rows_examined'
+- The actual JOIN conditions in the new release's code
+
+The fix is adding the proper JOIN condition: ON ug.group_id = gp.group_id"
+
 ## Fixes for Slow JOIN Queries
 
 ### **1. Add/Optimize Indexes** (Most Common Fix)
