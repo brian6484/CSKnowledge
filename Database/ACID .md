@@ -8,7 +8,7 @@ Consistency is moving from 1 valid state to another valid state by DB. Valid sta
 For example, if email column of user has unique constraint and this particular transaction tries to violate this constraint, it should be rolled back with error.
 
 ## Isolation
-Each transaction should not be visible to other transactions that are concurrently running
+Each transaction should not be visible to other transactions that are concurrently running. it should not interfere with other transactions 
 
 ## Durable
 Changes made in transaction should be persisted to db - even in system failure or power outage
