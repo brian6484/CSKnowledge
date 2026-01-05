@@ -227,8 +227,19 @@ PARTITION BY HASH(group_id) PARTITIONS 10;
 >
 > **Immediate (hours):**
 > 1. Add indexes on JOIN columns (user_id, group_id)
-> 2. Run ANALYZE TABLE to update statistics
-> 3. Enable application-level caching
+> 2. If there are too many where conditions, its a waste to create index for each column. Instead u should do 
+```
+"For WHERE clauses with many columns, I'd:
+
+Identify the most frequently run queries from slow query logs
+Create composite indexes on the 2-3 most selective columns
+Order columns by selectivity (most filtering first) like (user_id,group_id) or (user_id, order_id)
+Verify with EXPLAIN that the index is being used
+
+I'd avoid over-indexing - too many indexes slow down writes and waste space. Generally 2-3 columns per composite index is optimal."
+```
+> 3. Run ANALYZE TABLE to update statistics
+> 4. Enable application-level caching
 >
 > **Short-term (days):**
 > 4. Optimize the query itself - filter before joining
@@ -242,13 +253,5 @@ PARTITION BY HASH(group_id) PARTITIONS 10;
 
 ---
 
-## How to Decide Which Fix
-
-**Ask these questions:**
-1. **Is index missing?** → Add index (quickest win)
-2. **Are statistics stale?** → Run ANALYZE
-3. **Are results repeated?** → Add caching
-4. **Too many groups per user?** → Clean up data
-5. **Query fundamentally complex?** → Denormalize
 
 
