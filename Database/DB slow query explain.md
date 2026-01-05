@@ -34,7 +34,7 @@ SELECT * FROM permissions WHERE user_id = 12345;
 CREATE INDEX idx_user_id ON permissions(user_id);
 ```
 
-we can check if theres indexes via **EXPLAIN**, which literally explains the sql query 
+we can check if theres indexes via **EXPLAIN**, [which literally explains the sql query](https://github.com/brian6484/CSKnowledge/blob/main/Database/Explain%20VS%20Analyse.md) 
 ```
 -- See what indexes exist
 SHOW INDEX FROM permissions;
