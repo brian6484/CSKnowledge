@@ -1,3 +1,12 @@
+## Issue
+if saml auth succeeds yesterday but its failing today
+
+1) Check SAML certificate expiration (most common cause of "worked yesterday, broken today") - theres actually saml certificate. So we know saml token that contains user info is sent back from identity provider to browser. But its the saml certificate i.e. x509 cert that signs this token. IDP uses its private key to sign saml assertion and SP uses the IDP's public cert to verify if this signature is valid.
+2) Review SP/IdP logs for specific error codes
+3) Verify clock sync between IdP and SP (clock skew causes signature validation failures)
+4) Check SAML response - is the assertion being sent? Are attributes correct?
+5) verify metadata - has anything changed in IdP or SP metadata URLs?
+
 ## cookie issue (v impt)
 Step 3: Confluence receives SAML response ← THIS is where JSESSIONID matters
 
