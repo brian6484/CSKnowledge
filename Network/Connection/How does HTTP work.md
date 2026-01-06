@@ -10,6 +10,9 @@ uses QUIC/UDP but most of the time, it usues TCP)
 ## HTTP methods
 The commonly seen methods are get, post, delete and put
 
+i also need to **mention idempotency when comparing http methods!**
+put - idempotent, post - not idempotent, patch - idempotent
+
 ## Diff between GET vs POST
 GET retrieves data from server and **can be cached by browsers or CDNs with Cache-Control headers** unlike POST. It is also
 safe and idempotent (making same request multiple times doesnt change server state)
