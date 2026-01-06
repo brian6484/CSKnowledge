@@ -2,6 +2,8 @@
 So we know db indexes help db searches speed up data retrieval and enforce uniqueness. The most common way it is indexed is using a 
 b-tree.
 
+An index is a data structure (typically B+ tree) that speeds up queries by providing direct pointers to data instead of full table scans. The trade-off is increased storage and slower writes (INSERT/UPDATE/DELETE) since indexes must be maintained. Add indexes on columns frequently used in WHERE clauses, JOINs, or ORDER BY, but avoid over-indexing.
+
 ## but why do we use trees
 if u hav 1 million records and u wanna find user id = 500k. Instead of scanning line by line, using a tree index that keeps data sorted will make query much faster.
 
