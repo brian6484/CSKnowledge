@@ -15,3 +15,25 @@ You try to access a Service Provider
 
 So technically, the IdP doesn't directly send the token to the SP - it sends it back through your browser, which then forwards it to the SP. This is important for the security model.
 The "multiple resources without login" part: Once authenticated with the IdP, you can access other SPs that trust the same IdP without logging in again during your SSO session. Each SP still needs to receive and validate a SAML assertion, but you don't have to re-enter credentials.
+
+## LDAP
+LDAP (Lightweight Directory Access Protocol):
+
+- A protocol to query/access directory services (like Active Directory)
+- Used for authentication (verify username/password) and user lookup
+- Direct connection: Application → LDAP server
+- Use case: Sync users, validate credentials in real-time
+- Active Directory = Microsoft's implementation of a directory service (think of it as a database of users, groups, permissions)
+
+## saml
+SAML (Security Assertion Markup Language):
+
+- ✅ An authentication standard for Single Sign-On (SSO)
+- Uses assertions (XML tokens), not tokens stored in browser
+- Flow: User → IdP (Identity Provider) → SAML response → SP (Service Provider/your app)
+- Use case: SSO across multiple applications, federated authentication
+
+When to use:
+
+LDAP: Internal authentication, user directory sync, direct credential validation
+SAML: SSO experience, third-party IdP (Okta, Azure AD), web-based authentication
