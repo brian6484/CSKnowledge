@@ -31,3 +31,8 @@ The `/24` means the first 24 bits are the network, remaining 8 bits are for host
 - `/8` = 16 million addresses
 
 **Why it's useful:** Instead of saying "192.168.1.0 through 192.168.1.255", you just say `192.168.1.0/24`. Much more efficient for routing tables and firewall rules.
+
+## subnet mask
+IP:   192.168.1.10
+Mask: 255.255.255.0
+AND operation → Network: 192.168.1.0
