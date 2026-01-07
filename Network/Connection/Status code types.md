@@ -3,4 +3,4 @@
 instead of 502.
 
 ## 503 service unavailable
-this means the server itself is down or is currently incapable of serving req. Unlike 500 which occurs due to application logic issues, 503 is the server's incapacity.
+this means the server itself is running but it temporarily can't handle requests or is currently incapable of serving req. Unlike 500 which occurs due to application logic issues that throws exception, 503 is the server's incapacity like too overloaded or resource exhaustion (out of memory, connection pool) or upstream service is down (like db is down)
