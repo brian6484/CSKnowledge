@@ -16,8 +16,31 @@ You try to access a Service Provider
 So technically, the IdP doesn't directly send the token to the SP - it sends it back through your browser, which then forwards it to the SP. This is important for the security model.
 The "multiple resources without login" part: Once authenticated with the IdP, you can access other SPs that trust the same IdP without logging in again during your SSO session. Each SP still needs to receive and validate a SAML assertion, but you don't have to re-enter credentials.
 
-## LDAP
-LDAP (Lightweight Directory Access Protocol):
+## in terms of cookie
+```
+Step 1: User clicks "Login with SSO" on Confluence
+
+Confluence generates a SAML request
+Confluence might set some cookies here (like a temporary state/session cookie)
+Redirects to Okta
+
+Step 2: User logs into Okta
+
+Okta authenticates the user
+Okta generates a SAML response (proof of authentication)
+Redirects back to Confluence with SAML response
+
+Step 3: Confluence receives SAML response ← THIS is where JSESSIONID matters
+
+Confluence validates the SAML response
+Confluence tries to SET the JSESSIONID cookie (this is the session cookie)
+But SameSite=Strict BLOCKS Confluence from setting this cookie (cross-site context from Okta redirect)
+Without JSESSIONID, Confluence can't create a session
+User appears logged out → redirects to login page
+```
+
+## top level navigation
+if samesite=lax or none, it allows top level naviagtion, which is like clicking a link or a redirect.
 
 - A protocol to query/access directory services (like Active Directory)
 - Used for authentication (verify username/password) and user lookup
