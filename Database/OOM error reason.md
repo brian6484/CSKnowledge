@@ -1,3 +1,4 @@
+Connection pool exhaustion doesn't directly cause OOM, but it leads to it. When the pool is exhausted, incoming requests wait for connections. These waiting threads pile up, each consuming memory for their stack and local variables. With hundreds of threads waiting, memory fills up and causes OutOfMemoryError. Similarly, too many concurrent users means more sessions, cached data, and active threads—all consuming heap memory until it's exhausted.
 ```
 1. How Concurrent Users/Connection Pool → OOM Error
 Connection Pool Exhaustion ≠ Direct OOM
